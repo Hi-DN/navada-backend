@@ -1,8 +1,10 @@
 package hidn.navada.image;
 
+import hidn.navada.product.Product;
 import lombok.*;
 
 import javax.persistence.*;
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Builder
@@ -13,8 +15,9 @@ public class Image {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long imageId;   //pk
 
-    //fixme
-    private long product;   //상품(fk)
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "productId")
+    private Product product;   //상품(fk)
 
     @Column(nullable = false)
     private String imageUrl;    //이미지 주소
