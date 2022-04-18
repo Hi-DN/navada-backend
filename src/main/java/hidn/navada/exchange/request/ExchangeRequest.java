@@ -1,5 +1,7 @@
 package hidn.navada.exchange.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import hidn.navada.product.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +11,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Builder
@@ -21,10 +25,13 @@ public class ExchangeRequest {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long exchangeRequestId; //pk
 
-    //fixme 아래 두 컬럼
-    private long exchangeProduct;   //원하는 상품(fk)
+    @JsonIgnore @ManyToOne(fetch = LAZY)
+    @JoinColumn(referencedColumnName = "productId",name="exchangeProductId")
+    private Product exchangeProduct;   //원하는 상품(fk)
 
-    private long requestProduct;    //제시한 상품(fk)
+    @JsonIgnore @ManyToOne(fetch = LAZY)
+    @JoinColumn(referencedColumnName = "productId",name="requestProductId")
+    private Product requestProduct;    //제시한 상품(fk)
 
     @CreatedDate
     @Column(updatable = false)
