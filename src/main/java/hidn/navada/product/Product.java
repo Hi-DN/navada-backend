@@ -36,5 +36,10 @@ public class Product {
     private int productStatusCd=0;          // 상품 상태(0: 등록, 1: 거래중, 2: 거래 완료)
 
     @Builder.Default
-    private Long heartNum= 0L; // 좋아요 수
+    private Long heartNum= 0L;              // 좋아요 수
+
+    private int productCost;                //상품 원가
+
+    private int exchangeCostRange;          //교환 가격 범위
+
 }
