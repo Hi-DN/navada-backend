@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 public class ExchangeRequestService {
     private final ExchangeRequestJpaRepo exchangeRequestJpaRepo;
     private final ProductJpaRepo productJpaRepo;
+    private final ExchangeService exchangeService;
 
     public ExchangeRequest createExchangeRequest(Long requesterId, Long requestProductId, Long acceptorProductId){
 
@@ -37,33 +38,25 @@ public class ExchangeRequestService {
         return exchangeRequest;
     }
 
-//    public Exchange acceptExchangeRequest(Long exchangeRequestId){
-//
-//        ExchangeRequest exchangeRequest = exchangeRequestJpaRepo.findById(exchangeRequestId).orElseThrow(ExchangeRequestNotFoundException::new);
-//
-//        // [교환신청 수락 시 변경사항]
-//        // 교환신청상태 변경
-//        exchangeRequest.setExchangeStatusCd(1);
-//        exchangeRequestJpaRepo.save(exchangeRequest);
-//
-//        // 상품상태 변경
-//        // product.productStatusCd=1 (두 상품 모두) (0=등록완료, 1=교환중, 2=교환완료)
-//        Product product = exchangeRequest.getAcceptorProduct();
-////        product.
-//        // Exchange 엔티티 생성
-//
-//
-//    }
+    public Exchange acceptExchangeRequest(Long exchangeRequestId){
 
-    //    public ExchangeRequest testService() {
-//        Product product1=productJpaRepo.getById(1L);
-//        Product product2=productJpaRepo.getById(2L);
-//
-//        ExchangeRequest exchangeRequest=ExchangeRequest.builder()
-//                .exchangeProduct(product1)
-//                .requestProduct(product2)
-//                .build();
-//
-//        return exchangeRequestJpaRepo.save(exchangeRequest);
-//    }
+        ExchangeRequest exchangeRequest = exchangeRequestJpaRepo.findById(exchangeRequestId).orElseThrow(ExchangeRequestNotFoundException::new);
+
+        // 교환신청상태 변경(대기 -> 수락)
+        exchangeRequest.setExchangeStatusCd(1);
+        exchangeRequestJpaRepo.save(exchangeRequest);
+
+        // 상품상태 변경(등록완료 -> 교환중)
+        //TODO: 프로덕트 서비스에서 변경
+        Product product = exchangeRequest.getAcceptorProduct();
+        product.setProductStatusCd(1);
+        productJpaRepo.save(product);
+
+        // Exchange 엔티티 생성
+        return exchangeService.createExchange(exchangeRequest);
+    }
+
+    public void deleteExchangeRequest(long exchangeRequestId) {
+        exchangeRequestJpaRepo.deleteById(exchangeRequestId);
+    }
 }

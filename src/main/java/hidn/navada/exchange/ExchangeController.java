@@ -25,8 +25,8 @@ public class ExchangeController {
 
     // 교환 목록 조회
 
-    @PostMapping(value = "/exchange")
-    public SingleResponse<Exchange> testController(){
-        return responseService.getSingleResponse(exchangeService.testService());
-    }
+//    @PostMapping(value = "/exchange")
+//    public SingleResponse<Exchange> testController(){
+//        return responseService.getSingleResponse(exchangeService.testService());
+//    }
 }
