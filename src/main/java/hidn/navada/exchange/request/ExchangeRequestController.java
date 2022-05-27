@@ -36,7 +36,9 @@ public class ExchangeRequestController {
     // 교환신청 취소
     @DeleteMapping(value="/user/exchange/request/{exchangeRequestId}")
     public CommonResponse deleteExchangeRequest(@PathVariable Long exchangeRequestId){
-        exchangeRequestService.deleteExchangeRequest(exchangeRequestId);
-        return responseService.getSuccessResponse();
+        if(exchangeRequestService.deleteExchangeRequest(exchangeRequestId))
+            return responseService.getSuccessResponse();
+        else
+            return responseService.getErrorResponse(-1, "FAIL: 교환신청 상태가 대기중이 아닙니다.");
     }
 }

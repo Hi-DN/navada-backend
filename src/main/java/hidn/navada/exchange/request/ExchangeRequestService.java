@@ -56,7 +56,15 @@ public class ExchangeRequestService {
         return exchangeService.createExchange(exchangeRequest);
     }
 
-    public void deleteExchangeRequest(long exchangeRequestId) {
-        exchangeRequestJpaRepo.deleteById(exchangeRequestId);
+    public boolean deleteExchangeRequest(long exchangeRequestId) {
+        ExchangeRequest exchangeRequest = exchangeRequestJpaRepo.findById(exchangeRequestId).orElseThrow(ExchangeRequestNotFoundException::new);
+        if(exchangeRequest.getExchangeStatusCd() == 0) {
+            // 교환신청 상태가 대기중일 시에만 삭제
+            exchangeRequestJpaRepo.deleteById(exchangeRequestId);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
