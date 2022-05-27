@@ -14,19 +14,23 @@ public class ExchangeService {
     private final ProductJpaRepo productJpaRepo;
     private final UserJpaRepo userJpaRepo;
 
-    public Exchange testService() {
-        User acceptor=userJpaRepo.getById(1L);
-        Product acceptorProduct=productJpaRepo.getById(1L);
-        User requester=userJpaRepo.getById(2L);
-        Product requesterProduct=productJpaRepo.getById(2L);
+//    public Exchange createExchage() {
+//
+//    }
 
-        Exchange exchange= Exchange.builder()
-                .acceptor(acceptor)
-                .acceptorProduct(acceptorProduct)
-                .requester(requester)
-                .requesterProduct(requesterProduct)
-                .build();
-
-        return exchangeJpaRepo.save(exchange);
-    }
+//    public Exchange testService() {
+//        User acceptor=userJpaRepo.getById(1L);
+//        Product acceptorProduct=productJpaRepo.getById(1L);
+//        User requester=userJpaRepo.getById(2L);
+//        Product requesterProduct=productJpaRepo.getById(2L);
+//
+//        Exchange exchange= Exchange.builder()
+//                .acceptor(acceptor)
+//                .acceptorProduct(acceptorProduct)
+//                .requester(requester)
+//                .requesterProduct(requesterProduct)
+//                .build();
+//
+//        return exchangeJpaRepo.save(exchange);
+//    }
 }
