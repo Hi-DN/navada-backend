@@ -3,10 +3,7 @@ package hidn.navada.exchange.request;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import hidn.navada.product.Product;
 import hidn.navada.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -18,6 +15,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Builder
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
@@ -40,7 +38,7 @@ public class ExchangeRequest {
 
     @JsonIgnore @ManyToOne(fetch = LAZY)
     @JoinColumn(referencedColumnName = "productId",name="requestProductId", nullable = false)
-    private Product requestProduct;    // 신청자 상품(fk)
+    private Product requesterProduct;    // 신청자 상품(fk)
 
     @CreatedDate
     @Column(updatable = false)
