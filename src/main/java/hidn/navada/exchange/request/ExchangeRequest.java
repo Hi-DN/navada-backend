@@ -2,6 +2,7 @@ package hidn.navada.exchange.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import hidn.navada.product.Product;
+import hidn.navada.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,12 +27,20 @@ public class ExchangeRequest {
     private Long exchangeRequestId; //pk
 
     @JsonIgnore @ManyToOne(fetch = LAZY)
-    @JoinColumn(referencedColumnName = "productId",name="exchangeProductId")
-    private Product exchangeProduct;   //원하는 상품(fk)
+    @JoinColumn(referencedColumnName = "userId",name = "acceptorId",nullable = false)
+    private User acceptor;              // 교환수락자(fk)
 
     @JsonIgnore @ManyToOne(fetch = LAZY)
-    @JoinColumn(referencedColumnName = "productId",name="requestProductId")
-    private Product requestProduct;    //제시한 상품(fk)
+    @JoinColumn(referencedColumnName = "productId",name="acceptorProductId", nullable = false)
+    private Product acceptorProduct;   // 수락자 상품(fk)
+
+    @JsonIgnore @ManyToOne(fetch = LAZY)
+    @JoinColumn(referencedColumnName = "userId",name = "requesterId",nullable = false)
+    private User requester;             // 교환신청자(fk)
+
+    @JsonIgnore @ManyToOne(fetch = LAZY)
+    @JoinColumn(referencedColumnName = "productId",name="requestProductId", nullable = false)
+    private Product requestProduct;    // 신청자 상품(fk)
 
     @CreatedDate
     @Column(updatable = false)
