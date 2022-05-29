@@ -1,5 +1,6 @@
 package hidn.navada.exchange;
 
+import hidn.navada.comm.response.ListResponse;
 import hidn.navada.comm.response.ResponseService;
 import hidn.navada.comm.response.SingleResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,8 @@ public class ExchangeController {
     }
 
     // 교환 목록 조회
-
-//    @PostMapping(value = "/exchange")
-//    public SingleResponse<Exchange> testController(){
-//        return responseService.getSingleResponse(exchangeService.testService());
-//    }
+    @GetMapping(value = "/user/{userId}/exchanges")
+    public ListResponse<Exchange> getExchangeList(@PathVariable Long userId, @RequestParam(name="acceptor") Boolean isAcceptor, @RequestParam(name="complete") Boolean isComplete) {
+        return responseService.getListResponse(exchangeService.getExchangeList(userId, isAcceptor, isComplete));
+    }
 }

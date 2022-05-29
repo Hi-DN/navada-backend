@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -59,5 +61,23 @@ public class ExchangeService {
         exchangeJpaRepo.save(exchange);
 
         return exchange;
+    }
+
+    public List<Exchange> getExchangeList(Long userId, Boolean isAcceptor, Boolean isComplete) {
+        List<Exchange> exchangeList;
+
+        if(isAcceptor)
+            if(isComplete)
+                exchangeList = exchangeJpaRepo.findCompleteExchangesByAcceptorId(userId);
+            else
+                exchangeList = exchangeJpaRepo.findUncompleteExchangesByAcceptorId(userId);
+        else
+            if(isComplete)
+                exchangeList = exchangeJpaRepo.findCompleteExchangesByRequesterId(userId);
+            else
+                exchangeList = exchangeJpaRepo.findUncompleteExchangesByRequesterId(userId);
+
+
+        return exchangeList;
     }
 }
