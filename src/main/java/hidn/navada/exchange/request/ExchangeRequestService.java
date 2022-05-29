@@ -2,6 +2,7 @@ package hidn.navada.exchange.request;
 
 import hidn.navada.comm.exception.ExchangeRequestNotFoundException;
 import hidn.navada.comm.exception.ProductNotFoundException;
+import hidn.navada.comm.exception.ProductStatusCdDiscrepancyException;
 import hidn.navada.exchange.Exchange;
 import hidn.navada.exchange.ExchangeService;
 import hidn.navada.product.Product;
@@ -27,6 +28,10 @@ public class ExchangeRequestService {
         // 교환신청자 상품
         Product requesterProduct = productJpaRepo.findById(requestProductId).orElseThrow(ProductNotFoundException::new);
 
+        if(acceptorProduct.getProductStatusCd() != 0 || requesterProduct.getProductStatusCd() != 0) {
+            throw new ProductStatusCdDiscrepancyException();
+        }
+
         exchangeRequest.setAcceptor(acceptorProduct.getUser());
         exchangeRequest.setAcceptorProduct(acceptorProduct);
         exchangeRequest.setRequester(requesterProduct.getUser());
@@ -48,9 +53,12 @@ public class ExchangeRequestService {
 
         // 상품상태 변경(등록완료 -> 교환중)
         //TODO: 프로덕트 서비스에서 변경
-        Product product = exchangeRequest.getAcceptorProduct();
-        product.setProductStatusCd(1);
-        productJpaRepo.save(product);
+        Product acceptorProduct = exchangeRequest.getAcceptorProduct();
+        Product requesterProduct = exchangeRequest.getRequesterProduct();
+        acceptorProduct.setProductStatusCd(1);
+        requesterProduct.setProductStatusCd(1);
+        productJpaRepo.save(acceptorProduct);
+        productJpaRepo.save(requesterProduct);
 
         // Exchange 엔티티 생성
         return exchangeService.createExchange(exchangeRequest);
