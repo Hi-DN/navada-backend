@@ -1,6 +1,7 @@
 package hidn.navada.heart;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import hidn.navada.comm.BaseTime;
 import hidn.navada.product.Product;
 import hidn.navada.user.User;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Heart {
+public class Heart extends BaseTime {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long heartId;                   // pk
 

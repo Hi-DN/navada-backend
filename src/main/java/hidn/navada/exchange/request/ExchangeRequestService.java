@@ -16,7 +16,7 @@ public class ExchangeRequestService {
         Product product2=productJpaRepo.getById(2L);
 
         ExchangeRequest exchangeRequest=ExchangeRequest.builder()
-                .exchangeProduct(product1)
+                .acceptorProduct(product1)
                 .requestProduct(product2)
                 .build();
 
