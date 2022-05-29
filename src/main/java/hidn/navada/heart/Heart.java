@@ -29,7 +29,6 @@ public class Heart extends BaseTime {
     @JoinColumn(name = "userId")
     private User user;                      // 하트를 누른 회원 id(fk)
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "productId")
     private Product product;                // 하트가 눌려진 상품 id(fk)
