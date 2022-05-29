@@ -3,16 +3,14 @@ package hidn.navada.product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import hidn.navada.comm.BaseTime;
 import hidn.navada.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Builder
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product extends BaseTime {
