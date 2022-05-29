@@ -33,8 +33,4 @@ public class Heart extends BaseTime {
     @ManyToOne
     @JoinColumn(name = "productId")
     private Product product;                // 하트가 눌려진 상품 id(fk)
-
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime heartDt;          // 좋아요한 일시
 }
