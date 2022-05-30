@@ -37,7 +37,6 @@ public class ExchangeRequestService {
         exchangeRequest.setAcceptorProduct(acceptorProduct);
         exchangeRequest.setRequester(requesterProduct.getUser());
         exchangeRequest.setRequesterProduct(requesterProduct);
-        exchangeRequest.setExchangeRequestDt(LocalDateTime.now());
 
         exchangeRequestJpaRepo.save(exchangeRequest);
 
