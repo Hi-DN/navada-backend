@@ -1,11 +1,15 @@
 package hidn.navada.exchange.request;
 
 import hidn.navada.comm.response.CommonResponse;
+import hidn.navada.comm.response.ListResponse;
 import hidn.navada.comm.response.ResponseService;
 import hidn.navada.comm.response.SingleResponse;
 import hidn.navada.exchange.Exchange;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,11 +31,17 @@ public class ExchangeRequestController {
     }
 
     // 교환신청 목록 조회
-    // exchangeRequestStatus, productImage, productName, userNickname 따로 묶어서 만들어야할지?
-//    @GetMapping(value = "/user/{userId}/exchange/request")
-//    public SingleResponse<Exchange> getExchangeRequestList(@PathVariable Long userId){
-//
-//    }
+    @GetMapping(value = "/user/{userId}/exchange/requests")
+    public ListResponse<ExchangeRequestDto> getExchangeRequestList(@PathVariable Long userId){
+        List<ExchangeRequest> ers = exchangeRequestService.getExchangeRequestList(userId);
+        List<ExchangeRequestDto> result = new ArrayList<>();
+        ers.forEach(er -> {
+            ExchangeRequestDto dto = new ExchangeRequestDto(er.getExchangeStatusCd(), er.getRequesterProduct().getProductName(), er.getAcceptor().getUserNickname());
+            result.add(dto);
+        });
+
+        return responseService.getListResponse(result);
+    }
 
     // 교환신청 취소
     @DeleteMapping(value="/user/exchange/request/{exchangeRequestId}")
