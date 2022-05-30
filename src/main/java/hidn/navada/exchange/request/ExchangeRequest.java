@@ -4,19 +4,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import hidn.navada.comm.BaseTime;
 import hidn.navada.product.Product;
 import hidn.navada.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Builder
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
@@ -39,7 +39,7 @@ public class ExchangeRequest extends BaseTime {
 
     @JsonIgnore @ManyToOne(fetch = LAZY)
     @JoinColumn(referencedColumnName = "productId",name="requestProductId", nullable = false)
-    private Product requestProduct;    // 신청자 상품(fk)
+    private Product requesterProduct;    // 신청자 상품(fk)
 
     @Builder.Default
     private int exchangeStatusCd=0;    //교환상태(0:교환대기, 1:교환선택, 2:교환거절)

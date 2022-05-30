@@ -4,10 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import hidn.navada.comm.BaseTime;
 import hidn.navada.product.Product;
 import hidn.navada.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -18,6 +16,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Builder
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
@@ -43,9 +42,9 @@ public class Exchange extends BaseTime {
 
     private boolean acceptorConfirmYn;          //수락자 확인여부
 
-    private boolean requesterConfirmYn;         //신청자 확인여부
+    private boolean requesterConfirmYn=false;         //신청자 확인여부
 
-    private boolean exchangeCompleteYn;         //교환완료여부
+    private boolean exchangeCompleteYn=false;         //교환완료여부
 
     private LocalDateTime exchangeCompleteDt;   //교환완료일시
 }
