@@ -1,6 +1,7 @@
 package hidn.navada.exchange;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import hidn.navada.comm.BaseTime;
 import hidn.navada.product.Product;
 import hidn.navada.user.User;
 import lombok.*;
@@ -19,7 +20,7 @@ import static javax.persistence.FetchType.LAZY;
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Exchange {
+public class Exchange extends BaseTime {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long exchangeId;    //pk
 
@@ -39,11 +40,7 @@ public class Exchange {
     @JoinColumn(referencedColumnName = "productId",name = "requesterProductId",nullable = false)
     private Product requesterProduct;  //신청자상품(fk)
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime exchangeAcceptDt;     //교환수락일시
-
-    private boolean acceptorConfirmYn=false;          //수락자 확인여부
+    private boolean acceptorConfirmYn;          //수락자 확인여부
 
     private boolean requesterConfirmYn=false;         //신청자 확인여부
 

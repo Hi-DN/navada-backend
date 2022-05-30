@@ -1,5 +1,6 @@
 package hidn.navada.user;
 
+import hidn.navada.comm.BaseTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User extends BaseTime {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;            // pk
 

@@ -1,6 +1,7 @@
 package hidn.navada.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import hidn.navada.comm.BaseTime;
 import hidn.navada.user.User;
 import lombok.*;
 
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product {
+public class Product extends BaseTime {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;                 // pk
 

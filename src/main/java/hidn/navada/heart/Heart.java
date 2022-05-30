@@ -1,6 +1,7 @@
 package hidn.navada.heart;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import hidn.navada.comm.BaseTime;
 import hidn.navada.product.Product;
 import hidn.navada.user.User;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Heart {
+public class Heart extends BaseTime {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long heartId;                   // pk
 
@@ -28,12 +29,7 @@ public class Heart {
     @JoinColumn(name = "userId")
     private User user;                      // 하트를 누른 회원 id(fk)
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "productId")
     private Product product;                // 하트가 눌려진 상품 id(fk)
-
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime heartDt;          // 좋아요한 일시
 }
