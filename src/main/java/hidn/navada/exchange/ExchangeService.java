@@ -94,4 +94,20 @@ public class ExchangeService {
 
         return exchange;
     }
+
+    public Exchange deleteExchangeHistory(Long exchangeId, Boolean isAcceptor) {
+        Exchange exchange = exchangeJpaRepo.findById(exchangeId).orElseThrow(ExchangeNotFoundException::new);
+        if(isAcceptor) {
+            // 수락자가 교환 내역을 삭제하려는 경우
+            exchange.setAcceptorHistoryDeleteYn(true);
+
+        } else {
+            // 요청자가 교환 내역을 삭제하려는 경우
+            exchange.setRequesterHistoryDeleteYn(true);
+        }
+
+        exchangeJpaRepo.save(exchange);
+
+        return exchange;
+    }
 }

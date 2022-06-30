@@ -31,4 +31,10 @@ public class ExchangeController {
     public SingleResponse<Exchange> rateExchange(@PathVariable Long exchangeId, @RequestParam(name="acceptoryn") Boolean isAcceptor, @RequestParam(name="rating") float rating){
         return responseService.getSingleResponse(exchangeService.rateExchange(exchangeId, isAcceptor, rating));
     }
+
+    // 교환내역 삭제 api
+    @PatchMapping(value = "/user/exchange/{exchangeId}/dlthst")
+    public SingleResponse<Exchange> deleteExchangeHistory(@PathVariable Long exchangeId, @RequestParam(name="acceptoryn") Boolean isAcceptor){
+        return responseService.getSingleResponse(exchangeService.deleteExchangeHistory(exchangeId, isAcceptor));
+    }
 }
