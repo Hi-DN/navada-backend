@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(value = "/v1")
 public class ProductController {
     private final ProductService productService;
     private final ResponseService responseService;

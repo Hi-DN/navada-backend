@@ -52,7 +52,6 @@ public class ExchangeRequestService {
         exchangeRequestJpaRepo.save(exchangeRequest);
 
         // 상품상태 변경(등록완료 -> 교환중)
-        //TODO: 프로덕트 서비스에서 변경
         Product acceptorProduct = exchangeRequest.getAcceptorProduct();
         Product requesterProduct = exchangeRequest.getRequesterProduct();
         acceptorProduct.setProductStatusCd(1);

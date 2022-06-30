@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(value = "/v1")
 public class ExchangeRequestController {
     private final ResponseService responseService;
     private final ExchangeRequestService exchangeRequestService;
