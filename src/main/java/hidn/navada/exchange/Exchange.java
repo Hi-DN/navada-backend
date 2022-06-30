@@ -48,9 +48,9 @@ public class Exchange extends BaseTime {
 
     private LocalDateTime exchangeCompleteDt;           //교환완료일시
 
-    private double acceptorRating;                      //acceptor가 받은 평점
+    private float acceptorRating;                      //acceptor가 받은 평점
 
-    private double requesterRating;                     //requester가 받은 평점
+    private float requesterRating;                     //requester가 받은 평점
 
     private boolean acceptorHistoryDeleteYn=false;      //acceptor의 거래내역 삭제 여부
 
