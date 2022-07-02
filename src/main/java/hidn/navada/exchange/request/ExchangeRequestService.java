@@ -79,4 +79,10 @@ public class ExchangeRequestService {
     public List<ExchangeRequest> getExchangeRequestList(Long userId) {
         return exchangeRequestJpaRepo.findByRequesterUserId(userId);
     }
+
+    //교환신청 거절
+    public void rejectExchangeRequest(Long exchangeRequestId) {
+        ExchangeRequest exchangeRequest=exchangeRequestJpaRepo.findById(exchangeRequestId).orElseThrow(ExchangeRequestNotFoundException::new);
+        exchangeRequest.setExchangeStatusCd(2); // 2. 교환거절
+    }
 }
