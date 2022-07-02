@@ -68,7 +68,7 @@ public class ExchangeRequestService {
     }
 
     private void rejectOtherRequests(Product acceptorProduct) {
-        List<ExchangeRequest> exchangeRequestList= exchangeRequestJpaRepo.findByRequesterProductAndExchangeStatusCd(acceptorProduct,0);
+        List<ExchangeRequest> exchangeRequestList= exchangeRequestJpaRepo.findByAcceptorProductAndExchangeStatusCd(acceptorProduct,0);
 
         //TODO event 생성 후, 알림 가는지 확인 필요!
         for(ExchangeRequest exchangeRequest : exchangeRequestList){
