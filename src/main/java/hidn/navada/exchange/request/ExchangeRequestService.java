@@ -60,8 +60,19 @@ public class ExchangeRequestService {
         productJpaRepo.save(acceptorProduct);
         productJpaRepo.save(requesterProduct);
 
+        //나머지 교환 신청 거절
+        rejectOtherRequests(acceptorProduct);
+
         // Exchange 엔티티 생성
         return exchangeService.createExchange(exchangeRequest);
+    }
+
+    private void rejectOtherRequests(Product acceptorProduct) {
+        List<ExchangeRequest> exchangeRequestList= exchangeRequestJpaRepo.findByRequesterProductAndExchangeStatusCd(acceptorProduct,0);
+
+        for(ExchangeRequest exchangeRequest : exchangeRequestList){
+            exchangeRequest.setExchangeStatusCd(2); //2. 교환 거절
+        }
     }
 
     public Boolean deleteExchangeRequest(long exchangeRequestId) {
