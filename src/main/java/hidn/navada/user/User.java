@@ -2,16 +2,14 @@ package hidn.navada.user;
 
 import hidn.navada.comm.BaseTime;
 import hidn.navada.comm.enums.UserLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Builder
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class User extends BaseTime {

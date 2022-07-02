@@ -10,7 +10,6 @@ import hidn.navada.product.ProductJpaRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -20,6 +19,7 @@ public class ExchangeRequestService {
     private final ProductJpaRepo productJpaRepo;
     private final ExchangeService exchangeService;
 
+    //교환 신청
     public ExchangeRequest createExchangeRequest(Long requesterId, Long requestProductId, Long acceptorProductId){
 
         ExchangeRequest exchangeRequest = new ExchangeRequest();
@@ -43,6 +43,7 @@ public class ExchangeRequestService {
         return exchangeRequest;
     }
 
+    //교환 수락
     public Exchange acceptExchangeRequest(Long exchangeRequestId){
 
         ExchangeRequest exchangeRequest = exchangeRequestJpaRepo.findById(exchangeRequestId).orElseThrow(ExchangeRequestNotFoundException::new);
@@ -69,11 +70,13 @@ public class ExchangeRequestService {
     private void rejectOtherRequests(Product acceptorProduct) {
         List<ExchangeRequest> exchangeRequestList= exchangeRequestJpaRepo.findByRequesterProductAndExchangeStatusCd(acceptorProduct,0);
 
+        //TODO event 생성 후, 알림 가는지 확인 필요!
         for(ExchangeRequest exchangeRequest : exchangeRequestList){
             exchangeRequest.setExchangeStatusCd(2); //2. 교환 거절
         }
     }
 
+    //교환신청 삭제
     public Boolean deleteExchangeRequest(long exchangeRequestId) {
         ExchangeRequest exchangeRequest = exchangeRequestJpaRepo.findById(exchangeRequestId).orElseThrow(ExchangeRequestNotFoundException::new);
         if(exchangeRequest.getExchangeStatusCd() == 0) {

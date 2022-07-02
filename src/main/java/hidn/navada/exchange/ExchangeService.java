@@ -2,9 +2,12 @@ package hidn.navada.exchange;
 
 import hidn.navada.comm.exception.ExchangeNotFoundException;
 import hidn.navada.comm.exception.ProductNotFoundException;
+import hidn.navada.comm.exception.UserNotFoundException;
 import hidn.navada.exchange.request.ExchangeRequest;
 import hidn.navada.product.Product;
 import hidn.navada.product.ProductJpaRepo;
+import hidn.navada.user.User;
+import hidn.navada.user.UserJpaRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +19,9 @@ import java.util.List;
 public class ExchangeService {
     private final ExchangeJpaRepo exchangeJpaRepo;
     private final ProductJpaRepo productJpaRepo;
+    private final UserJpaRepo userJpaRepo;
 
+    //교환 성립
     public Exchange createExchange(ExchangeRequest exchangeRequest) {
         Exchange exchange = new Exchange();
 
@@ -30,6 +35,7 @@ public class ExchangeService {
         return exchange;
     }
 
+    //교환 완료
     public Exchange completeExchange(Long exchangeId, Boolean isAcceptor) {
         Exchange exchange = exchangeJpaRepo.findById(exchangeId).orElseThrow(ExchangeNotFoundException::new);
         if(isAcceptor) {
@@ -55,6 +61,8 @@ public class ExchangeService {
 
             productJpaRepo.save(acceptorProduct);
             productJpaRepo.save(requesterProduct);
+
+            updateUserRating(exchange);
         }
 
         exchangeJpaRepo.save(exchange);
@@ -62,6 +70,27 @@ public class ExchangeService {
         return exchange;
     }
 
+    //교환 완료 시 거래횟수, 평균평점 업데이트
+    private void updateUserRating(Exchange exchange) {
+        User acceptor = userJpaRepo.findById(exchange.getAcceptor().getUserId()).orElseThrow(UserNotFoundException::new);
+        User requester = userJpaRepo.findById(exchange.getRequester().getUserId()).orElseThrow(UserNotFoundException::new);
+
+        float acceptorRating=exchange.getAcceptorRating();
+        float requesterRating=exchange.getRequesterRating();
+
+        float prevAcceptorRating = acceptor.getUserRating()*acceptor.getUserTradeCount();
+        float prevRequesterRating = requester.getUserRating()*requester.getUserTradeCount();
+
+        acceptor.setUserTradeCount(acceptor.getUserTradeCount()+1);
+        requester.setUserTradeCount(requester.getUserTradeCount()+1);
+
+        if(acceptorRating>-1)
+            acceptor.setUserRating((prevAcceptorRating+acceptorRating)/acceptor.getUserTradeCount());
+        if(requesterRating>-1)
+            requester.setUserRating((prevRequesterRating+requesterRating)/requester.getUserTradeCount());
+    }
+
+    //교환목록조회
     public List<Exchange> getExchangeList(Long userId, Boolean isAcceptor, Boolean isComplete) {
         List<Exchange> exchangeList;
 
@@ -79,6 +108,7 @@ public class ExchangeService {
         return exchangeList;
     }
 
+    //교환 평점 부여
     public Exchange rateExchange(Long exchangeId, Boolean isAcceptor, float rating) {
         Exchange exchange = exchangeJpaRepo.findById(exchangeId).orElseThrow(ExchangeNotFoundException::new);
         if(isAcceptor) {
@@ -95,6 +125,7 @@ public class ExchangeService {
         return exchange;
     }
 
+    //교환 내역 삭제
     public Exchange deleteExchangeHistory(Long exchangeId, Boolean isAcceptor) {
         Exchange exchange = exchangeJpaRepo.findById(exchangeId).orElseThrow(ExchangeNotFoundException::new);
         if(isAcceptor) {
