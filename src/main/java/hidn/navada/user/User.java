@@ -32,4 +32,10 @@ public class User extends BaseTime {
 
     @Builder.Default
     private int userLevel=0;        // 0:일반, 1:골드, 2:VIP
+
+    @Builder.Default
+    private float userRating=0;       //회원 평점
+
+    @Builder.Default
+    private int userTradeCount=0;     //회원 거래 횟수
 }
