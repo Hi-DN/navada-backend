@@ -1,6 +1,7 @@
 package hidn.navada.user;
 
 import hidn.navada.comm.BaseTime;
+import hidn.navada.comm.enums.UserLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,6 +31,7 @@ public class User extends BaseTime {
     @Column(nullable = false)
     private String userAddress;     // 회원 주소(동네)
 
+    @Enumerated(EnumType.STRING)
     @Builder.Default
-    private int userLevel=0;        // 0:일반, 1:골드, 2:VIP
+    private UserLevel userLevel = UserLevel.LV1_OUTSIDER;        // lv1: 외지인, lv2: 주민, lv3: 토박이, lv4: 촌장
 }

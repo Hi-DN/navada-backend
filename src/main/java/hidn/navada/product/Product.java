@@ -2,6 +2,7 @@ package hidn.navada.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import hidn.navada.comm.BaseTime;
+import hidn.navada.comm.enums.Category;
 import hidn.navada.user.User;
 import lombok.*;
 
@@ -28,8 +29,9 @@ public class Product extends BaseTime {
     @Column(length = 100, nullable = false)
     private String productExplanation;      // 상품 설명
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String category;                // 상품 카테고리
+    private Category category;              // 상품 카테고리
 
     @Builder.Default
     private int productStatusCd=0;          // 상품 상태(0: 등록, 1: 거래중, 2: 거래 완료)
@@ -37,8 +39,8 @@ public class Product extends BaseTime {
     @Builder.Default
     private Long heartNum= 0L;              // 좋아요 수
 
-    private int productCost;                //상품 원가
+    private int productCost;                // 상품 원가
 
-    private int exchangeCostRange;          //교환 가격 범위
+    private int exchangeCostRange;          // 교환 가격 범위
 
 }
