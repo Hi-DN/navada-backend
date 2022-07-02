@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(value = "/v1")
 public class HeartController {
     private final ResponseService responseService;
     private final HeartService heartService;

@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,11 +41,11 @@ public class ExchangeService {
             exchange.setRequesterConfirmYn(true);
         }
 
-        if(exchange.isAcceptorConfirmYn()&& exchange.isRequesterConfirmYn()) {
+        // 둘다 교환 완료인 경우
+        if(exchange.isAcceptorConfirmYn() && exchange.isRequesterConfirmYn()) {
             exchange.setExchangeCompleteYn(true);
             exchange.setExchangeCompleteDt(LocalDateTime.now());
 
-            // TODO: product 서비스걸로 추후 수정
             Product acceptorProduct = productJpaRepo.findById(exchange.getAcceptorProduct().getProductId()).orElseThrow(ProductNotFoundException::new);
             Product requesterProduct = productJpaRepo.findById(exchange.getRequesterProduct().getProductId()).orElseThrow(ProductNotFoundException::new);
 
@@ -77,7 +76,38 @@ public class ExchangeService {
             else
                 exchangeList = exchangeJpaRepo.findUncompleteExchangesByRequesterId(userId);
 
-
         return exchangeList;
+    }
+
+    public Exchange rateExchange(Long exchangeId, Boolean isAcceptor, float rating) {
+        Exchange exchange = exchangeJpaRepo.findById(exchangeId).orElseThrow(ExchangeNotFoundException::new);
+        if(isAcceptor) {
+            // 수락자가 요청자에게 평점을 주고있는 경우
+            exchange.setRequesterRating(rating);
+
+        } else {
+            // 요청자가 수락자에게 평점을 주고있는 경우
+            exchange.setAcceptorRating(rating);
+        }
+
+        exchangeJpaRepo.save(exchange);
+
+        return exchange;
+    }
+
+    public Exchange deleteExchangeHistory(Long exchangeId, Boolean isAcceptor) {
+        Exchange exchange = exchangeJpaRepo.findById(exchangeId).orElseThrow(ExchangeNotFoundException::new);
+        if(isAcceptor) {
+            // 수락자가 교환 내역을 삭제하려는 경우
+            exchange.setAcceptorHistoryDeleteYn(true);
+
+        } else {
+            // 요청자가 교환 내역을 삭제하려는 경우
+            exchange.setRequesterHistoryDeleteYn(true);
+        }
+
+        exchangeJpaRepo.save(exchange);
+
+        return exchange;
     }
 }
