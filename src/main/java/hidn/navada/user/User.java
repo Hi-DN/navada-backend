@@ -2,16 +2,14 @@ package hidn.navada.user;
 
 import hidn.navada.comm.BaseTime;
 import hidn.navada.comm.enums.UserLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Builder
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class User extends BaseTime {
@@ -34,4 +32,10 @@ public class User extends BaseTime {
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private UserLevel userLevel = UserLevel.LV1_OUTSIDER;        // lv1: 외지인, lv2: 주민, lv3: 토박이, lv4: 촌장
+
+    @Builder.Default
+    private float userRating=0;       //회원 평점
+
+    @Builder.Default
+    private int userTradeCount=0;     //회원 거래 횟수
 }

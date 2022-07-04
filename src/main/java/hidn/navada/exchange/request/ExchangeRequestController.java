@@ -52,4 +52,12 @@ public class ExchangeRequestController {
         else
             return responseService.getErrorResponse(-1, "FAIL: 교환신청 상태가 대기중이 아닙니다.");
     }
+
+    //교환신청 거절
+    @PatchMapping(value = "/exchange/request/{exchangeRequestId}/reject")
+    public CommonResponse rejectExchangeRequest(@PathVariable Long exchangeRequestId){
+        exchangeRequestService.rejectExchangeRequest(exchangeRequestId);
+        //TODO event 생성 후, 알림 가는지 확인 필요!
+        return responseService.getSuccessResponse();
+    }
 }
