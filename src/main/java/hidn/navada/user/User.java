@@ -38,4 +38,7 @@ public class User extends BaseTime {
 
     @Builder.Default
     private int userTradeCount=0;     //회원 거래 횟수
+
+    @Builder.Default
+    private int userRatingCount=0;    //평점 받은 횟수
 }

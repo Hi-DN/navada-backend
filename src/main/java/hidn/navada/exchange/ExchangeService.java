@@ -62,7 +62,7 @@ public class ExchangeService {
             productJpaRepo.save(acceptorProduct);
             productJpaRepo.save(requesterProduct);
 
-            updateUserRating(exchange);
+            updateUserInfo(exchange);
         }
 
         exchangeJpaRepo.save(exchange);
@@ -71,23 +71,28 @@ public class ExchangeService {
     }
 
     //교환 완료 시 거래횟수, 평균평점 업데이트
-    private void updateUserRating(Exchange exchange) {
+    private void updateUserInfo(Exchange exchange) {
         User acceptor = userJpaRepo.findById(exchange.getAcceptor().getUserId()).orElseThrow(UserNotFoundException::new);
         User requester = userJpaRepo.findById(exchange.getRequester().getUserId()).orElseThrow(UserNotFoundException::new);
 
         float acceptorRating=exchange.getAcceptorRating();
         float requesterRating=exchange.getRequesterRating();
 
-        float prevAcceptorRating = acceptor.getUserRating()*acceptor.getUserTradeCount();
-        float prevRequesterRating = requester.getUserRating()*requester.getUserTradeCount();
+        float prevAcceptorRating = acceptor.getUserRating()*acceptor.getUserRatingCount();
+        float prevRequesterRating = requester.getUserRating()*requester.getUserRatingCount();
 
         acceptor.setUserTradeCount(acceptor.getUserTradeCount()+1);
         requester.setUserTradeCount(requester.getUserTradeCount()+1);
 
-        if(acceptorRating>-1)
-            acceptor.setUserRating((prevAcceptorRating+acceptorRating)/acceptor.getUserTradeCount());
-        if(requesterRating>-1)
+        //평점을 부여한 경우
+        if(acceptorRating>-1){
+            acceptor.setUserRatingCount(acceptor.getUserRatingCount()+1);
+            acceptor.setUserRating((prevAcceptorRating+acceptorRating)/acceptor.getUserRatingCount());
+        }
+        if(requesterRating>-1){
+            requester.setUserRatingCount(requester.getUserRatingCount()+1);
             requester.setUserRating((prevRequesterRating+requesterRating)/requester.getUserTradeCount());
+        }
     }
 
     //교환목록조회
