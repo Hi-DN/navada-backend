@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -96,21 +97,19 @@ public class ExchangeService {
     }
 
     //교환목록조회
-    public List<Exchange> getExchangeList(Long userId, Boolean isAcceptor, Boolean isComplete) {
-        List<Exchange> exchangeList;
+    public List<Exchange> getExchangeList(Long userId, Boolean isComplete) {
+        User user=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        List<Exchange> acceptedExchangeList;
+        List<Exchange> requestedExchangeList;
 
-        if(isAcceptor)
-            if(isComplete)
-                exchangeList = exchangeJpaRepo.findCompleteExchangesByAcceptorId(userId);
-            else
-                exchangeList = exchangeJpaRepo.findUncompleteExchangesByAcceptorId(userId);
-        else
-            if(isComplete)
-                exchangeList = exchangeJpaRepo.findCompleteExchangesByRequesterId(userId);
-            else
-                exchangeList = exchangeJpaRepo.findUncompleteExchangesByRequesterId(userId);
+        acceptedExchangeList = exchangeJpaRepo.findExchangesByAcceptor(user,isComplete);
+        requestedExchangeList = exchangeJpaRepo.findExchangesByRequester(user,isComplete);
 
-        return exchangeList;
+        List<Exchange> result = new ArrayList<>();
+        result.addAll(acceptedExchangeList);
+        result.addAll(requestedExchangeList);
+
+        return result;
     }
 
     //교환 평점 부여

@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface ExchangeJpaRepo extends JpaRepository<Exchange, Long> {
@@ -21,4 +20,10 @@ public interface ExchangeJpaRepo extends JpaRepository<Exchange, Long> {
 
     @Query(value = "select * from exchange where exchange_complete_yn = 0 and requester_id = :requesterId", nativeQuery = true)
     List<Exchange> findUncompleteExchangesByRequesterId(@Param("requesterId") Long requesterId);
+
+    @Query(value = "select * from exchange where acceptor=:acceptor and exchange_complete_yn =: completeYn and acceptor_history_delete_yn=0",nativeQuery = true)
+    List<Exchange> findExchangesByAcceptor(@Param("acceptor") User acceptor, @Param("completeYn") boolean completeYn);
+
+    @Query(value = "select * from exchange where requester=:requester and exchange_complete_yn =: completeYn and acceptor_history_delete_yn=0",nativeQuery = true)
+    List<Exchange> findExchangesByRequester(@Param("requester") User requester, @Param("completeYn") boolean completeYn);
 }
