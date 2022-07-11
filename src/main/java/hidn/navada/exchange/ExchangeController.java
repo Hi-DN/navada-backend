@@ -33,7 +33,7 @@ public class ExchangeController {
     }
 
     // 교환내역 삭제 api
-    @PatchMapping(value = "/user/exchange/{exchangeId}/dlthst")
+    @PatchMapping(value = "/user/exchange/{exchangeId}/delete")
     public SingleResponse<Exchange> deleteExchangeHistory(@PathVariable Long exchangeId, @RequestParam(name="acceptoryn") Boolean isAcceptor){
         return responseService.getSingleResponse(exchangeService.deleteExchangeHistory(exchangeId, isAcceptor));
     }
