@@ -1,7 +1,10 @@
 package hidn.navada.product;
 
+import hidn.navada.comm.exception.CategoryNotFoundException;
 import hidn.navada.comm.exception.ProductNotFoundException;
 import hidn.navada.comm.exception.UserNotFoundException;
+import hidn.navada.product.category.Category;
+import hidn.navada.product.category.CategoryJpaRepo;
 import hidn.navada.user.User;
 import hidn.navada.user.UserJpaRepo;
 import lombok.RequiredArgsConstructor;
@@ -17,17 +20,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductJpaRepo productJpaRepo;
+    private final CategoryJpaRepo categoryJpaRepo;
     private final UserJpaRepo userJpaRepo;
 
     //상품 등록
     public Product createProduct(long userId, ProductParams productParams){
         User user= userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        Category category = categoryJpaRepo.findById(productParams.getCategoryId()).orElseThrow(CategoryNotFoundException::new);
 
         Product product = Product.builder()
                 .user(user)
                 .productName(productParams.getProductName())
                 .productExplanation(productParams.getProductExplanation())
-                .category(productParams.getCategory())
+                .category(category)
                 .productCost(productParams.getProductCost())
                 .exchangeCostRange(productParams.getExchangeCostRange())
                 .build();
@@ -38,10 +43,11 @@ public class ProductService {
     //상품 수정
     public Product modifyProduct(long productId, ProductParams productParams){
         Product product=productJpaRepo.findById(productId).orElseThrow(ProductNotFoundException::new);
+        Category category = categoryJpaRepo.findById(productParams.getCategoryId()).orElseThrow(CategoryNotFoundException::new);
 
         product.setProductName(productParams.getProductName());
         product.setProductExplanation(productParams.getProductExplanation());
-        product.setCategory(productParams.getCategory());
+        product.setCategory(category);
         product.setProductCost(productParams.getProductCost());
         product.setExchangeCostRange(productParams.getExchangeCostRange());
 
@@ -51,15 +57,13 @@ public class ProductService {
     //사용자별 상품 리스트 조회
     public List<Product> getProductsByUser(long userId){
         User user= userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
-        List<Product> productList = productJpaRepo.findProductsByUser(user);
 
-        return productList;
+        return productJpaRepo.findProductsByUser(user);
     }
 
     //상품 단건 조회
     public Product getOneProduct(long productId){
-        Product product=productJpaRepo.findById(productId).orElseThrow(ProductNotFoundException::new);
-        return product;
+        return productJpaRepo.findById(productId).orElseThrow(ProductNotFoundException::new);
     }
 
     //상품 삭제
