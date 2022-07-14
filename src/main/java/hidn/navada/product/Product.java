@@ -2,7 +2,7 @@ package hidn.navada.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import hidn.navada.comm.BaseTime;
-import hidn.navada.comm.enums.Category;
+import hidn.navada.product.category.Category;
 import hidn.navada.user.User;
 import lombok.*;
 
@@ -29,8 +29,8 @@ public class Product extends BaseTime {
     @Column(length = 100, nullable = false)
     private String productExplanation;      // 상품 설명
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "categoryId")
     private Category category;              // 상품 카테고리
 
     @Builder.Default

@@ -5,8 +5,8 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ExchangeRequestDto {
-    private int exchangeRequestStatusCd;
+public class RequestDto {
+    private int exchangeStatusCd;
 
 //    private String productImage;
 

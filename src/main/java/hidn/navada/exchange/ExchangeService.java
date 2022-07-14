@@ -3,7 +3,7 @@ package hidn.navada.exchange;
 import hidn.navada.comm.exception.ExchangeNotFoundException;
 import hidn.navada.comm.exception.ProductNotFoundException;
 import hidn.navada.comm.exception.UserNotFoundException;
-import hidn.navada.exchange.request.ExchangeRequest;
+import hidn.navada.exchange.request.Request;
 import hidn.navada.product.Product;
 import hidn.navada.product.ProductJpaRepo;
 import hidn.navada.user.User;
@@ -23,13 +23,13 @@ public class ExchangeService {
     private final UserJpaRepo userJpaRepo;
 
     //교환 성립
-    public Exchange createExchange(ExchangeRequest exchangeRequest) {
+    public Exchange createExchange(Request request) {
         Exchange exchange = new Exchange();
 
-        exchange.setAcceptor(exchangeRequest.getAcceptor());
-        exchange.setAcceptorProduct(exchangeRequest.getAcceptorProduct());
-        exchange.setRequester(exchangeRequest.getRequester());
-        exchange.setRequesterProduct(exchangeRequest.getRequesterProduct());
+        exchange.setAcceptor(request.getAcceptor());
+        exchange.setAcceptorProduct(request.getAcceptorProduct());
+        exchange.setRequester(request.getRequester());
+        exchange.setRequesterProduct(request.getRequesterProduct());
 
         exchangeJpaRepo.save(exchange);
 

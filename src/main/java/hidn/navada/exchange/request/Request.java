@@ -5,11 +5,9 @@ import hidn.navada.comm.BaseTime;
 import hidn.navada.product.Product;
 import hidn.navada.user.User;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -20,10 +18,10 @@ import static javax.persistence.FetchType.LAZY;
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class ExchangeRequest extends BaseTime {
+public class Request extends BaseTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long exchangeRequestId; //pk
+    private Long requestId; //pk
 
     @JsonIgnore @ManyToOne(fetch = LAZY)
     @JoinColumn(referencedColumnName = "userId",name = "acceptorId",nullable = false)
