@@ -8,7 +8,6 @@ import hidn.navada.exchange.Exchange;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,10 +30,11 @@ public class RequestController {
         return responseService.getSingleResponse(requestService.acceptRequest(requestId));
     }
 
-    // 교환신청 목록 조회
-    @GetMapping(value = "/user/{userId}/exchange/requests")
-    public ListResponse<RequestDto> getRequestList(@PathVariable Long userId){
-        List<Request> ers = requestService.getRequestList(userId);
+    // 내가 신청한 교환신청 목록 조회1 (네비게이션에서 사용)
+    /* 이전 dto 호출 방식 : 추후 더 나은 방식으로 교체
+    @GetMapping(value = "/requester/{userId}/exchange/requests")
+    public ListResponse<RequestDto> getRequestListByRequester(@PathVariable Long userId){
+        List<Request> ers = requestService.getRequestListByRequester(userId);
         List<RequestDto> result = new ArrayList<>();
         ers.forEach(er -> {
             RequestDto dto = new RequestDto(er.getExchangeStatusCd(), er.getRequesterProduct().getProductName(), er.getAcceptor().getUserNickname());
@@ -42,6 +42,19 @@ public class RequestController {
         });
 
         return responseService.getListResponse(result);
+    }
+    */
+
+    // 내가 신청한 교환신청 목록 조회2 (네비게이션에서 사용)
+    @GetMapping(value = "/requester/{userId}/exchange/requests")
+    public ListResponse<RequestDto> getRequestListByRequester(@PathVariable Long userId){
+        return responseService.getListResponse(requestService.getRequestListByRequester(userId));
+    }
+
+    // 내가 신청받은 교환신청 목록 조회 (홈에서 사용)
+    @GetMapping(value = "/acceptor/{userId}/exchange/requests")
+    public ListResponse<RequestDto> getRequestListByAcceptor(@PathVariable long userId, @RequestParam List<Integer> exchangeStatusCd){
+        return responseService.getListResponse(requestService.getRequestListByAcceptor(userId,exchangeStatusCd));
     }
 
     // 교환신청 취소

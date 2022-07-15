@@ -3,20 +3,28 @@ package hidn.navada.exchange.request;
 import hidn.navada.comm.exception.RequestNotFoundException;
 import hidn.navada.comm.exception.ProductNotFoundException;
 import hidn.navada.comm.exception.ProductStatusCdDiscrepancyException;
+import hidn.navada.comm.exception.UserNotFoundException;
 import hidn.navada.exchange.Exchange;
 import hidn.navada.exchange.ExchangeService;
 import hidn.navada.product.Product;
 import hidn.navada.product.ProductJpaRepo;
+import hidn.navada.user.User;
+import hidn.navada.user.UserJpaRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class RequestService {
     private final RequestJpaRepo requestJpaRepo;
     private final ProductJpaRepo productJpaRepo;
+    private final UserJpaRepo userJpaRepo;
     private final ExchangeService exchangeService;
 
     //교환 신청
@@ -89,8 +97,25 @@ public class RequestService {
         }
     }
 
-    public List<Request> getRequestList(Long userId) {
-        return requestJpaRepo.findByRequesterUserId(userId);
+    //내가 신청받은 교환신청 목록 조회
+    public List<RequestDto> getRequestListByRequester(Long userId) {
+        User requester=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+
+        List<Request> requestList= requestJpaRepo.findRequestsByRequester(requester);
+        return convertToDto(requestList);
+    }
+
+    //내가 신청한 교환신청 목록 조회
+    public List<RequestDto> getRequestListByAcceptor(long userId, List<Integer> exchangeStatusCd){
+        User acceptor=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+
+        List<Request> requestList = requestJpaRepo.findRequestsByAcceptor(acceptor, exchangeStatusCd);
+        return convertToDto(requestList);
+    }
+
+    public List<RequestDto> convertToDto(List<Request> requestList){
+        List<RequestDto> requestDtoList = requestList.stream().map(RequestDto::new).collect(toList());
+        return requestDtoList;
     }
 
     //교환신청 거절
