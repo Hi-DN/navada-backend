@@ -20,10 +20,10 @@ public class ExchangeController {
         return responseService.getSingleResponse(exchangeService.completeExchange(exchangeId, isAcceptor));
     }
 
-    // 교환 목록 조회
+    // 교환 목록 조회(교환중, 교환완료)
     @GetMapping(value = "/user/{userId}/exchanges")
-    public ListResponse<Exchange> getExchangeList(@PathVariable Long userId,  @RequestParam(name="completeyn") Boolean isComplete) {
-        return responseService.getListResponse(exchangeService.getExchangeList(userId, isComplete));
+    public ListResponse<Exchange> getExchangeList(@PathVariable Long userId) {
+        return responseService.getListResponse(exchangeService.getExchangeList(userId));
     }
 
     // 교환상대에게 평점 부여

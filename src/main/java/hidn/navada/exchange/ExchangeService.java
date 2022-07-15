@@ -96,14 +96,14 @@ public class ExchangeService {
         }
     }
 
-    //교환목록조회
-    public List<Exchange> getExchangeList(Long userId, Boolean isComplete) {
+    //교환목록조회(교환중, 교환완료)
+    public List<Exchange> getExchangeList(Long userId) {
         User user=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         List<Exchange> acceptedExchangeList;
         List<Exchange> requestedExchangeList;
 
-        acceptedExchangeList = exchangeJpaRepo.findExchangesByAcceptor(user,isComplete);
-        requestedExchangeList = exchangeJpaRepo.findExchangesByRequester(user,isComplete);
+        acceptedExchangeList = exchangeJpaRepo.findExchangesByAcceptor(user);
+        requestedExchangeList = exchangeJpaRepo.findExchangesByRequester(user);
 
         List<Exchange> result = new ArrayList<>();
         result.addAll(acceptedExchangeList);
