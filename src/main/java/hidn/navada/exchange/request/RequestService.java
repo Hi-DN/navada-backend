@@ -68,19 +68,29 @@ public class RequestService {
         productJpaRepo.save(acceptorProduct);
         productJpaRepo.save(requesterProduct);
 
-        //나머지 교환 신청 거절
-        rejectOtherRequests(acceptorProduct);
+        // acceptor 가 받은 나머지 교환 신청들 거절
+        rejectRequestsByAcceptor(acceptorProduct);
+
+        // requester 가 신청한 나머지 교환 신청들 삭제
+        rejectRequestsByRequester(requesterProduct);
 
         // Exchange 엔티티 생성
         return exchangeService.createExchange(request);
     }
 
-    private void rejectOtherRequests(Product acceptorProduct) {
+    private void rejectRequestsByAcceptor(Product acceptorProduct) {
         List<Request> requestList= requestJpaRepo.findByAcceptorProductAndExchangeStatusCd(acceptorProduct,0);
 
         //TODO event 생성 후, 알림 가는지 확인 필요!
         for(Request request : requestList){
             request.setExchangeStatusCd(2); //2. 교환 거절
+        }
+    }
+
+    private void rejectRequestsByRequester(Product requesterProduct) {
+        List<Request> requestList= requestJpaRepo.findByRequesterProductAndExchangeStatusCd(requesterProduct,0);
+        for(Request request : requestList){
+            requestJpaRepo.deleteById(request.getRequestId());
         }
     }
 

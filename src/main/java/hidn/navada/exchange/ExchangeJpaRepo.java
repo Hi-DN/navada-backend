@@ -22,9 +22,9 @@ public interface ExchangeJpaRepo extends JpaRepository<Exchange, Long> {
     List<Exchange> findUncompleteExchangesByRequesterId(@Param("requesterId") Long requesterId);
     */
 
-    @Query(value = "select * from exchange where acceptor=:acceptor and acceptor_history_delete_yn=0",nativeQuery = true)
+    @Query(value = "select e from Exchange e where e.acceptor=:acceptor and e.acceptorHistoryDeleteYn=false")
     List<Exchange> findExchangesByAcceptor(@Param("acceptor") User acceptor);
 
-    @Query(value = "select * from exchange where requester=:requester and acceptor_history_delete_yn=0",nativeQuery = true)
+    @Query(value = "select e from Exchange e where e.requester=:requester and e.requesterHistoryDeleteYn=false")
     List<Exchange> findExchangesByRequester(@Param("requester") User requester);
 }
