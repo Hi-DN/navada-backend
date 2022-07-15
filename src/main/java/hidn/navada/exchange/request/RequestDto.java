@@ -6,6 +6,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestDto {
+    private long requestId;
+
     private int exchangeStatusCd;   //교환상태(0 : 대기 , 1 : 수락, 2 : 거절)
 
     private String acceptorProductName;     // 수락자 상품명
@@ -18,6 +20,7 @@ public class RequestDto {
     //    private String requesterProductImage;
 
     public RequestDto(Request request){
+        requestId=request.getRequestId();
         exchangeStatusCd=request.getExchangeStatusCd();
         acceptorProductName = request.getAcceptorProduct().getProductName();
         requesterProductName = request.getRequesterProduct().getProductName();
