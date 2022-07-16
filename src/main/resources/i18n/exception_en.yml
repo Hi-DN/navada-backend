@@ -1,0 +1,39 @@
+unKnown:
+  code: "-9999"
+  msg: "Unknown error occurred."
+userNotFound:
+  code: "404"
+  msg: "User not found."
+userExistException:
+  code: "409"
+  msg: "User already exists."
+productNotFound:
+  code: "404"
+  msg: "Product not found."
+productStatusCdDiscrepancy:
+  code: "409"
+  msg: "Product status code does not match."
+imageNotFound:
+  code: "404"
+  msg: "Image not found."
+categoryNotFound:
+  code: "404"
+  msg: "Category not found."
+exchangeNotFound:
+  code: "404"
+  msg: "Exchange not found."
+heartNotFound:
+  code: "404"
+  msg: "Heart not found."
+accessDenied:
+  code: "403"
+  msg: "Access Denied."
+inputValidationException:
+  code: "409"
+  msg: "Input is not valid."
+businessRuleException:
+  code: "500"
+  msg: "Business rules violated."
+tokenValidationException:
+  code: "500"
+  msg: "Error occurred during token validation."
