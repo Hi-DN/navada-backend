@@ -10,12 +10,14 @@ import hidn.navada.user.User;
 import hidn.navada.user.UserJpaRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ExchangeService {
     private final ExchangeJpaRepo exchangeJpaRepo;
@@ -96,14 +98,14 @@ public class ExchangeService {
         }
     }
 
-    //교환목록조회
-    public List<Exchange> getExchangeList(Long userId, Boolean isComplete) {
+    //교환목록조회(교환중, 교환완료)
+    public List<Exchange> getExchangeList(Long userId) {
         User user=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         List<Exchange> acceptedExchangeList;
         List<Exchange> requestedExchangeList;
 
-        acceptedExchangeList = exchangeJpaRepo.findExchangesByAcceptor(user,isComplete);
-        requestedExchangeList = exchangeJpaRepo.findExchangesByRequester(user,isComplete);
+        acceptedExchangeList = exchangeJpaRepo.findExchangesByAcceptor(user);
+        requestedExchangeList = exchangeJpaRepo.findExchangesByRequester(user);
 
         List<Exchange> result = new ArrayList<>();
         result.addAll(acceptedExchangeList);
