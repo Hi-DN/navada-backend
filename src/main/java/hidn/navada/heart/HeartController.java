@@ -15,7 +15,7 @@ public class HeartController {
     private final HeartService heartService;
 
     //좋아요 등록
-    @PostMapping(value = "/heart/{productId}")
+    @PostMapping(value = "/product/{productId}/heart")
     public SingleResponse<Heart> saveHeart(@PathVariable long productId, @RequestParam long userId){
         return responseService.getSingleResponse(heartService.saveHeart(productId, userId));
     }
@@ -28,7 +28,7 @@ public class HeartController {
     }
 
     //사용자별 좋아요 목록 조회
-    @GetMapping(value = "/hearts/{userId}")
+    @GetMapping(value = "/user/{userId}/hearts")
     public ListResponse<Heart> getHeartsByUser(@PathVariable long userId){
         return responseService.getListResponse(heartService.getHeartsByUser(userId));
     }

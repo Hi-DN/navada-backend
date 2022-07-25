@@ -15,8 +15,8 @@ public class ExchangeController {
 
 
     // 교환 완료
-    @PatchMapping(value = "/user/exchange/{exchangeId}")
-    public SingleResponse<Exchange> completeExchange(@PathVariable Long exchangeId, @RequestParam(name="acceptoryn") Boolean isAcceptor){
+    @PatchMapping(value = "/exchange/{exchangeId}")
+    public SingleResponse<Exchange> completeExchange(@PathVariable Long exchangeId, @RequestParam Boolean isAcceptor){
         return responseService.getSingleResponse(exchangeService.completeExchange(exchangeId, isAcceptor));
     }
 
@@ -27,14 +27,14 @@ public class ExchangeController {
     }
 
     // 교환상대에게 평점 부여
-    @PatchMapping(value = "/user/exchange/{exchangeId}/rate")
-    public SingleResponse<Exchange> rateExchange(@PathVariable Long exchangeId, @RequestParam(name="acceptoryn") Boolean isAcceptor, @RequestParam(name="rating") float rating){
+    @PatchMapping(value = "/exchange/{exchangeId}/rate")
+    public SingleResponse<Exchange> rateExchange(@PathVariable Long exchangeId, @RequestParam Boolean isAcceptor, @RequestParam float rating){
         return responseService.getSingleResponse(exchangeService.rateExchange(exchangeId, isAcceptor, rating));
     }
 
     // 교환내역 삭제 api
-    @PatchMapping(value = "/user/exchange/{exchangeId}/delete")
-    public SingleResponse<Exchange> deleteExchangeHistory(@PathVariable Long exchangeId, @RequestParam(name="acceptoryn") Boolean isAcceptor){
+    @PatchMapping(value = "/exchange/{exchangeId}/delete")
+    public SingleResponse<Exchange> deleteExchangeHistory(@PathVariable Long exchangeId, @RequestParam Boolean isAcceptor){
         return responseService.getSingleResponse(exchangeService.deleteExchangeHistory(exchangeId, isAcceptor));
     }
 }

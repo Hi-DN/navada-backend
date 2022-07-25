@@ -26,16 +26,14 @@ public class ExchangeService {
 
     //교환 성립
     public Exchange createExchange(Request request) {
-        Exchange exchange = new Exchange();
+        Exchange exchange = Exchange.builder()
+                .acceptor(request.getAcceptor())
+                .acceptorProduct(request.getAcceptorProduct())
+                .requester(request.getRequester())
+                .requesterProduct(request.getRequesterProduct())
+                .build();
 
-        exchange.setAcceptor(request.getAcceptor());
-        exchange.setAcceptorProduct(request.getAcceptorProduct());
-        exchange.setRequester(request.getRequester());
-        exchange.setRequesterProduct(request.getRequesterProduct());
-
-        exchangeJpaRepo.save(exchange);
-
-        return exchange;
+        return exchangeJpaRepo.save(exchange);
     }
 
     //교환 완료
@@ -62,13 +60,8 @@ public class ExchangeService {
             acceptorProduct.setProductStatusCd(2);
             requesterProduct.setProductStatusCd(2);
 
-            productJpaRepo.save(acceptorProduct);
-            productJpaRepo.save(requesterProduct);
-
             updateUserInfo(exchange);
         }
-
-        exchangeJpaRepo.save(exchange);
 
         return exchange;
     }
@@ -126,8 +119,6 @@ public class ExchangeService {
             exchange.setAcceptorRating(rating);
         }
 
-        exchangeJpaRepo.save(exchange);
-
         return exchange;
     }
 
@@ -142,8 +133,6 @@ public class ExchangeService {
             // 요청자가 교환 내역을 삭제하려는 경우
             exchange.setRequesterHistoryDeleteYn(true);
         }
-
-        exchangeJpaRepo.save(exchange);
 
         return exchange;
     }
