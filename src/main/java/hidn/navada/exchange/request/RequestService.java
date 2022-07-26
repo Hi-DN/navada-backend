@@ -11,6 +11,8 @@ import hidn.navada.product.ProductJpaRepo;
 import hidn.navada.user.User;
 import hidn.navada.user.UserJpaRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -97,23 +99,23 @@ public class RequestService {
     }
 
     //내가 신청받은 교환신청 목록 조회
-    public List<RequestDto> getRequestListByRequester(Long userId) {
+    public Page<RequestDto> getRequestListByRequester(Long userId, Pageable pageable) {
         User requester=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
 
-        List<Request> requestList= requestJpaRepo.findRequestsByRequester(requester);
+        Page<Request> requestList= requestJpaRepo.findRequestsByRequester(requester,pageable);
         return convertToDto(requestList);
     }
 
     //내가 신청한 교환신청 목록 조회
-    public List<RequestDto> getRequestListByAcceptor(long userId, List<Integer> exchangeStatusCd){
+    public Page<RequestDto> getRequestListByAcceptor(long userId, List<Integer> exchangeStatusCd,Pageable pageable){
         User acceptor=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
 
-        List<Request> requestList = requestJpaRepo.findRequestsByAcceptor(acceptor, exchangeStatusCd);
+        Page<Request> requestList = requestJpaRepo.findRequestsByAcceptor(acceptor, exchangeStatusCd,pageable);
         return convertToDto(requestList);
     }
 
-    public List<RequestDto> convertToDto(List<Request> requestList){
-        List<RequestDto> requestDtoList = requestList.stream().map(RequestDto::new).collect(toList());
+    public Page<RequestDto> convertToDto(Page<Request> requestList){
+        Page<RequestDto> requestDtoList=requestList.map(RequestDto::new);
         return requestDtoList;
     }
 

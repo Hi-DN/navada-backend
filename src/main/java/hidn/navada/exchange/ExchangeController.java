@@ -1,9 +1,11 @@
 package hidn.navada.exchange;
 
-import hidn.navada.comm.response.ListResponse;
+import hidn.navada.comm.response.PageResponse;
 import hidn.navada.comm.response.ResponseService;
 import hidn.navada.comm.response.SingleResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,8 +24,8 @@ public class ExchangeController {
 
     // 교환 목록 조회(교환중, 교환완료)
     @GetMapping(value = "/user/{userId}/exchanges")
-    public ListResponse<Exchange> getExchangeList(@PathVariable Long userId) {
-        return responseService.getListResponse(exchangeService.getExchangeList(userId));
+    public PageResponse<Exchange> getExchangeList(@PathVariable Long userId, @PageableDefault(size =20)Pageable pageable) {
+        return responseService.getPageResponse(exchangeService.getExchangeList(userId,pageable));
     }
 
     // 교환상대에게 평점 부여

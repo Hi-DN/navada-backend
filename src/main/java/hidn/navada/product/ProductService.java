@@ -9,10 +9,10 @@ import hidn.navada.user.User;
 import hidn.navada.user.UserJpaRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Slf4j
 @Service
@@ -55,10 +55,10 @@ public class ProductService {
     }
 
     //사용자별 상품 리스트 조회
-    public List<Product> getProductsByUser(long userId){
+    public Page<Product> getProductsByUser(long userId, Pageable pageable){
         User user= userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
 
-        return productJpaRepo.findProductsByUser(user);
+        return productJpaRepo.findProductsByUser(user,pageable);
     }
 
     //상품 단건 조회

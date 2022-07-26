@@ -9,12 +9,12 @@ import hidn.navada.product.ProductJpaRepo;
 import hidn.navada.user.User;
 import hidn.navada.user.UserJpaRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @Transactional
@@ -92,19 +92,11 @@ public class ExchangeService {
     }
 
     //교환목록조회(교환중, 교환완료)
-    public List<Exchange> getExchangeList(Long userId) {
+    public Page<Exchange> getExchangeList(Long userId, Pageable pageable) {
         User user=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
-        List<Exchange> acceptedExchangeList;
-        List<Exchange> requestedExchangeList;
 
-        acceptedExchangeList = exchangeJpaRepo.findExchangesByAcceptor(user);
-        requestedExchangeList = exchangeJpaRepo.findExchangesByRequester(user);
-
-        List<Exchange> result = new ArrayList<>();
-        result.addAll(acceptedExchangeList);
-        result.addAll(requestedExchangeList);
-
-        return result;
+        Page<Exchange> exchanges=exchangeJpaRepo.findExchangePagesByUser(user,pageable);
+        return exchanges;
     }
 
     //교환 평점 부여

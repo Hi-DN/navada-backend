@@ -1,10 +1,9 @@
 package hidn.navada.product;
 
-import hidn.navada.comm.response.CommonResponse;
-import hidn.navada.comm.response.ListResponse;
-import hidn.navada.comm.response.ResponseService;
-import hidn.navada.comm.response.SingleResponse;
+import hidn.navada.comm.response.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,8 +27,8 @@ public class ProductController {
 
     //사용자별 상품 리스트 조회
     @GetMapping(value = "/user/{userId}/products")
-    public ListResponse<Product> getProductsByUser(@PathVariable long userId){
-        return responseService.getListResponse(productService.getProductsByUser(userId));
+    public PageResponse<Product> getProductsByUser(@PathVariable long userId, @PageableDefault(size = 20)Pageable pageable){
+        return responseService.getPageResponse(productService.getProductsByUser(userId,pageable));
     }
 
 
