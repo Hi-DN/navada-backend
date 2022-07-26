@@ -42,7 +42,7 @@ public class HeartService {
         Heart heart= heartJpaRepo.findById(heartId).orElseThrow(HeartNotFoundException::new);
         Product product=heart.getProduct();
 
-        product.setProductCost(product.getProductCost()-1);     //좋아요 수 감소
+        product.setHeartNum(Math.max(product.getHeartNum()-1,0));     //좋아요 수 감소
         heartJpaRepo.delete(heart);
     }
 
