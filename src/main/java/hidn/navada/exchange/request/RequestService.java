@@ -124,4 +124,14 @@ public class RequestService {
         Request request= requestJpaRepo.findById(requestId).orElseThrow(RequestNotFoundException::new);
         request.setExchangeStatusCd(2); // 2. 교환거절
     }
+
+    //특정 상품으로부터 받은 교환신청 목록 조회
+    public List<RequestDto> getRequestsByCertainProduct(Long productId, Long userId) {
+        Product product=productJpaRepo.findById(productId).orElseThrow(ProductNotFoundException::new);
+        User acceptor=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+
+        List<Request> requestList=requestJpaRepo.findRequestsByCertainProduct(product,acceptor);
+
+        return requestList.stream().map(RequestDto::new).collect(toList());
+    }
 }

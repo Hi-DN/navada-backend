@@ -19,4 +19,7 @@ public interface RequestJpaRepo extends JpaRepository<Request,Long> {
 
     @Query(value = "select r from Request r where r.acceptor=:acceptor and r.exchangeStatusCd in (:exchangeStatusCds)")
     Page<Request> findRequestsByAcceptor(@Param("acceptor") User acceptor, @Param("exchangeStatusCds") List<Integer> exchangeStatusCds,Pageable pageable);
+
+    @Query(value = "select r from Request r where r.requesterProduct=:requesterProduct and r.acceptor=:acceptor and r.exchangeStatusCd=0")
+    List<Request> findRequestsByCertainProduct(@Param("requesterProduct") Product requesterProduct, @Param("acceptor") User acceptor);
 }

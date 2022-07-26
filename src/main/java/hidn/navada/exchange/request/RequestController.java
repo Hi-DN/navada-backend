@@ -55,4 +55,10 @@ public class RequestController {
         //TODO event 생성 후, 알림 가는지 확인 필요!
         return responseService.getSuccessResponse();
     }
+
+    // 특정 상품으로부터 받은 교환신청 목록 조회
+    @GetMapping(value = "product/{productId}/exchange/request")
+    public ListResponse<RequestDto> getRequestsByCertainProduct(@PathVariable Long productId, @RequestParam Long userId){
+        return responseService.getListResponse(requestService.getRequestsByCertainProduct(productId,userId));
+    }
 }
