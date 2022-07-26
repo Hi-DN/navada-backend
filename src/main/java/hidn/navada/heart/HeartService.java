@@ -9,10 +9,10 @@ import hidn.navada.user.User;
 import hidn.navada.user.UserJpaRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Slf4j
 @Service
@@ -47,8 +47,8 @@ public class HeartService {
     }
 
     //사용자별 좋아요 내역 조회
-    public List<Heart> getHeartsByUser(long userId){
+    public Page<Heart> getHeartsByUser(long userId, Pageable pageable){
         User user=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
-        return heartJpaRepo.findHeartsByUser(user);
+        return heartJpaRepo.findHeartsByUser(user,pageable);
     }
 }

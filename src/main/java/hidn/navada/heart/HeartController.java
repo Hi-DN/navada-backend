@@ -1,10 +1,9 @@
 package hidn.navada.heart;
 
-import hidn.navada.comm.response.CommonResponse;
-import hidn.navada.comm.response.ListResponse;
-import hidn.navada.comm.response.ResponseService;
-import hidn.navada.comm.response.SingleResponse;
+import hidn.navada.comm.response.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,7 +28,7 @@ public class HeartController {
 
     //사용자별 좋아요 목록 조회
     @GetMapping(value = "/user/{userId}/hearts")
-    public ListResponse<Heart> getHeartsByUser(@PathVariable long userId){
-        return responseService.getListResponse(heartService.getHeartsByUser(userId));
+    public PageResponse<Heart> getHeartsByUser(@PathVariable long userId, @PageableDefault(size = 20) Pageable pageable){
+        return responseService.getPageResponse(heartService.getHeartsByUser(userId, pageable));
     }
 }

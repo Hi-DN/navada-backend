@@ -1,11 +1,11 @@
 package hidn.navada.exchange;
 
 import hidn.navada.user.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
-import java.util.List;
 
 public interface ExchangeJpaRepo extends JpaRepository<Exchange, Long> {
     /* 사용 안함 -> 추후 삭제하기
@@ -22,9 +22,7 @@ public interface ExchangeJpaRepo extends JpaRepository<Exchange, Long> {
     List<Exchange> findUncompleteExchangesByRequesterId(@Param("requesterId") Long requesterId);
     */
 
-    @Query(value = "select e from Exchange e where e.acceptor=:acceptor and e.acceptorHistoryDeleteYn=false")
-    List<Exchange> findExchangesByAcceptor(@Param("acceptor") User acceptor);
+    @Query(value = "select e from Exchange e where (e.acceptor=:user and e.acceptorHistoryDeleteYn=false) or (e.requester=:user and e.requesterHistoryDeleteYn=false)")
+    Page<Exchange> findExchangePagesByUser(@Param("user") User user, Pageable pageable);
 
-    @Query(value = "select e from Exchange e where e.requester=:requester and e.requesterHistoryDeleteYn=false")
-    List<Exchange> findExchangesByRequester(@Param("requester") User requester);
 }

@@ -36,7 +36,7 @@ public class Request extends BaseTime {
     private User requester;             // 교환신청자(fk)
 
     @JsonIgnore @ManyToOne(fetch = LAZY)
-    @JoinColumn(referencedColumnName = "productId",name="requestProductId", nullable = false)
+    @JoinColumn(referencedColumnName = "productId",name="requesterProductId", nullable = false)
     private Product requesterProduct;    // 신청자 상품(fk)
 
     @Builder.Default
