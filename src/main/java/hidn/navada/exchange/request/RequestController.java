@@ -18,14 +18,13 @@ public class RequestController {
     private final RequestService requestService;
 
     // 교환신청 등록
-    @PostMapping(value = "/user/{userId}/exchange/{requestProductId}/request/{acceptorProductId}")
-    public SingleResponse<Request> createRequest(@PathVariable Long userId, @PathVariable Long requestProductId, @PathVariable Long acceptorProductId){
-        // userId 필요?, params로 받을지 pathvariable로 받을지
-        return responseService.getSingleResponse(requestService.createRequest(userId, requestProductId, acceptorProductId));
+    @PostMapping(value = "/exchange/request/{requesterProductId}/{acceptorProductId}")
+    public SingleResponse<Request> createRequest(@PathVariable Long requesterProductId, @PathVariable Long acceptorProductId){
+        return responseService.getSingleResponse(requestService.createRequest(requesterProductId, acceptorProductId));
     }
 
     // 교환신청 수락
-    @PatchMapping(value = "/user/exchange/request/{requestId}")
+    @PatchMapping(value = "/exchange/request/{requestId}")
     public SingleResponse<Exchange> createRequest(@PathVariable Long requestId){
         return responseService.getSingleResponse(requestService.acceptRequest(requestId));
     }
@@ -58,12 +57,10 @@ public class RequestController {
     }
 
     // 교환신청 취소
-    @DeleteMapping(value="/user/exchange/request/{requestId}")
+    @DeleteMapping(value="/exchange/request/{requestId}")
     public CommonResponse deleteRequest(@PathVariable Long requestId){
-        if(requestService.deleteRequest(requestId))
-            return responseService.getSuccessResponse();
-        else
-            return responseService.getErrorResponse(-1, "FAIL: 교환신청 상태가 대기중이 아닙니다.");
+        requestService.deleteRequest(requestId);
+        return responseService.getSuccessResponse();
     }
 
     //교환신청 거절

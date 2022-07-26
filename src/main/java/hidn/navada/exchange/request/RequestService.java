@@ -28,27 +28,22 @@ public class RequestService {
     private final ExchangeService exchangeService;
 
     //교환 신청
-    public Request createRequest(Long requesterId, Long requestProductId, Long acceptorProductId){
-
-        Request request = new Request();
-
-        // 교환신청 받은 상품
+    public Request createRequest(Long requesterProductId, Long acceptorProductId){
         Product acceptorProduct = productJpaRepo.findById(acceptorProductId).orElseThrow(ProductNotFoundException::new);
-        // 교환신청자 상품
-        Product requesterProduct = productJpaRepo.findById(requestProductId).orElseThrow(ProductNotFoundException::new);
+        Product requesterProduct = productJpaRepo.findById(requesterProductId).orElseThrow(ProductNotFoundException::new);
 
         if(acceptorProduct.getProductStatusCd() != 0 || requesterProduct.getProductStatusCd() != 0) {
             throw new ProductStatusCdDiscrepancyException();
         }
 
-        request.setAcceptor(acceptorProduct.getUser());
-        request.setAcceptorProduct(acceptorProduct);
-        request.setRequester(requesterProduct.getUser());
-        request.setRequesterProduct(requesterProduct);
+        Request request = Request.builder()
+                .acceptor(acceptorProduct.getUser())
+                .acceptorProduct(acceptorProduct)
+                .requester(requesterProduct.getUser())
+                .requesterProduct(requesterProduct)
+                .build();
 
-        requestJpaRepo.save(request);
-
-        return request;
+        return requestJpaRepo.save(request);
     }
 
     //교환 수락
@@ -58,15 +53,12 @@ public class RequestService {
 
         // 교환신청상태 변경(대기 -> 수락)
         request.setExchangeStatusCd(1);
-        requestJpaRepo.save(request);
 
         // 상품상태 변경(등록완료 -> 교환중)
         Product acceptorProduct = request.getAcceptorProduct();
-        Product requesterProduct = request.getRequesterProduct();
         acceptorProduct.setProductStatusCd(1);
+        Product requesterProduct = request.getRequesterProduct();
         requesterProduct.setProductStatusCd(1);
-        productJpaRepo.save(acceptorProduct);
-        productJpaRepo.save(requesterProduct);
 
         // acceptor 가 받은 나머지 교환 신청들 거절
         rejectRequestsByAcceptor(acceptorProduct);
@@ -95,16 +87,13 @@ public class RequestService {
     }
 
     //교환신청 삭제
-    public Boolean deleteRequest(long requestId) {
+    public void deleteRequest(long requestId) {
         Request request = requestJpaRepo.findById(requestId).orElseThrow(RequestNotFoundException::new);
-        if(request.getExchangeStatusCd() == 0) {
-            // 교환신청 상태가 대기중일 시에만 삭제
+
+        if(request.getExchangeStatusCd() == 0)
             requestJpaRepo.deleteById(requestId);
-            return true;
-        }
-        else {
-            return false;
-        }
+        else
+            throw new ProductStatusCdDiscrepancyException();
     }
 
     //내가 신청받은 교환신청 목록 조회

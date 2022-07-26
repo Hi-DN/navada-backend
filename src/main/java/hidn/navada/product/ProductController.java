@@ -15,7 +15,7 @@ public class ProductController {
     private final ResponseService responseService;
 
     //상품 등록
-    @PostMapping(value="/product/{userId}")
+    @PostMapping(value="/user/{userId}/product")
     public SingleResponse<Product> saveProduct(@PathVariable long userId, @ModelAttribute ProductParams productParams){
         return responseService.getSingleResponse(productService.createProduct(userId, productParams));
     }
@@ -27,7 +27,7 @@ public class ProductController {
     }
 
     //사용자별 상품 리스트 조회
-    @GetMapping(value = "/products/{userId}")
+    @GetMapping(value = "/user/{userId}/products")
     public ListResponse<Product> getProductsByUser(@PathVariable long userId){
         return responseService.getListResponse(productService.getProductsByUser(userId));
     }
