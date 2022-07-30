@@ -15,13 +15,13 @@ public class ProductController {
 
     //상품 등록
     @PostMapping(value="/user/{userId}/product")
-    public SingleResponse<Product> saveProduct(@PathVariable long userId, @ModelAttribute ProductParams productParams){
+    public SingleResponse<Product> saveProduct(@PathVariable long userId, @RequestBody ProductParams productParams){
         return responseService.getSingleResponse(productService.createProduct(userId, productParams));
     }
 
     //상품 수정
     @PatchMapping(value = "/product/{productId}")
-    public SingleResponse<Product> modifyProduct(@PathVariable long productId, @ModelAttribute ProductParams productParams){
+    public SingleResponse<Product> modifyProduct(@PathVariable long productId, @RequestBody ProductParams productParams){
         return responseService.getSingleResponse(productService.modifyProduct(productId, productParams));
     }
 
