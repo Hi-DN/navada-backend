@@ -14,16 +14,16 @@ INSERT INTO category(category_name) VALUES ('장난감');
 INSERT INTO category(category_name) VALUES ('식물');
 INSERT INTO category(category_name) VALUES ('기타용품');
 
-INSERT INTO user(user_id,user_name,user_email,user_password,user_phone_num,user_address,user_level, user_nickname) VALUES (1,'kim','kim@naver.com','kim','010-1111-2222','address','LV1_OUTSIDER' ,'mj');
-INSERT INTO user(user_id,user_name,user_email,user_password,user_phone_num,user_address,user_level, user_nickname) VALUES (2,'lee','lee@naver.com','lee','010-1111-3333','address','LV1_OUTSIDER', 'kc');
-INSERT INTO user(user_id,user_name,user_email,user_password,user_phone_num,user_address,user_level, user_nickname) VALUES (3,'park','park@naver.com','park','010-1111-3333','address','LV1_OUTSIDER', 'pp');
+INSERT INTO user(user_id,user_name,user_email,user_password,user_phone_num,user_address,user_level, user_nickname) VALUES (1,'kim','kim@naver.com','kim','010-1111-2222','address','LV1_OUTSIDER' ,'user1');
+INSERT INTO user(user_id,user_name,user_email,user_password,user_phone_num,user_address,user_level, user_nickname) VALUES (2,'lee','lee@naver.com','lee','010-1111-3333','address','LV1_OUTSIDER', 'user2');
+INSERT INTO user(user_id,user_name,user_email,user_password,user_phone_num,user_address,user_level, user_nickname) VALUES (3,'park','park@naver.com','park','010-1111-3333','address','LV1_OUTSIDER', 'user3');
 
-INSERT INTO product(product_id,user_id,product_name,product_explanation,category_id,product_status_cd,heart_num, product_cost, exchange_cost_range) VALUES (1,1,'투썸 아아','투썸 아아입니다',1,0,3, 3000, 500);
-INSERT INTO product(product_id,user_id,product_name,product_explanation,category_id,product_status_cd,heart_num, product_cost, exchange_cost_range) VALUES (2,2,'스벅 아아','스벅 아아입니다',2,0,5, 6000, 1000);
-INSERT INTO product(product_id,user_id,product_name,product_explanation,category_id,product_status_cd,heart_num, product_cost, exchange_cost_range) VALUES (3,3,'할리스 아아','할리스',2,0,5, 6000, 1000);
-INSERT INTO product(product_id,user_id,product_name,product_explanation,category_id,product_status_cd,heart_num, product_cost, exchange_cost_range) VALUES (4,1,'투썸 카페라떼','투섬 카페라떼입니다',2,0,0, 6000, 1000);
-INSERT INTO product(product_id,user_id,product_name,product_explanation,category_id,product_status_cd,heart_num, product_cost, exchange_cost_range) VALUES (5,2,'스벅 카페라떼','할리스',2,0,0, 6000, 1000);
-INSERT INTO product(product_id,user_id,product_name,product_explanation,category_id,product_status_cd,heart_num, product_cost, exchange_cost_range) VALUES (6,3,'할리스 카페라떼','할리스 카페라떼',2,0,0, 6000, 1000);
+INSERT INTO product(product_id,user_id,product_name,product_explanation,category_id,product_status_cd,heart_num, product_cost, exchange_cost_range,user_nickname) VALUES (1,1,'투썸 아아','투썸 아아입니다',1,0,3, 3000, 500,'user1');
+INSERT INTO product(product_id,user_id,product_name,product_explanation,category_id,product_status_cd,heart_num, product_cost, exchange_cost_range,user_nickname) VALUES (2,2,'스벅 아아','스벅 아아입니다',2,0,5, 6000, 1000,'user2');
+INSERT INTO product(product_id,user_id,product_name,product_explanation,category_id,product_status_cd,heart_num, product_cost, exchange_cost_range,user_nickname) VALUES (3,3,'할리스 아아','할리스',2,0,5, 6000, 1000,'user3');
+INSERT INTO product(product_id,user_id,product_name,product_explanation,category_id,product_status_cd,heart_num, product_cost, exchange_cost_range,user_nickname) VALUES (4,1,'투썸 카페라떼','투섬 카페라떼입니다',2,0,0, 6000, 1000,'user1');
+INSERT INTO product(product_id,user_id,product_name,product_explanation,category_id,product_status_cd,heart_num, product_cost, exchange_cost_range,user_nickname) VALUES (5,2,'스벅 카페라떼','할리스',2,0,0, 6000, 1000,'user2');
+INSERT INTO product(product_id,user_id,product_name,product_explanation,category_id,product_status_cd,heart_num, product_cost, exchange_cost_range,user_nickname) VALUES (6,3,'할리스 카페라떼','할리스 카페라떼',2,0,0, 6000, 1000,'user3');
 
 -- 유저 1 -> 2 요청 (상품 1 -> 2) : 수락
 INSERT INTO request(request_id,requester_id, acceptor_id, requester_product_id,acceptor_product_id, exchange_status_cd) VALUES(1,1,2,1,2,1);
