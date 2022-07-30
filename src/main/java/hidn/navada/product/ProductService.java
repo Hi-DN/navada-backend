@@ -30,6 +30,7 @@ public class ProductService {
 
         Product product = Product.builder()
                 .user(user)
+                .userNickname(user.getUserNickname())
                 .productName(productParams.getProductName())
                 .productExplanation(productParams.getProductExplanation())
                 .category(category)

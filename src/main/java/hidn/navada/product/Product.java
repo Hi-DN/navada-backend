@@ -23,6 +23,8 @@ public class Product extends BaseTime {
     @JoinColumn(name = "userId")
     private User user;                      // 해당 상품을 등록한 회원 id(fk)
 
+    private String userNickname;            //회원 닉네임
+
     @Column(length = 20)
     private String productName;             // 상품 이름
 
