@@ -47,8 +47,10 @@ public class HeartService {
     }
 
     //사용자별 좋아요 내역 조회
-    public Page<Heart> getHeartsByUser(long userId, Pageable pageable){
+    public Page<Heart> getHeartsByUser(long userId, boolean showAll, Pageable pageable){
         User user=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
-        return heartJpaRepo.findHeartsByUser(user,pageable);
+
+        if(showAll) return heartJpaRepo.findHeartsByUser(user,pageable);
+        else return heartJpaRepo.findHeartsByUserAndProductStatusCd(user,pageable);
     }
 }
