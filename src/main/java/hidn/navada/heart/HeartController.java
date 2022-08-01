@@ -28,7 +28,7 @@ public class HeartController {
 
     //사용자별 좋아요 목록 조회
     @GetMapping(value = "/user/{userId}/hearts")
-    public PageResponse<Heart> getHeartsByUser(@PathVariable long userId, @PageableDefault(size = 20) Pageable pageable){
-        return responseService.getPageResponse(heartService.getHeartsByUser(userId, pageable));
+    public PageResponse<Heart> getHeartsByUser(@PathVariable long userId, @RequestParam boolean showAll, @PageableDefault(size = 20) Pageable pageable){
+        return responseService.getPageResponse(heartService.getHeartsByUser(userId, showAll, pageable));
     }
 }
