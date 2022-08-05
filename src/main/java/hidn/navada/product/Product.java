@@ -45,4 +45,14 @@ public class Product extends BaseTime {
 
     private int exchangeCostRange;          // 교환 가격 범위
 
+    @Override
+    public boolean equals(Object o) {
+        if(o == null) {
+            return false;
+        } else if (!(o instanceof Product)) {
+            return false;
+        } else {
+            return ((Product) o).getProductId().equals(this.productId);
+        }
+    }
 }

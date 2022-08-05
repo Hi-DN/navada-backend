@@ -2,7 +2,9 @@ package hidn.navada.product;
 
 import hidn.navada.comm.exception.CategoryNotFoundException;
 import hidn.navada.comm.exception.ProductNotFoundException;
+import hidn.navada.comm.exception.ProductStatusCdDiscrepancyException;
 import hidn.navada.comm.exception.UserNotFoundException;
+import hidn.navada.exchange.request.RequestJpaRepo;
 import hidn.navada.product.category.Category;
 import hidn.navada.product.category.CategoryJpaRepo;
 import hidn.navada.user.User;
@@ -10,9 +12,14 @@ import hidn.navada.user.UserJpaRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -60,6 +67,38 @@ public class ProductService {
         User user= userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
 
         return productJpaRepo.findProductsByUser(user,pageable);
+    }
+
+    // 내물품 리스트 조회(교환 신청하기 화면에서 상대방에게 이미 신청했는지 체크위해 사용)
+    public Page<ProductDto> getProductsByUserWithCheckingIfRequestedAlready(long userId, long theirProductId, Pageable pageable) {
+        User user= userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        Product theirProduct = productJpaRepo.findById(theirProductId).orElseThrow(ProductStatusCdDiscrepancyException::new);
+
+        List<Product> myProducts = new ArrayList<>(getProductsByUser(userId,pageable).getContent());
+
+        List<Product> myProductsAlreadyRequestedToTheirProduct = productJpaRepo.findProductsByUserAlreadyRequestedToTheirProduct(user, theirProduct);
+
+        myProducts.removeAll(myProductsAlreadyRequestedToTheirProduct);
+        List<Product> myProductsNotRequestedToTheirProduct = new ArrayList<>(myProducts);
+
+        List<ProductDto> result = new ArrayList<>();
+        result.addAll(convertToDtoList(myProductsNotRequestedToTheirProduct, false));
+        result.addAll(convertToDtoList(myProductsAlreadyRequestedToTheirProduct, true));
+
+        return convertToPage(result, pageable);
+    }
+
+    public List<ProductDto> convertToDtoList(List<Product> productList, boolean hasRequestedToTheirProduct){
+        List<ProductDto> productDtoList = productList.stream().map(product -> new ProductDto(product, hasRequestedToTheirProduct)).collect(Collectors.toList());
+        return productDtoList;
+    }
+
+    public Page<ProductDto> convertToPage(List<ProductDto> productDtoList, Pageable pageable) {
+        final int start = (int)pageable.getOffset();
+        final int end = Math.min((start + pageable.getPageSize()), productDtoList.size());
+        final Page<ProductDto> productDtoPage = new PageImpl<>(productDtoList.subList(start, end), pageable, productDtoList.size());
+
+        return productDtoPage;
     }
 
     //상품 단건 조회
