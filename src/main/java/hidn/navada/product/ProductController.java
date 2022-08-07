@@ -42,13 +42,14 @@ public class ProductController {
     }
 
     //상품 검색
-    @GetMapping(value = "/products/{productName}/search")
-    public PageResponse<Product> searchProductsByName(@PathVariable String productName,
+    @GetMapping(value = "/user/{userId}/products/search")
+    public PageResponse<ProductSearchDto> searchProductsByName(@PathVariable long userId,
+                                                      @RequestParam String productName,
                                                       @RequestParam(required = false, defaultValue = "") List<Long> categoryIds,
                                                       @RequestParam(required = false, defaultValue = "") Integer lowerCostBound,
                                                       @RequestParam(required = false, defaultValue = "") Integer upperCostBound,
                                                       @PageableDefault(sort = "productId",direction = Sort.Direction.DESC) Pageable pageable){
-        return responseService.getPageResponse(productService.searchProducts(productName, categoryIds, lowerCostBound, upperCostBound, pageable));
+        return responseService.getPageResponse(productService.searchProducts(userId, productName, categoryIds, lowerCostBound, upperCostBound, pageable));
     }
 
     //상품 삭제

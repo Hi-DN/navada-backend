@@ -3,6 +3,7 @@ package hidn.navada.product;
 import hidn.navada.comm.exception.CategoryNotFoundException;
 import hidn.navada.comm.exception.ProductNotFoundException;
 import hidn.navada.comm.exception.UserNotFoundException;
+import hidn.navada.heart.HeartJpaRepo;
 import hidn.navada.product.category.Category;
 import hidn.navada.product.category.CategoryJpaRepo;
 import hidn.navada.user.User;
@@ -24,6 +25,7 @@ public class ProductService {
     private final ProductJpaRepo productJpaRepo;
     private final CategoryJpaRepo categoryJpaRepo;
     private final UserJpaRepo userJpaRepo;
+    private final HeartJpaRepo heartJpaRepo;
 
     //상품 등록
     public Product createProduct(long userId, ProductParams productParams){
@@ -74,18 +76,25 @@ public class ProductService {
 
 
     //상품 검색
-    public Page<Product> searchProducts(String productName, List<Long> categoryIds, Integer lowerCostBound, Integer upperCostBound, Pageable pageable) {
+    public Page<ProductSearchDto> searchProducts(long userId,String productName, List<Long> categoryIds, Integer lowerCostBound, Integer upperCostBound, Pageable pageable) {
+        User user=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        List<Long> likeProductIds=heartJpaRepo.findLikeProductIdsByUser(user);  //좋아요 상품 id 목록
+        Page<Product> products;
+
         // 전체 대상 검색
         if(categoryIds.isEmpty() && lowerCostBound==null)
-            return productJpaRepo.findProductsByProductNameContains(productName,pageable);
+            products= productJpaRepo.findProductsByProductNameContains(productName,pageable);
         // 카테고리별 검색
         else if(!categoryIds.isEmpty())
-            return productJpaRepo.searchProductsByNameAndCategory(productName,categoryIds,pageable);
+            products= productJpaRepo.searchProductsByNameAndCategory(productName,categoryIds,pageable);
         // 가격범위별 검색
         else if(!(lowerCostBound==null))
-            return productJpaRepo.searchProductsByNameAndCost(productName,lowerCostBound,upperCostBound,pageable);
+            products= productJpaRepo.searchProductsByNameAndCost(productName,lowerCostBound,upperCostBound,pageable);
         // 카테고리 + 가격범위
-        else return productJpaRepo.searchProductsByNameAndCategoryAndCost(productName,categoryIds,lowerCostBound,upperCostBound,pageable);
+        else products= productJpaRepo.searchProductsByNameAndCategoryAndCost(productName,categoryIds,lowerCostBound,upperCostBound,pageable);
+
+        Page<ProductSearchDto> result = products.map(product -> new ProductSearchDto(product,likeProductIds.contains(product.getProductId())));
+        return result;
     }
 
 
