@@ -14,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @Transactional
@@ -41,6 +43,7 @@ public class ProductService {
         return productJpaRepo.save(product);
     }
 
+
     //상품 수정
     public Product modifyProduct(long productId, ProductParams productParams){
         Product product=productJpaRepo.findById(productId).orElseThrow(ProductNotFoundException::new);
@@ -55,6 +58,7 @@ public class ProductService {
         return product;
     }
 
+
     //사용자별 상품 리스트 조회
     public Page<Product> getProductsByUser(long userId, Pageable pageable){
         User user= userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
@@ -62,14 +66,33 @@ public class ProductService {
         return productJpaRepo.findProductsByUser(user,pageable);
     }
 
+
     //상품 단건 조회
     public Product getOneProduct(long productId){
         return productJpaRepo.findById(productId).orElseThrow(ProductNotFoundException::new);
     }
+
+
+    //상품 검색
+    public Page<Product> searchProducts(String productName, List<Long> categoryIds, Integer lowerCostBound, Integer upperCostBound, Pageable pageable) {
+        // 전체 대상 검색
+        if(categoryIds.isEmpty() && lowerCostBound==null)
+            return productJpaRepo.findProductsByProductNameContains(productName,pageable);
+        // 카테고리별 검색
+        else if(!categoryIds.isEmpty())
+            return productJpaRepo.searchProductsByNameAndCategory(productName,categoryIds,pageable);
+        // 가격범위별 검색
+        else if(!(lowerCostBound==null))
+            return productJpaRepo.searchProductsByNameAndCost(productName,lowerCostBound,upperCostBound,pageable);
+        // 카테고리 + 가격범위
+        else return productJpaRepo.searchProductsByNameAndCategoryAndCost(productName,categoryIds,lowerCostBound,upperCostBound,pageable);
+    }
+
 
     //상품 삭제
     public void deleteProduct(long productId){
         Product product=productJpaRepo.findById(productId).orElseThrow(ProductNotFoundException::new);
         productJpaRepo.delete(product);
     }
+
 }
