@@ -9,9 +9,11 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ProductJpaRepo extends JpaRepository<Product,Long> {
+public interface ProductJpaRepo extends JpaRepository<Product, Long> {
     Page<Product> findProductsByUser(User user, Pageable pageable);
 
-    @Query(value = "select r.requesterProduct from Request r where r.requester=:user and r.acceptorProduct=:acceptorProduct and r.exchangeStatusCd in (0,1)")
-    List<Product> findProductsByUserAlreadyRequestedToTheirProduct(@Param("user")User user, @Param("acceptorProduct")Product acceptorProduct);
+    List<Product> findProductsByUserAndProductStatusCd(User user, int productStatusCd);
+
+    @Query(value = "select requester_product_id from request where requester_id=:userId and acceptor_product_id=:acceptorProductId and exchange_status_cd=0", nativeQuery = true)
+    List<Long> findProductsByUserAlreadyRequestedToTheirProduct(@Param("userId")Long userId, @Param("acceptorProductId")Long acceptorProductId);
 }

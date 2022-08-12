@@ -72,28 +72,25 @@ public class ProductService {
     // 내물품 리스트 조회(교환 신청하기 화면에서 상대방에게 이미 신청했는지 체크위해 사용)
     public Page<ProductDto> getProductsByUserWithCheckingIfRequestedAlready(long userId, long theirProductId, Pageable pageable) {
         User user= userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
-        Product theirProduct = productJpaRepo.findById(theirProductId).orElseThrow(ProductStatusCdDiscrepancyException::new);
 
-        List<Product> myProducts = new ArrayList<>(getProductsByUser(userId,pageable).getContent());
+        List<Product> myProductsInWait = new ArrayList<>(productJpaRepo.findProductsByUserAndProductStatusCd(user, 0));
+        List<Long> productIdsAlreadyRequested = productJpaRepo.findProductsByUserAlreadyRequestedToTheirProduct(userId, theirProductId);
 
-        List<Product> myProductsAlreadyRequestedToTheirProduct = productJpaRepo.findProductsByUserAlreadyRequestedToTheirProduct(user, theirProduct);
-
-        myProducts.removeAll(myProductsAlreadyRequestedToTheirProduct);
-        List<Product> myProductsNotRequestedToTheirProduct = new ArrayList<>(myProducts);
-
-        List<ProductDto> result = new ArrayList<>();
-        result.addAll(convertToDtoList(myProductsNotRequestedToTheirProduct, false));
-        result.addAll(convertToDtoList(myProductsAlreadyRequestedToTheirProduct, true));
-
+        List<ProductDto> result = convertToDtoList(myProductsInWait, productIdsAlreadyRequested);
         return convertToPage(result, pageable);
     }
 
-    public List<ProductDto> convertToDtoList(List<Product> productList, boolean hasRequestedToTheirProduct){
-        List<ProductDto> productDtoList = productList.stream().map(product -> new ProductDto(product, hasRequestedToTheirProduct)).collect(Collectors.toList());
+    private List<ProductDto> convertToDtoList(List<Product> productList, List<Long> productIdsAlreadyRequested){
+        List<ProductDto> productDtoList = productList.stream().map(
+                        product -> new ProductDto(product, hasAlreadyRequested(productIdsAlreadyRequested, product.getProductId()))).collect(Collectors.toList());
         return productDtoList;
     }
 
-    public Page<ProductDto> convertToPage(List<ProductDto> productDtoList, Pageable pageable) {
+    private boolean hasAlreadyRequested(List<Long> productIdsAlreadyRequested, Long findProductId) {
+        return productIdsAlreadyRequested.contains(findProductId);
+    }
+
+    private Page<ProductDto> convertToPage(List<ProductDto> productDtoList, Pageable pageable) {
         final int start = (int)pageable.getOffset();
         final int end = Math.min((start + pageable.getPageSize()), productDtoList.size());
         final Page<ProductDto> productDtoPage = new PageImpl<>(productDtoList.subList(start, end), pageable, productDtoList.size());
