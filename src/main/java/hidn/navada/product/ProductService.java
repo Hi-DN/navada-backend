@@ -78,7 +78,7 @@ public class ProductService {
     //상품 검색
     public Page<ProductSearchDto> searchProducts(long userId,String productName, List<Long> categoryIds, Integer lowerCostBound, Integer upperCostBound, Pageable pageable) {
         User user=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
-        List<Long> likeProductIds=heartJpaRepo.findLikeProductIdsByUser(user);  //좋아요 상품 id 목록
+        List<Long> likeProductIds=productJpaRepo.findHeartProductIdsByUser(user);  //좋아요 상품 id 목록
         Page<Product> products;
 
         // 전체 대상 검색
