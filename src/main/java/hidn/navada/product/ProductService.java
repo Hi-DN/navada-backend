@@ -4,6 +4,8 @@ import hidn.navada.comm.exception.CategoryNotFoundException;
 import hidn.navada.comm.exception.ProductNotFoundException;
 import hidn.navada.comm.exception.ProductStatusCdDiscrepancyException;
 import hidn.navada.comm.exception.UserNotFoundException;
+
+import hidn.navada.heart.HeartJpaRepo;
 import hidn.navada.exchange.request.RequestJpaRepo;
 import hidn.navada.product.category.Category;
 import hidn.navada.product.category.CategoryJpaRepo;
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Slf4j
 @Service
 @Transactional
@@ -29,6 +32,7 @@ public class ProductService {
     private final ProductJpaRepo productJpaRepo;
     private final CategoryJpaRepo categoryJpaRepo;
     private final UserJpaRepo userJpaRepo;
+    private final HeartJpaRepo heartJpaRepo;
 
     //상품 등록
     public Product createProduct(long userId, ProductParams productParams){
@@ -48,6 +52,7 @@ public class ProductService {
         return productJpaRepo.save(product);
     }
 
+
     //상품 수정
     public Product modifyProduct(long productId, ProductParams productParams){
         Product product=productJpaRepo.findById(productId).orElseThrow(ProductNotFoundException::new);
@@ -62,12 +67,14 @@ public class ProductService {
         return product;
     }
 
+
     //사용자별 상품 리스트 조회
     public Page<Product> getProductsByUser(long userId, Pageable pageable){
         User user= userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
 
         return productJpaRepo.findProductsByUser(user,pageable);
     }
+
 
     // 내물품 리스트 조회(교환 신청하기 화면에서 상대방에게 이미 신청했는지 체크위해 사용)
     public Page<ProductDto> getProductsByUserWithCheckingIfRequestedAlready(long userId, long theirProductId, Pageable pageable) {
@@ -103,9 +110,34 @@ public class ProductService {
         return productJpaRepo.findById(productId).orElseThrow(ProductNotFoundException::new);
     }
 
+
+    //상품 검색
+    public Page<ProductSearchDto> searchProducts(long userId,String productName, List<Long> categoryIds, Integer lowerCostBound, Integer upperCostBound, Pageable pageable) {
+        User user=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        List<Long> likeProductIds=productJpaRepo.findHeartProductIdsByUser(user);  //좋아요 상품 id 목록
+        Page<Product> products;
+
+        // 전체 대상 검색
+        if(categoryIds.isEmpty() && lowerCostBound==null)
+            products= productJpaRepo.findProductsByProductNameContains(productName,pageable);
+        // 카테고리별 검색
+        else if(!categoryIds.isEmpty())
+            products= productJpaRepo.searchProductsByNameAndCategory(productName,categoryIds,pageable);
+        // 가격범위별 검색
+        else if(!(lowerCostBound==null))
+            products= productJpaRepo.searchProductsByNameAndCost(productName,lowerCostBound,upperCostBound,pageable);
+        // 카테고리 + 가격범위
+        else products= productJpaRepo.searchProductsByNameAndCategoryAndCost(productName,categoryIds,lowerCostBound,upperCostBound,pageable);
+
+        Page<ProductSearchDto> result = products.map(product -> new ProductSearchDto(product,likeProductIds.contains(product.getProductId())));
+        return result;
+    }
+
+
     //상품 삭제
     public void deleteProduct(long productId){
         Product product=productJpaRepo.findById(productId).orElseThrow(ProductNotFoundException::new);
         productJpaRepo.delete(product);
     }
+
 }

@@ -1,4 +1,4 @@
 spring:
   profiles:
-    active: ec2
-#    active: local
+#    active: ec2
+    active: local

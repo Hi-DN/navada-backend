@@ -12,4 +12,5 @@ public interface HeartJpaRepo extends JpaRepository<Heart,Long> {
 
     @Query(value = "select h from Heart h where h.user=:user and h.product.productStatusCd=0")
     Page<Heart> findHeartsByUserAndProductStatusCd(@Param("user") User user, Pageable pageable);
+
 }

@@ -3,8 +3,11 @@ package hidn.navada.product;
 import hidn.navada.comm.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,6 +44,17 @@ public class ProductController {
     @GetMapping(value = "/product/{productId}")
     public SingleResponse<Product> getProduct(@PathVariable long productId){
         return responseService.getSingleResponse(productService.getOneProduct(productId));
+    }
+
+    //상품 검색
+    @GetMapping(value = "/user/{userId}/products/search")
+    public PageResponse<ProductSearchDto> searchProductsByName(@PathVariable long userId,
+                                                      @RequestParam String productName,
+                                                      @RequestParam(required = false, defaultValue = "") List<Long> categoryIds,
+                                                      @RequestParam(required = false, defaultValue = "") Integer lowerCostBound,
+                                                      @RequestParam(required = false, defaultValue = "") Integer upperCostBound,
+                                                      @PageableDefault(sort = "productId",direction = Sort.Direction.DESC) Pageable pageable){
+        return responseService.getPageResponse(productService.searchProducts(userId, productName, categoryIds, lowerCostBound, upperCostBound, pageable));
     }
 
     //상품 삭제

@@ -12,6 +12,20 @@ import java.util.List;
 public interface ProductJpaRepo extends JpaRepository<Product, Long> {
     Page<Product> findProductsByUser(User user, Pageable pageable);
 
+    Page<Product> findProductsByProductNameContains(String productName, Pageable pageable);
+
+    @Query(value = "select h.product.productId from Heart h where h.user=:user")
+    List<Long> findHeartProductIdsByUser(@Param("user") User user);
+
+    @Query("select p from Product p where p.productName like %:productName% and p.category.categoryId in (:categoryIds)")
+    Page<Product> searchProductsByNameAndCategory(@Param("productName") String productName, @Param("categoryIds") List<Long> categoryIds, Pageable pageable);
+
+    @Query("select p from Product p where p.productName like %:productName% and p.productCost between :lowerBound and :upperBound")
+    Page<Product> searchProductsByNameAndCost(@Param("productName") String productName, @Param("lowerBound") int lowerBound, @Param("upperBound") int upperBound, Pageable pageable);
+
+    @Query("select p from Product p where p.productName like %:productName% and p.category.categoryId in (:categoryIds) and p.productCost between :lowerBound and :upperBound")
+    Page<Product> searchProductsByNameAndCategoryAndCost(@Param("productName") String productName, @Param("categoryIds") List<Long> categoryIds, @Param("lowerBound") int lowerBound, @Param("upperBound") int upperBound,Pageable pageable);
+
     List<Product> findProductsByUserAndProductStatusCd(User user, int productStatusCd);
 
     @Query(value = "select requester_product_id from request where requester_id=:userId and acceptor_product_id=:acceptorProductId and exchange_status_cd=0", nativeQuery = true)
