@@ -34,6 +34,11 @@ public class ProductController {
         return responseService.getPageResponse(productService.getProductsByUser(userId,pageable));
     }
 
+    // 내물품 리스트 조회(교환 신청하기 화면에서 상대방에게 이미 신청했는지 체크위해 사용)
+    @GetMapping(value = "user/{userId}/products/check/{theirProductId}")
+    public PageResponse<ProductDto> getProductsByUserWithCheckingIfRequestedAlready(@PathVariable long userId, @PathVariable long theirProductId, @PageableDefault(size = 20) Pageable pageable) {
+        return responseService.getPageResponse(productService.getProductsByUserWithCheckingIfRequestedAlready(userId, theirProductId, pageable));
+    }
 
     //상품 단건 조회
     @GetMapping(value = "/product/{productId}")
