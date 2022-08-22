@@ -19,10 +19,17 @@ public class HeartController {
         return responseService.getSingleResponse(heartService.saveHeart(productId, userId));
     }
 
-    //좋아요 취소
+    //좋아요 취소 by heartId
     @DeleteMapping(value = "/heart/{heartId}")
-    public CommonResponse deleteHeart(@PathVariable long heartId){
-        heartService.cancelHeart(heartId);
+    public CommonResponse deleteHeartByHeartId(@PathVariable long heartId){
+        heartService.cancelHeartByHeartId(heartId);
+        return responseService.getSuccessResponse();
+    }
+
+    //좋아요 취소 by userId and productId
+    @DeleteMapping(value = "/product/{productId}/heart")
+    public CommonResponse deleteHeartByProductAndUser(@PathVariable long productId,@RequestParam long userId){
+        heartService.cancelHeartByProductAndUser(productId,userId);
         return responseService.getSuccessResponse();
     }
 

@@ -37,12 +37,23 @@ public class HeartService {
         return heartJpaRepo.save(heart);
     }
 
-    //좋아요 취소
-    public void cancelHeart(long heartId){
+    //좋아요 취소 by heartId
+    public void cancelHeartByHeartId(long heartId){
         Heart heart= heartJpaRepo.findById(heartId).orElseThrow(HeartNotFoundException::new);
         Product product=heart.getProduct();
 
         product.setHeartNum(Math.max(product.getHeartNum()-1,0));     //좋아요 수 감소
+        heartJpaRepo.delete(heart);
+    }
+
+    //좋아요 취소 by product and user
+    public void cancelHeartByProductAndUser(long productId, long userId) {
+        User user=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        Product product=productJpaRepo.findById(productId).orElseThrow(ProductNotFoundException::new);
+
+        Heart heart=heartJpaRepo.findByProductAndUser(product,user);
+        product.setHeartNum(Math.max(product.getHeartNum()-1,0));
+
         heartJpaRepo.delete(heart);
     }
 

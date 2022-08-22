@@ -32,7 +32,7 @@ INSERT INTO request(request_id,requester_id, acceptor_id, requester_product_id,a
 -- 유저 2 -> 3 요청 (상품 2 -> 3)
 INSERT INTO request(request_id,requester_id, acceptor_id, requester_product_id,acceptor_product_id, exchange_status_cd) VALUES(3,2,3,2,3,0);
 -- 유저 2 -> 1 요청 (상품 5 -> 4)
-INSERT INTO request(request_id,requester_id, acceptor_id, requester_product_id,acceptor_product_id, exchange_status_cd) VALUES(4,2,1,5,4,2);
+INSERT INTO request(request_id,requester_id, acceptor_id, requester_product_id,acceptor_product_id, exchange_status_cd) VALUES(4,2,1,5,4,0);
 -- 유저 3 -> 1 요청 (상품 6 -> 4) : 수락
 INSERT INTO request(request_id,requester_id, acceptor_id, requester_product_id,acceptor_product_id, exchange_status_cd) VALUES(5,3,1,6,4,1);
 
