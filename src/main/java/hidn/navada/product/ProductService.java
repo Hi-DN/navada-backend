@@ -2,11 +2,8 @@ package hidn.navada.product;
 
 import hidn.navada.comm.exception.CategoryNotFoundException;
 import hidn.navada.comm.exception.ProductNotFoundException;
-import hidn.navada.comm.exception.ProductStatusCdDiscrepancyException;
 import hidn.navada.comm.exception.UserNotFoundException;
 
-import hidn.navada.heart.HeartJpaRepo;
-import hidn.navada.exchange.request.RequestJpaRepo;
 import hidn.navada.product.category.Category;
 import hidn.navada.product.category.CategoryJpaRepo;
 import hidn.navada.user.User;
@@ -32,7 +29,6 @@ public class ProductService {
     private final ProductJpaRepo productJpaRepo;
     private final CategoryJpaRepo categoryJpaRepo;
     private final UserJpaRepo userJpaRepo;
-    private final HeartJpaRepo heartJpaRepo;
 
     //상품 등록
     public Product createProduct(long userId, ProductParams productParams){

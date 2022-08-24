@@ -1,5 +1,6 @@
 package hidn.navada.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import hidn.navada.comm.BaseTime;
 import hidn.navada.comm.enums.UserLevel;
 import lombok.*;
@@ -23,6 +24,7 @@ public class User extends BaseTime {
 
     private String userEmail;       // 회원 이메일
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String userPassword;    // 회원 비밀번호
 
     private String userPhoneNum;    // 회원 전화번호
