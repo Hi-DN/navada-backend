@@ -27,7 +27,7 @@ public class Exchange extends BaseTime {
     @JoinColumn(referencedColumnName = "userId",name = "acceptorId",nullable = false)
     private User acceptor;                  //교환수락자(fk)
 
-    @JsonIgnore @ManyToOne(fetch = LAZY)
+    @OneToOne
     @JoinColumn(referencedColumnName = "productId",name = "acceptorProductId",nullable = false)
     private Product acceptorProduct;        //수락자상품(fk)
 
@@ -35,7 +35,7 @@ public class Exchange extends BaseTime {
     @JoinColumn(referencedColumnName = "userId",name = "requesterId",nullable = false)
     private User requester;                 //교환신청자(fk)
 
-    @JsonIgnore @ManyToOne(fetch = LAZY)
+    @OneToOne
     @JoinColumn(referencedColumnName = "productId",name = "requesterProductId",nullable = false)
     private Product requesterProduct;       //신청자상품(fk)
 
