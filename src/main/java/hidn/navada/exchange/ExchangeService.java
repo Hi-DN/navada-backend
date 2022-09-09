@@ -39,14 +39,8 @@ public class ExchangeService {
     //교환 완료
     public Exchange completeExchange(Long exchangeId, Boolean isAcceptor) {
         Exchange exchange = exchangeJpaRepo.findById(exchangeId).orElseThrow(ExchangeNotFoundException::new);
-        if(isAcceptor) {
-            // 수락자가 교환 완료를 누른 경우
-            exchange.setAcceptorConfirmYn(true);
-
-        } else {
-            // 요청자가 교환 완료를 누른 경우
-            exchange.setRequesterConfirmYn(true);
-        }
+        if(isAcceptor) exchange.setAcceptorConfirmYn(true);
+        else exchange.setRequesterConfirmYn(true);
 
         // 둘다 교환 완료인 경우
         if(exchange.isAcceptorConfirmYn() && exchange.isRequesterConfirmYn()) {
@@ -92,24 +86,19 @@ public class ExchangeService {
     }
 
     //교환목록조회(교환중, 교환완료)
-    public Page<Exchange> getExchangeList(Long userId, Pageable pageable) {
-        User user=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+    public Page<ExchangeDto> getExchangeList(Long userId, Pageable pageable) {
+        User user = userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
 
-        Page<Exchange> exchanges=exchangeJpaRepo.findExchangePagesByUser(user,pageable);
-        return exchanges;
+        Page<Exchange> exchanges = exchangeJpaRepo.findExchangePagesByUser(user, pageable);
+        return convertToDto(exchanges);
     }
 
     //교환 평점 부여
     public Exchange rateExchange(Long exchangeId, Boolean isAcceptor, float rating) {
         Exchange exchange = exchangeJpaRepo.findById(exchangeId).orElseThrow(ExchangeNotFoundException::new);
-        if(isAcceptor) {
-            // 수락자가 요청자에게 평점을 주고있는 경우
-            exchange.setRequesterRating(rating);
 
-        } else {
-            // 요청자가 수락자에게 평점을 주고있는 경우
-            exchange.setAcceptorRating(rating);
-        }
+        if(isAcceptor) exchange.setRequesterRating(rating);
+        else exchange.setAcceptorRating(rating);
 
         return exchange;
     }
@@ -117,15 +106,14 @@ public class ExchangeService {
     //교환 내역 삭제
     public Exchange deleteExchangeHistory(Long exchangeId, Boolean isAcceptor) {
         Exchange exchange = exchangeJpaRepo.findById(exchangeId).orElseThrow(ExchangeNotFoundException::new);
-        if(isAcceptor) {
-            // 수락자가 교환 내역을 삭제하려는 경우
-            exchange.setAcceptorHistoryDeleteYn(true);
 
-        } else {
-            // 요청자가 교환 내역을 삭제하려는 경우
-            exchange.setRequesterHistoryDeleteYn(true);
-        }
+        if(isAcceptor) exchange.setAcceptorHistoryDeleteYn(true);
+        else exchange.setRequesterHistoryDeleteYn(true);
 
         return exchange;
+    }
+
+    public Page<ExchangeDto> convertToDto(Page<Exchange> exchangeList){
+        return exchangeList.map(ExchangeDto::new);
     }
 }
