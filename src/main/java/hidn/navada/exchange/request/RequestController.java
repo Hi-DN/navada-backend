@@ -30,7 +30,8 @@ public class RequestController {
 
     // 내가 신청한 교환신청 목록 조회 (네비게이션에서 사용)
     @GetMapping(value = "/requester/{userId}/exchange/requests")
-    public PageResponse<RequestDto> getRequestListByRequester(@PathVariable Long userId,@PageableDefault(size =20) Pageable pageable){
+    public PageResponse<RequestDto> getRequestListByRequester(@PathVariable Long userId,
+                                                              @PageableDefault(size =20, sort = "exchangeStatusCd") Pageable pageable){
         return responseService.getPageResponse(requestService.getRequestListByRequester(userId,pageable));
     }
 
