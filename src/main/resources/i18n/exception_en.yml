@@ -13,6 +13,9 @@ productNotFound:
 productStatusCdDiscrepancy:
   code: "409"
   msg: "Product status code does not match."
+exchangeStatusCdDiscrepancy:
+  code: "409"
+  msg: "Exchange status code does not match."
 imageNotFound:
   code: "404"
   msg: "Image not found."

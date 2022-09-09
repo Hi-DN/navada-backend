@@ -21,7 +21,7 @@ import static javax.persistence.FetchType.LAZY;
 public class Request extends BaseTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long requestId; //pk
+    private Long requestId;             //pk
 
     @JsonIgnore @ManyToOne(fetch = LAZY)
     @JoinColumn(referencedColumnName = "userId",name = "acceptorId",nullable = false)
@@ -29,7 +29,7 @@ public class Request extends BaseTime {
 
     @JsonIgnore @ManyToOne(fetch = LAZY)
     @JoinColumn(referencedColumnName = "productId",name="acceptorProductId", nullable = false)
-    private Product acceptorProduct;   // 수락자 상품(fk)
+    private Product acceptorProduct;    // 수락자 상품(fk)
 
     @JsonIgnore @ManyToOne(fetch = LAZY)
     @JoinColumn(referencedColumnName = "userId",name = "requesterId",nullable = false)
@@ -37,8 +37,12 @@ public class Request extends BaseTime {
 
     @JsonIgnore @ManyToOne(fetch = LAZY)
     @JoinColumn(referencedColumnName = "productId",name="requesterProductId", nullable = false)
-    private Product requesterProduct;    // 신청자 상품(fk)
+    private Product requesterProduct;   // 신청자 상품(fk)
 
     @Builder.Default
-    private int exchangeStatusCd=0;    //교환상태(0:교환대기, 1:교환선택, 2:교환거절)
+    private int exchangeStatusCd=0;     // 교환상태(0:교환대기, 1:교환선택, 2:교환거절)
+
+    private boolean acceptorDeniedRequestDeleteYn=false;    // 수락자 교환신청 거절내역 삭제여부
+
+    private boolean requesterDeniedRequestDeleteYn=false;   // 신청자 교환신청 거절내역 삭제여부
 }

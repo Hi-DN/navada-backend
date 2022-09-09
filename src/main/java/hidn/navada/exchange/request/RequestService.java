@@ -1,9 +1,6 @@
 package hidn.navada.exchange.request;
 
-import hidn.navada.comm.exception.RequestNotFoundException;
-import hidn.navada.comm.exception.ProductNotFoundException;
-import hidn.navada.comm.exception.ProductStatusCdDiscrepancyException;
-import hidn.navada.comm.exception.UserNotFoundException;
+import hidn.navada.comm.exception.*;
 import hidn.navada.exchange.Exchange;
 import hidn.navada.exchange.ExchangeService;
 import hidn.navada.product.Product;
@@ -133,5 +130,17 @@ public class RequestService {
         List<Request> requestList=requestJpaRepo.findRequestsByCertainProduct(product,acceptor);
 
         return requestList.stream().map(RequestDto::new).collect(toList());
+    }
+
+    // 교환신청 거절내역 삭제
+    public Request deleteDeniedRequest(Long requestId, Boolean isAcceptor) {
+        Request request = requestJpaRepo.findById(requestId).orElseThrow(RequestNotFoundException::new);
+
+        if(request.getExchangeStatusCd() != 2) throw new ExchangeStatusCdDiscrepancyException();
+
+        if(isAcceptor) request.setAcceptorDeniedRequestDeleteYn(true);
+        else request.setRequesterDeniedRequestDeleteYn(true);
+
+        return request;
     }
 }
