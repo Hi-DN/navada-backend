@@ -86,10 +86,17 @@ public class ExchangeService {
     }
 
     //교환목록조회(교환중, 교환완료)
-    public Page<ExchangeDto> getExchangeList(Long userId, Pageable pageable) {
+    public Page<ExchangeDto> getExchangeList(Long userId, Boolean viewOnlySentElseGot, Pageable pageable) {
         User user = userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        Page<Exchange> exchanges;
 
-        Page<Exchange> exchanges = exchangeJpaRepo.findExchangePagesByUser(user, pageable);
+        if(viewOnlySentElseGot == null)
+            exchanges = exchangeJpaRepo.findExchangePagesByUser(user, pageable);
+        else {
+            exchanges = (viewOnlySentElseGot)
+                    ? exchangeJpaRepo.findExchangePagesByRequester(user, pageable)
+                    : exchangeJpaRepo.findExchangePagesByAcceptor(user, pageable);
+        }
         return convertToDto(exchanges);
     }
 
