@@ -136,4 +136,11 @@ public class ProductService {
         productJpaRepo.delete(product);
     }
 
+    //특정 상품에 교환신청가능한 내 상품 리스트
+    public Page<Product> getProductsForRequest(long userId, long acceptorProductId, Pageable pageable) {
+        User user=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        Product acceptorProduct=productJpaRepo.findById(acceptorProductId).orElseThrow(ProductNotFoundException::new);
+
+        return productJpaRepo.findProductsForRequest(user, acceptorProduct, pageable);
+    }
 }

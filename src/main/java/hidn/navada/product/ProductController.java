@@ -63,4 +63,13 @@ public class ProductController {
         productService.deleteProduct(productId);
         return responseService.getSuccessResponse();
     }
+
+    //특정 상품에 교환신청가능한 내 상품목록 조회
+    @GetMapping(value = "/user/{userId}/products/request")
+    public PageResponse<Product> getProductsForRequest(@PathVariable long userId,
+                                                       @RequestParam long acceptorProductId,
+                                                       @PageableDefault(size = 20) Pageable pageable){
+        return responseService.getPageResponse(productService.getProductsForRequest(userId,acceptorProductId, pageable));
+    }
+
 }
