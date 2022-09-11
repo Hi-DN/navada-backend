@@ -30,7 +30,8 @@ public class RequestController {
 
     // 내가 신청한 교환신청 목록 조회 (네비게이션에서 사용)
     @GetMapping(value = "/requester/{userId}/exchange/requests")
-    public PageResponse<RequestDto> getRequestListByRequester(@PathVariable Long userId,@PageableDefault(size =20) Pageable pageable){
+    public PageResponse<RequestDto> getRequestListByRequester(@PathVariable Long userId,
+                                                              @PageableDefault(size =20, sort = "exchangeStatusCd") Pageable pageable){
         return responseService.getPageResponse(requestService.getRequestListByRequester(userId,pageable));
     }
 
@@ -57,8 +58,14 @@ public class RequestController {
     }
 
     // 특정 상품으로부터 받은 교환신청 목록 조회
-    @GetMapping(value = "product/{productId}/exchange/request")
+    @GetMapping(value = "/product/{productId}/exchange/request")
     public ListResponse<RequestDto> getRequestsByCertainProduct(@PathVariable Long productId, @RequestParam Long userId){
         return responseService.getListResponse(requestService.getRequestsByCertainProduct(productId,userId));
+    }
+
+    // 교환신청 거절내역 삭제
+    @PatchMapping(value = "/exchange/request/{requestId}/delete")
+    public SingleResponse<Request> deleteDeniedRequest(@PathVariable Long requestId, @RequestParam Boolean isAcceptor) {
+        return responseService.getSingleResponse(requestService.deleteDeniedRequest(requestId, isAcceptor));
     }
 }

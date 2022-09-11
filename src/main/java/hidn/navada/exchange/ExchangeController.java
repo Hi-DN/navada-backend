@@ -24,8 +24,9 @@ public class ExchangeController {
 
     // 교환 목록 조회(교환중, 교환완료)
     @GetMapping(value = "/user/{userId}/exchanges")
-    public PageResponse<Exchange> getExchangeList(@PathVariable Long userId, @PageableDefault(size =20)Pageable pageable) {
-        return responseService.getPageResponse(exchangeService.getExchangeList(userId,pageable));
+    public PageResponse<ExchangeDto> getExchangeList(@PathVariable Long userId, @RequestParam(required = false) Boolean viewOnlySentElseGot,
+                                                     @PageableDefault(size =20, sort = "exchangeCompleteYn") Pageable pageable) {
+        return responseService.getPageResponse(exchangeService.getExchangeList(userId, viewOnlySentElseGot, pageable));
     }
 
     // 교환상대에게 평점 부여

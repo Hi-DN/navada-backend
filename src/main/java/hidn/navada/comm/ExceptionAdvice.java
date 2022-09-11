@@ -57,6 +57,13 @@ public class ExceptionAdvice {
                 getMessage("productStatusCdDiscrepancy.msg"));
     }
 
+    @ExceptionHandler(ExchangeStatusCdDiscrepancyException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    protected CommonResponse exchangeStatusCdDiscrepancyException(HttpServletRequest request, ExchangeStatusCdDiscrepancyException e) {
+        return responseService.getErrorResponse(Integer.parseInt(getMessage("exchangeStatusCdDiscrepancy.code")),
+                getMessage("exchangeStatusCdDiscrepancy.msg"));
+    }
+
     @ExceptionHandler(ImageNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     protected CommonResponse imageNotFoundException(HttpServletRequest request, ImageNotFoundException e) {
