@@ -16,7 +16,7 @@
     </appender>
 
     <logger name="jdbc.sqltiming" additivity="false">
-        <level value="DEBUG"/>
+        <level value="OFF"/>
         <appender-ref ref="console-sql"/>
     </logger>
 
