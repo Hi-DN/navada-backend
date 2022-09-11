@@ -19,7 +19,7 @@ public class Product extends BaseTime {
     private Long productId;                 // pk
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;                      // 해당 상품을 등록한 회원 id(fk)
 

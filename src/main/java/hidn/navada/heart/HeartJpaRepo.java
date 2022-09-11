@@ -9,7 +9,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface HeartJpaRepo extends JpaRepository<Heart,Long> {
-    Page<Heart> findHeartsByUser(User user, Pageable pageable);
+
+    @Query(value = "select h from Heart h join fetch h.product where h.user=:user",
+    countQuery = "select count(h) from Heart h inner join h.product where h.user=:user")
+    Page<Heart> findHeartsByUser(@Param("user") User user, Pageable pageable);
 
     Heart findByProductAndUser(Product product, User user);
 
