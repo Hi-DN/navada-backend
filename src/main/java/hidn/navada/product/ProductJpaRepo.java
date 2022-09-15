@@ -30,4 +30,13 @@ public interface ProductJpaRepo extends JpaRepository<Product, Long> {
 
     @Query(value = "select requester_product_id from request where requester_id=:userId and acceptor_product_id=:acceptorProductId and exchange_status_cd=0", nativeQuery = true)
     List<Long> findProductsByUserAlreadyRequestedToTheirProduct(@Param("userId")Long userId, @Param("acceptorProductId")Long acceptorProductId);
+
+    @Query(value = "select p from Product p " +
+            "where p.user=:user " +
+            "and p.productStatusCd=0" +
+            "and p not in " +
+            "(select r.acceptorProduct from Request r where r.requesterProduct=:wantedProduct and r.acceptor=:user)" +
+            "and p not in " +
+            "(select r.requesterProduct from Request r where r.acceptorProduct=:wantedProduct and r.requester=:user)")
+    Page<Product> findProductsForRequest(@Param("user") User user, @Param("wantedProduct") Product wantedProduct, Pageable pageable);
 }

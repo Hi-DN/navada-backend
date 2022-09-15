@@ -5,6 +5,7 @@ import hidn.navada.comm.BaseTime;
 import hidn.navada.product.Product;
 import hidn.navada.user.User;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -39,19 +40,26 @@ public class Exchange extends BaseTime {
     @JoinColumn(referencedColumnName = "productId",name = "requesterProductId",nullable = false)
     private Product requesterProduct;       //신청자상품(fk)
 
+    @ColumnDefault("false")
     private boolean acceptorConfirmYn=false;            //수락자 확인여부
 
+    @ColumnDefault("false")
     private boolean requesterConfirmYn=false;           //신청자 확인여부
 
+    @ColumnDefault("false")
     private boolean exchangeCompleteYn=false;           //교환완료여부
 
     private LocalDateTime exchangeCompleteDt;           //교환완료일시
 
+    @ColumnDefault("-1")
     private float acceptorRating=-1;                      //acceptor가 받은 평점
 
+    @ColumnDefault("-1")
     private float requesterRating=-1;                     //requester가 받은 평점
 
+    @ColumnDefault("false")
     private boolean acceptorHistoryDeleteYn=false;      //acceptor의 거래내역 삭제 여부
 
+    @ColumnDefault("false")
     private boolean requesterHistoryDeleteYn=false;     //requester의 거래내역 삭제 여부
 }
