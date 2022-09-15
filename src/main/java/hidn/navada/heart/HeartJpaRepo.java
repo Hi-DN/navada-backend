@@ -16,7 +16,8 @@ public interface HeartJpaRepo extends JpaRepository<Heart,Long> {
 
     Heart findByProductAndUser(Product product, User user);
 
-    @Query(value = "select h from Heart h where h.user=:user and h.product.productStatusCd=0")
+    @Query(value = "select h from Heart h join fetch h.product p where h.user=:user and p.productStatusCd=0",
+    countQuery = "select count(h) from Heart h inner join h.product p where h.user=:user and p.productStatusCd=0")
     Page<Heart> findHeartsByUserAndProductStatusCd(@Param("user") User user, Pageable pageable);
 
 }
