@@ -15,6 +15,10 @@ public class ExchangeDto {
 
     private long acceptorId;
 
+    private boolean requesterConfirmYn;
+
+    private boolean acceptorConfirmYn;
+
     private Product requesterProduct;
 
     private Product acceptorProduct;
@@ -23,6 +27,8 @@ public class ExchangeDto {
         exchangeId=exchange.getExchangeId();
         requesterId = exchange.getRequester().getUserId();
         acceptorId = exchange.getAcceptor().getUserId();
+        requesterConfirmYn = exchange.isRequesterConfirmYn();
+        acceptorConfirmYn = exchange.isAcceptorConfirmYn();
         requesterProduct = exchange.getRequesterProduct();
         acceptorProduct = exchange.getAcceptorProduct();
     }
