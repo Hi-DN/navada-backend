@@ -15,8 +15,8 @@ INSERT INTO category(category_name) VALUES ('식물');
 INSERT INTO category(category_name) VALUES ('기타용품');
 
 INSERT INTO user(user_id,user_name,user_email,user_password,user_phone_num,user_address,user_level, user_nickname) VALUES (1,'kim','kim@naver.com','kim','010-1111-2222','address','LV1_OUTSIDER' ,'투썸러버');
-INSERT INTO user(user_id,user_name,user_email,user_password,user_phone_num,user_address,user_level, user_nickname) VALUES (2,'lee','lee@naver.com','lee','010-1111-3333','address','LV1_OUTSIDER', '나는스벅나는스벅나는');
-INSERT INTO user(user_id,user_name,user_email,user_password,user_phone_num,user_address,user_level, user_nickname) VALUES (3,'park','park@naver.com','park','010-1111-3333','address','LV1_OUTSIDER', 'seller');
+INSERT INTO user(user_id,user_name,user_email,user_password,user_phone_num,user_address,user_level, user_nickname) VALUES (2,'lee','lee@naver.com','lee','010-1111-3333','address','LV2_RESIDENT', '나는스벅나는스벅나는');
+INSERT INTO user(user_id,user_name,user_email,user_password,user_phone_num,user_address,user_level, user_nickname) VALUES (3,'park','park@naver.com','park','010-1111-3333','address','LV4_HEADMAN', 'seller');
 
 INSERT INTO product(created_date,product_id,user_id,product_name,product_explanation,category_id,heart_num, product_cost, exchange_cost_range,user_nickname) VALUES (now(),1,1,'투썸아아 투썸아아 투썸아아 투썸아아 ','투썸 아아입니다투썸 아아입니다투썸 아아입니다투썸 아아입니다투썸 아아입니다투썸 아아입니다투썸 아아입니다투썸 아아입니다투썸 아아입니다투썸 아아입니다투썸 아아입니다투썸 아아입니다ㅇㅇㅇㅇ',1,3, 4500, 500,'투썸러버');
 INSERT INTO product(created_date,product_id,user_id,product_name,product_explanation,category_id,heart_num, product_cost, exchange_cost_range,user_nickname) VALUES (now(),2,1,'투썸 카페라떼','투썸 카페라떼입니다!!',1,3, 5000, 500,'투썸러버');

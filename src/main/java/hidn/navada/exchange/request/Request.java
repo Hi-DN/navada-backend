@@ -40,8 +40,9 @@ public class Request extends BaseTime {
     @JoinColumn(referencedColumnName = "productId",name="requesterProductId", nullable = false)
     private Product requesterProduct;   // 신청자 상품(fk)
 
+    @Column(columnDefinition ="char")
     @ColumnDefault("0") @Builder.Default
-    private int exchangeStatusCd=0;     // 교환상태(0:교환대기, 1:교환선택, 2:교환거절)
+    private char requestStatusCd='0';     // 교환상태(0:교환대기, 1:교환선택, 2:교환거절)
 
     @ColumnDefault("false") @Builder.Default
     private boolean acceptorDeniedRequestDeleteYn=false;    // 수락자 교환신청 거절내역 삭제여부

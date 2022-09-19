@@ -8,7 +8,7 @@ import lombok.*;
 public class RequestDto {
     private long requestId;
 
-    private int exchangeStatusCd;   //교환상태(0 : 대기 , 1 : 수락, 2 : 거절)
+    private char requestStatusCd;      //신청상태(0 : 대기 , 1 : 수락, 2 : 거절)
 
     private String acceptorNickname;    //수락자 닉네임
     private String requesterNickName;   //요청자 닉네임
@@ -27,7 +27,7 @@ public class RequestDto {
 
     public RequestDto(Request request){
         requestId=request.getRequestId();
-        exchangeStatusCd=request.getExchangeStatusCd();
+        requestStatusCd=request.getRequestStatusCd();
 
         acceptorProductName = request.getAcceptorProduct().getProductName();
         requesterProductName = request.getRequesterProduct().getProductName();

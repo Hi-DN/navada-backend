@@ -51,7 +51,7 @@ public class RequestService {
         Request request = requestJpaRepo.findById(requestId).orElseThrow(RequestNotFoundException::new);
 
         // 교환신청상태 변경(대기 -> 수락)
-        request.setExchangeStatusCd(1);
+        request.setRequestStatusCd('1');
 
         // 상품상태 변경(등록완료 -> 교환중)
         Product acceptorProduct = request.getAcceptorProduct();
@@ -70,16 +70,16 @@ public class RequestService {
     }
 
     private void rejectRequestsByAcceptor(Product acceptorProduct) {
-        List<Request> requestList= requestJpaRepo.findByAcceptorProductAndExchangeStatusCd(acceptorProduct,0);
+        List<Request> requestList= requestJpaRepo.findByAcceptorProductAndRequestStatusCd(acceptorProduct,'0');
 
         //TODO event 생성 후, 알림 가는지 확인 필요!
         for(Request request : requestList){
-            request.setExchangeStatusCd(2); //2. 교환 거절
+            request.setRequestStatusCd('2'); //2. 교환 거절
         }
     }
 
     private void rejectRequestsByRequester(Product requesterProduct) {
-        List<Request> requestList= requestJpaRepo.findByRequesterProductAndExchangeStatusCd(requesterProduct,0);
+        List<Request> requestList= requestJpaRepo.findByRequesterProductAndRequestStatusCd(requesterProduct,'0');
         for(Request request : requestList){
             requestJpaRepo.deleteById(request.getRequestId());
         }
@@ -89,7 +89,7 @@ public class RequestService {
     public void deleteRequest(long requestId) {
         Request request = requestJpaRepo.findById(requestId).orElseThrow(RequestNotFoundException::new);
 
-        if(request.getExchangeStatusCd() == 0)
+        if(request.getRequestStatusCd() == '0')
             requestJpaRepo.deleteById(requestId);
         else
             throw new ProductExchangeStatusCdDiscrepancyException();
@@ -104,10 +104,10 @@ public class RequestService {
     }
 
     //내가 신청한 교환신청 목록 조회
-    public Page<RequestDto> getRequestListByAcceptor(long userId, List<Integer> exchangeStatusCd,Pageable pageable){
+    public Page<RequestDto> getRequestListByAcceptor(long userId, List<Character> requestStatusCds, Pageable pageable){
         User acceptor=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
 
-        Page<Request> requestList = requestJpaRepo.findRequestsByAcceptor(acceptor, exchangeStatusCd,pageable);
+        Page<Request> requestList = requestJpaRepo.findRequestsByAcceptor(acceptor, requestStatusCds, pageable);
         return convertToDto(requestList);
     }
 
@@ -119,7 +119,7 @@ public class RequestService {
     //교환신청 거절
     public void rejectRequest(Long requestId) {
         Request request= requestJpaRepo.findById(requestId).orElseThrow(RequestNotFoundException::new);
-        request.setExchangeStatusCd(2); // 2. 교환거절
+        request.setRequestStatusCd('2'); // 2. 교환거절
     }
 
     //특정 상품으로부터 받은 교환신청 목록 조회
@@ -136,7 +136,7 @@ public class RequestService {
     public Request deleteDeniedRequest(Long requestId, Boolean isAcceptor) {
         Request request = requestJpaRepo.findById(requestId).orElseThrow(RequestNotFoundException::new);
 
-        if(request.getExchangeStatusCd() != 2) throw new ExchangeStatusCdDiscrepancyException();
+        if(request.getRequestStatusCd() != '2') throw new RequestStatusCdDiscrepancyException();
 
         if(isAcceptor) request.setAcceptorDeniedRequestDeleteYn(true);
         else request.setRequesterDeniedRequestDeleteYn(true);
