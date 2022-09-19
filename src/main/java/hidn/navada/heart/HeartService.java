@@ -62,6 +62,6 @@ public class HeartService {
         User user=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
 
         if(showAll) return heartJpaRepo.findHeartsByUser(user,pageable);
-        else return heartJpaRepo.findHeartsByUserAndProductStatusCd(user,pageable);
+        else return heartJpaRepo.findHeartsByUserAndProductExchangeStatusCd(user,pageable);
     }
 }

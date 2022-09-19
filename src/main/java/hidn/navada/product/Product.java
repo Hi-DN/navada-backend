@@ -17,35 +17,36 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Product extends BaseTime {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;                 // pk
+    private Long productId;                     // pk
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
-    private User user;                      // 해당 상품을 등록한 회원 id(fk)
+    private User user;                          // 해당 상품을 등록한 회원 id(fk)
 
     @Column(length = 10)
-    private String userNickname;            //회원 닉네임
+    private String userNickname;                //회원 닉네임
 
     @Column(length = 20)
-    private String productName;             // 상품 이름
+    private String productName;                 // 상품 이름
 
     @Column(length = 200, nullable = false)
-    private String productExplanation;      // 상품 설명
+    private String productExplanation;          // 상품 설명
 
     @ManyToOne
     @JoinColumn(name = "categoryId")
-    private Category category;              // 상품 카테고리
+    private Category category;                  // 상품 카테고리
 
+    @Column(columnDefinition ="char")
     @ColumnDefault("0") @Builder.Default
-    private int productStatusCd=0;          // 상품 상태(0: 등록, 1: 거래중, 2: 거래 완료)
+    private char productExchangeStatusCd='0';   // 상품 상태(0: 등록, 1: 거래중, 2: 거래 완료)
 
     @ColumnDefault("0")  @Builder.Default
-    private Long heartNum= 0L;              // 좋아요 수
+    private Long heartNum= 0L;                  // 좋아요 수
 
-    private int productCost;                // 상품 원가
+    private int productCost;                    // 상품 원가
 
-    private int exchangeCostRange;          // 교환 가격 범위
+    private int exchangeCostRange;              // 교환 가격 범위
 
     @Override
     public boolean equals(Object o) {

@@ -10,7 +10,7 @@ userExistException:
 productNotFound:
   code: "404"
   msg: "상품을 찾을 수 없습니다."
-productStatusCdDiscrepancy:
+productExchangeStatusCdDiscrepancy:
   code: "409"
   msg: "상품 상태코드가 일치하지 않습니다."
 exchangeStatusCdDiscrepancy:

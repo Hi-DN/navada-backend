@@ -50,11 +50,11 @@ public class ExceptionAdvice {
                 getMessage("productNotFound.msg"));
     }
 
-    @ExceptionHandler(ProductStatusCdDiscrepancyException.class)
+    @ExceptionHandler(ProductExchangeStatusCdDiscrepancyException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    protected CommonResponse productStatusCdDiscrepancyException(HttpServletRequest request, ProductStatusCdDiscrepancyException e) {
-        return responseService.getErrorResponse(Integer.parseInt(getMessage("productStatusCdDiscrepancy.code")),
-                getMessage("productStatusCdDiscrepancy.msg"));
+    protected CommonResponse productExchangeStatusCdDiscrepancyException(HttpServletRequest request, ProductExchangeStatusCdDiscrepancyException e) {
+        return responseService.getErrorResponse(Integer.parseInt(getMessage("productExchangeStatusCdDiscrepancy.code")),
+                getMessage("productExchangeStatusCdDiscrepancy.msg"));
     }
 
     @ExceptionHandler(ExchangeStatusCdDiscrepancyException.class)

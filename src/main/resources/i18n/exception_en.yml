@@ -10,7 +10,7 @@ userExistException:
 productNotFound:
   code: "404"
   msg: "Product not found."
-productStatusCdDiscrepancy:
+productExchangeStatusCdDiscrepancy:
   code: "409"
   msg: "Product status code does not match."
 exchangeStatusCdDiscrepancy:

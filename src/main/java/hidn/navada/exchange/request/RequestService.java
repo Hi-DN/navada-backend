@@ -31,8 +31,8 @@ public class RequestService {
         Product acceptorProduct = productJpaRepo.findById(acceptorProductId).orElseThrow(ProductNotFoundException::new);
         Product requesterProduct = productJpaRepo.findById(requesterProductId).orElseThrow(ProductNotFoundException::new);
 
-        if(acceptorProduct.getProductStatusCd() != 0 || requesterProduct.getProductStatusCd() != 0) {
-            throw new ProductStatusCdDiscrepancyException();
+        if(acceptorProduct.getProductExchangeStatusCd() != '0' || requesterProduct.getProductExchangeStatusCd() != '0') {
+            throw new ProductExchangeStatusCdDiscrepancyException();
         }
 
         Request request = Request.builder()
@@ -55,9 +55,9 @@ public class RequestService {
 
         // 상품상태 변경(등록완료 -> 교환중)
         Product acceptorProduct = request.getAcceptorProduct();
-        acceptorProduct.setProductStatusCd(1);
+        acceptorProduct.setProductExchangeStatusCd('1');
         Product requesterProduct = request.getRequesterProduct();
-        requesterProduct.setProductStatusCd(1);
+        requesterProduct.setProductExchangeStatusCd('1');
 
         // acceptor 가 받은 나머지 교환 신청들 거절
         rejectRequestsByAcceptor(acceptorProduct);
@@ -92,7 +92,7 @@ public class RequestService {
         if(request.getExchangeStatusCd() == 0)
             requestJpaRepo.deleteById(requestId);
         else
-            throw new ProductStatusCdDiscrepancyException();
+            throw new ProductExchangeStatusCdDiscrepancyException();
     }
 
     //내가 신청받은 교환신청 목록 조회
