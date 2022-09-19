@@ -37,9 +37,9 @@ public class RequestController {
 
     // 내가 신청받은 교환신청 목록 조회 (홈에서 사용)
     @GetMapping(value = "/acceptor/{userId}/exchange/requests")
-    public PageResponse<RequestDto> getRequestListByAcceptor(@PathVariable long userId, @RequestParam List<Character> requestStatusCd,
+    public PageResponse<RequestDto> getRequestListByAcceptor(@PathVariable long userId, @RequestParam List<Character> requestStatusCds,
                                                              @PageableDefault(size =20) Pageable pageable){
-        return responseService.getPageResponse(requestService.getRequestListByAcceptor(userId,requestStatusCd,pageable));
+        return responseService.getPageResponse(requestService.getRequestListByAcceptor(userId,requestStatusCds,pageable));
     }
 
     // 교환신청 취소
