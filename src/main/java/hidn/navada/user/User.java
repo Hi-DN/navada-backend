@@ -20,6 +20,7 @@ public class User extends BaseTime {
 
     private String userName;        // 회원 이름
 
+    @Column(length = 10)
     private String userNickname;    // 회원 별명
 
     private String userEmail;       // 회원 이메일
