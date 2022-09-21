@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -118,6 +119,19 @@ public class ExceptionAdvice {
     protected CommonResponse tokenValidationException(HttpServletResponse request, TokenValidationException e) {
         return responseService.getErrorResponse(Integer.parseInt(getMessage("tokenValidationException.code")),
                 getMessage("tokenValidationException.msg"));
+    }
+
+    @ExceptionHandler(DuplicatedRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected CommonResponse DuplicatedRequestException(HttpServletResponse request, DuplicatedRequestException e) {
+        return responseService.getErrorResponse(Integer.parseInt(getMessage("duplicatedRequestException.code")),
+                getMessage("duplicatedRequestException.msg"));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected CommonResponse MethodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException e){
+        return responseService.getErrorResponse(500,e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
     }
 
     // code 정보에 해당하는 메시지 조회
