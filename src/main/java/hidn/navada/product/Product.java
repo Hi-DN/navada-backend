@@ -37,8 +37,7 @@ public class Product extends BaseTime {
     @JoinColumn(name = "categoryId")
     private Category category;                  // 상품 카테고리
 
-    @Column(columnDefinition ="char")
-    @ColumnDefault("0") @Builder.Default
+    @Column(columnDefinition="char default 0") @Builder.Default
     private char productExchangeStatusCd='0';   // 상품 상태(0: 등록, 1: 거래중, 2: 거래 완료)
 
     @ColumnDefault("0")  @Builder.Default
