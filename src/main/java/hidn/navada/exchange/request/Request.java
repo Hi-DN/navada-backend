@@ -19,6 +19,8 @@ import static javax.persistence.FetchType.LAZY;
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
+@Table(uniqueConstraints = {@UniqueConstraint(name = "DuplicatedRequest",
+        columnNames = {"requesterProductId", "acceptorProductId"})})
 public class Request extends BaseTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -42,7 +42,12 @@ public class RequestService {
                 .requesterProduct(requesterProduct)
                 .build();
 
-        return requestJpaRepo.save(request);
+        try {
+            request = requestJpaRepo.save(request);
+        } catch (org.springframework.dao.DataIntegrityViolationException e){
+            throw new DuplicatedRequestException();
+        }
+        return request;
     }
 
     //교환 수락

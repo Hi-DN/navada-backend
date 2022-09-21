@@ -40,3 +40,6 @@ businessRuleException:
 tokenValidationException:
   code: "500"
   msg: "토큰 검증시 오류가 발생하였습니다."
+duplicatedRequestException:
+  code: "400"
+  msg: "이미 존재하는 교환신청입니다."

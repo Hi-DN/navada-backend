@@ -40,3 +40,7 @@ businessRuleException:
 tokenValidationException:
   code: "500"
   msg: "Error occurred during token validation."
+duplicatedRequestException:
+  code: "400"
+  msg: "Request duplicated."
+
