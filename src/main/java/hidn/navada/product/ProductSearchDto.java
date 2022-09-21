@@ -10,7 +10,7 @@ public class ProductSearchDto {
     private String userNickname;
     private int productCost;
     private int exchangeCostRange;
-    private int productStatusCd;
+    private char productExchangeStatusCd;
     private boolean like;
 
     ProductSearchDto(Product product, boolean like){
@@ -19,7 +19,7 @@ public class ProductSearchDto {
         userNickname=product.getUserNickname();
         productCost=product.getProductCost();
         exchangeCostRange=product.getExchangeCostRange();
-        productStatusCd=product.getProductStatusCd();
+        productExchangeStatusCd=product.getProductExchangeStatusCd();
         this.like=like;
     }
 }

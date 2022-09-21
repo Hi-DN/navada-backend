@@ -10,12 +10,12 @@ userExistException:
 productNotFound:
   code: "404"
   msg: "Product not found."
-productStatusCdDiscrepancy:
+productExchangeStatusCdDiscrepancy:
   code: "409"
-  msg: "Product status code does not match."
-exchangeStatusCdDiscrepancy:
+  msg: "Product Exchange status code does not match."
+requestStatusCdDiscrepancy:
   code: "409"
-  msg: "Exchange status code does not match."
+  msg: "Request status code does not match."
 imageNotFound:
   code: "404"
   msg: "Image not found."

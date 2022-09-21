@@ -50,18 +50,18 @@ public class ExceptionAdvice {
                 getMessage("productNotFound.msg"));
     }
 
-    @ExceptionHandler(ProductStatusCdDiscrepancyException.class)
+    @ExceptionHandler(ProductExchangeStatusCdDiscrepancyException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    protected CommonResponse productStatusCdDiscrepancyException(HttpServletRequest request, ProductStatusCdDiscrepancyException e) {
-        return responseService.getErrorResponse(Integer.parseInt(getMessage("productStatusCdDiscrepancy.code")),
-                getMessage("productStatusCdDiscrepancy.msg"));
+    protected CommonResponse productExchangeStatusCdDiscrepancyException(HttpServletRequest request, ProductExchangeStatusCdDiscrepancyException e) {
+        return responseService.getErrorResponse(Integer.parseInt(getMessage("productExchangeStatusCdDiscrepancy.code")),
+                getMessage("productExchangeStatusCdDiscrepancy.msg"));
     }
 
-    @ExceptionHandler(ExchangeStatusCdDiscrepancyException.class)
+    @ExceptionHandler(RequestStatusCdDiscrepancyException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    protected CommonResponse exchangeStatusCdDiscrepancyException(HttpServletRequest request, ExchangeStatusCdDiscrepancyException e) {
-        return responseService.getErrorResponse(Integer.parseInt(getMessage("exchangeStatusCdDiscrepancy.code")),
-                getMessage("exchangeStatusCdDiscrepancy.msg"));
+    protected CommonResponse requestStatusCdDiscrepancyException(HttpServletRequest request, RequestStatusCdDiscrepancyException e) {
+        return responseService.getErrorResponse(Integer.parseInt(getMessage("requestStatusCdDiscrepancy.code")),
+                getMessage("requestStatusCdDiscrepancy.msg"));
     }
 
     @ExceptionHandler(ImageNotFoundException.class)

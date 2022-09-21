@@ -26,14 +26,14 @@ public interface ProductJpaRepo extends JpaRepository<Product, Long> {
     @Query("select p from Product p where p.productName like %:productName% and p.category.categoryId in (:categoryIds) and p.productCost between :lowerBound and :upperBound")
     Page<Product> searchProductsByNameAndCategoryAndCost(@Param("productName") String productName, @Param("categoryIds") List<Long> categoryIds, @Param("lowerBound") int lowerBound, @Param("upperBound") int upperBound,Pageable pageable);
 
-    List<Product> findProductsByUserAndProductStatusCd(User user, int productStatusCd);
+    List<Product> findProductsByUserAndProductExchangeStatusCd(User user, char productExchangeStatusCd);
 
     @Query(value = "select requester_product_id from request where requester_id=:userId and acceptor_product_id=:acceptorProductId and exchange_status_cd=0", nativeQuery = true)
     List<Long> findProductsByUserAlreadyRequestedToTheirProduct(@Param("userId")Long userId, @Param("acceptorProductId")Long acceptorProductId);
 
     @Query(value = "select p from Product p " +
             "where p.user=:user " +
-            "and p.productStatusCd=0" +
+            "and p.productExchangeStatusCd='0'" +
             "and p not in " +
             "(select r.acceptorProduct from Request r where r.requesterProduct=:wantedProduct and r.acceptor=:user)" +
             "and p not in " +

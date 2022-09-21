@@ -40,26 +40,26 @@ public class Exchange extends BaseTime {
     @JoinColumn(referencedColumnName = "productId",name = "requesterProductId",nullable = false)
     private Product requesterProduct;       //신청자상품(fk)
 
-    @ColumnDefault("false")
+    @ColumnDefault("false") @Builder.Default
     private boolean acceptorConfirmYn=false;            //수락자 확인여부
 
-    @ColumnDefault("false")
+    @ColumnDefault("false") @Builder.Default
     private boolean requesterConfirmYn=false;           //신청자 확인여부
 
-    @ColumnDefault("false")
+    @ColumnDefault("false") @Builder.Default
     private boolean exchangeCompleteYn=false;           //교환완료여부
 
     private LocalDateTime exchangeCompleteDt;           //교환완료일시
 
-    @ColumnDefault("-1")
+    @ColumnDefault("-1") @Builder.Default
     private float acceptorRating=-1;                      //acceptor가 받은 평점
 
-    @ColumnDefault("-1")
+    @ColumnDefault("-1") @Builder.Default
     private float requesterRating=-1;                     //requester가 받은 평점
 
-    @ColumnDefault("false")
+    @ColumnDefault("false") @Builder.Default
     private boolean acceptorHistoryDeleteYn=false;      //acceptor의 거래내역 삭제 여부
 
-    @ColumnDefault("false")
+    @ColumnDefault("false") @Builder.Default
     private boolean requesterHistoryDeleteYn=false;     //requester의 거래내역 삭제 여부
 }

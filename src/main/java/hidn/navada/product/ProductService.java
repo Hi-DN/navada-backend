@@ -76,7 +76,7 @@ public class ProductService {
     public Page<ProductDto> getProductsByUserWithCheckingIfRequestedAlready(long userId, long theirProductId, Pageable pageable) {
         User user= userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
 
-        List<Product> myProductsInWait = new ArrayList<>(productJpaRepo.findProductsByUserAndProductStatusCd(user, 0));
+        List<Product> myProductsInWait = new ArrayList<>(productJpaRepo.findProductsByUserAndProductExchangeStatusCd(user, '0'));
         List<Long> productIdsAlreadyRequested = productJpaRepo.findProductsByUserAlreadyRequestedToTheirProduct(userId, theirProductId);
 
         List<ProductDto> result = convertToDtoList(myProductsInWait, productIdsAlreadyRequested);

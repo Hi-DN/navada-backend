@@ -51,8 +51,8 @@ public class ExchangeService {
             Product requesterProduct = productJpaRepo.findById(exchange.getRequesterProduct().getProductId()).orElseThrow(ProductNotFoundException::new);
 
             // 상품 상태 교환 완료로 변경
-            acceptorProduct.setProductStatusCd(2);
-            requesterProduct.setProductStatusCd(2);
+            acceptorProduct.setProductExchangeStatusCd('2');
+            requesterProduct.setProductExchangeStatusCd('2');
 
             updateUserInfo(exchange);
         }

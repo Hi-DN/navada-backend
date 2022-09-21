@@ -11,15 +11,15 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface RequestJpaRepo extends JpaRepository<Request,Long> {
-    List<Request> findByAcceptorProductAndExchangeStatusCd(Product product, int exchangeStatusCd);
-    List<Request> findByRequesterProductAndExchangeStatusCd(Product product, int exchangeStatusCd);
+    List<Request> findByAcceptorProductAndRequestStatusCd(Product product, char requestStatusCd);
+    List<Request> findByRequesterProductAndRequestStatusCd(Product product, char requestStatusCd);
 
-    @Query(value = "select r from Request r where r.requester=:requester and r.exchangeStatusCd in (0,2) and r.requesterDeniedRequestDeleteYn=false")
+    @Query(value = "select r from Request r where r.requester=:requester and r.requestStatusCd in ('0','2') and r.requesterDeniedRequestDeleteYn=false")
     Page<Request> findRequestsByRequester(@Param("requester") User requester, Pageable pageable);
 
-    @Query(value = "select r from Request r where r.acceptor=:acceptor and r.exchangeStatusCd in (:exchangeStatusCds) and r.acceptorDeniedRequestDeleteYn=false")
-    Page<Request> findRequestsByAcceptor(@Param("acceptor") User acceptor, @Param("exchangeStatusCds") List<Integer> exchangeStatusCds,Pageable pageable);
+    @Query(value = "select r from Request r where r.acceptor=:acceptor and r.requestStatusCd in (:requestStatusCds) and r.acceptorDeniedRequestDeleteYn=false")
+    Page<Request> findRequestsByAcceptor(@Param("acceptor") User acceptor, @Param("requestStatusCds") List<Character> requestStatusCds, Pageable pageable);
 
-    @Query(value = "select r from Request r where r.requesterProduct=:requesterProduct and r.acceptor=:acceptor and r.exchangeStatusCd=0")
+    @Query(value = "select r from Request r where r.requesterProduct=:requesterProduct and r.acceptor=:acceptor and r.requestStatusCd='0'")
     List<Request> findRequestsByCertainProduct(@Param("requesterProduct") Product requesterProduct, @Param("acceptor") User acceptor);
 }

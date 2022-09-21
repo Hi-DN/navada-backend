@@ -31,15 +31,15 @@ public class RequestController {
     // 내가 신청한 교환신청 목록 조회 (네비게이션에서 사용)
     @GetMapping(value = "/requester/{userId}/exchange/requests")
     public PageResponse<RequestDto> getRequestListByRequester(@PathVariable Long userId,
-                                                              @PageableDefault(size =20, sort = "exchangeStatusCd") Pageable pageable){
+                                                              @PageableDefault(size =20, sort = "requestStatusCd") Pageable pageable){
         return responseService.getPageResponse(requestService.getRequestListByRequester(userId,pageable));
     }
 
     // 내가 신청받은 교환신청 목록 조회 (홈에서 사용)
     @GetMapping(value = "/acceptor/{userId}/exchange/requests")
-    public PageResponse<RequestDto> getRequestListByAcceptor(@PathVariable long userId, @RequestParam List<Integer> exchangeStatusCd,
+    public PageResponse<RequestDto> getRequestListByAcceptor(@PathVariable long userId, @RequestParam List<Character> requestStatusCds,
                                                              @PageableDefault(size =20) Pageable pageable){
-        return responseService.getPageResponse(requestService.getRequestListByAcceptor(userId,exchangeStatusCd,pageable));
+        return responseService.getPageResponse(requestService.getRequestListByAcceptor(userId,requestStatusCds,pageable));
     }
 
     // 교환신청 취소

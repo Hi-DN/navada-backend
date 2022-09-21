@@ -23,6 +23,8 @@ public class ExchangeDto {
 
     private Product acceptorProduct;
 
+    private boolean exchangeCompleteYn;
+
     public ExchangeDto(Exchange exchange){
         exchangeId=exchange.getExchangeId();
         requesterId = exchange.getRequester().getUserId();
@@ -31,5 +33,6 @@ public class ExchangeDto {
         acceptorConfirmYn = exchange.isAcceptorConfirmYn();
         requesterProduct = exchange.getRequesterProduct();
         acceptorProduct = exchange.getAcceptorProduct();
+        exchangeCompleteYn = exchange.isExchangeCompleteYn();
     }
 }
