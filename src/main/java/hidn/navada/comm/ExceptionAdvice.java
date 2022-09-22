@@ -131,7 +131,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected CommonResponse MethodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException e){
-        return responseService.getErrorResponse(500,e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+        return responseService.getErrorResponse(400,e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
     }
 
     // code 정보에 해당하는 메시지 조회
