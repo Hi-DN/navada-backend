@@ -55,7 +55,7 @@ public class RequestService {
     //교환 수락
     public Exchange acceptRequest(Long requestId){
 
-        Request request = requestJpaRepo.findById(requestId).orElseThrow(RequestNotFoundException::new);
+        Request request = requestJpaRepo.findByIdWithProduct(requestId).orElseThrow(RequestNotFoundException::new);
 
         // 교환신청상태 변경(대기 -> 수락)
         request.setRequestStatusCd('1');
