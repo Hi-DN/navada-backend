@@ -4,13 +4,19 @@ import hidn.navada.product.Product;
 import hidn.navada.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RequestJpaRepo extends JpaRepository<Request,Long> {
+
+    @Query(value = "select r from Request r join fetch r.acceptorProduct p join fetch r.requesterProduct p2 where r.requestId=:requestId")
+    Optional<Request> findByIdWithProduct(@Param("requestId") long requestId);
+
     List<Request> findByAcceptorProductAndRequestStatusCd(Product product, char requestStatusCd);
     List<Request> findByRequesterProductAndRequestStatusCd(Product product, char requestStatusCd);
 

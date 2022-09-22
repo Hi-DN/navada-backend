@@ -23,7 +23,7 @@ public class RequestController {
     }
 
     // 교환신청 수락
-    @PatchMapping(value = "/exchange/request/{requestId}")
+    @PostMapping(value = "/exchange/request/{requestId}")
     public SingleResponse<Exchange> createRequest(@PathVariable Long requestId){
         return responseService.getSingleResponse(requestService.acceptRequest(requestId));
     }
