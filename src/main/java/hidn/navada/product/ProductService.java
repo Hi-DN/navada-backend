@@ -115,19 +115,6 @@ public class ProductService {
         List<Long> likeProductIds=productJpaRepo.findHeartProductIdsByUser(user);  //좋아요 상품 id 목록
         Page<Product> products = productJpaRepo.findProductsByOptions(productSearchOptions,pageable);
 
-
-//        // 전체 대상 검색
-//        if(categoryIds.isEmpty() && lowerCostBound==null)
-//            products= productJpaRepo.findProductsByProductNameContains(productName,pageable);
-//        // 카테고리별 검색
-//        else if(!categoryIds.isEmpty())
-//            products= productJpaRepo.searchProductsByNameAndCategory(productName,categoryIds,pageable);
-//        // 가격범위별 검색
-//        else if(!(lowerCostBound==null))
-//            products= productJpaRepo.searchProductsByNameAndCost(productName,lowerCostBound,upperCostBound,pageable);
-//        // 카테고리 + 가격범위
-//        else products= productJpaRepo.searchProductsByNameAndCategoryAndCost(productName,categoryIds,lowerCostBound,upperCostBound,pageable);
-
         Page<ProductSearchDto> result = products.map(product -> new ProductSearchDto(product,likeProductIds.contains(product.getProductId())));
         return result;
     }
