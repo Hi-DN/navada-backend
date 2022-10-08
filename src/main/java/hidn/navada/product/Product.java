@@ -47,6 +47,8 @@ public class Product extends BaseTime {
 
     private int exchangeCostRange;              // 교환 가격 범위
 
+    private String productImageUrl;             // 상품 이미지 주소
+
     @Override
     public boolean equals(Object o) {
         if(o == null) {
