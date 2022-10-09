@@ -21,4 +21,6 @@ public class ProductParams {
 
     @NotNull(message = "교환 희망 가격범위는 필수값입니다.")
     private int exchangeCostRange;
+
+    private String productImageUrl;
 }

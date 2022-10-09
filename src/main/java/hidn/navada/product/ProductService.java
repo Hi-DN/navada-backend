@@ -43,6 +43,7 @@ public class ProductService {
                 .category(category)
                 .productCost(productParams.getProductCost())
                 .exchangeCostRange(productParams.getExchangeCostRange())
+                .productImageUrl(productParams.getProductImageUrl())
                 .build();
 
         return productJpaRepo.save(product);
@@ -59,6 +60,7 @@ public class ProductService {
         product.setCategory(category);
         product.setProductCost(productParams.getProductCost());
         product.setExchangeCostRange(productParams.getExchangeCostRange());
+        product.setProductImageUrl(productParams.getProductImageUrl());
 
         return product;
     }
@@ -108,22 +110,10 @@ public class ProductService {
 
 
     //상품 검색
-    public Page<ProductSearchDto> searchProducts(long userId,String productName, List<Long> categoryIds, Integer lowerCostBound, Integer upperCostBound, Pageable pageable) {
+    public Page<ProductSearchDto> searchProducts(long userId, ProductSearchOptions productSearchOptions, Pageable pageable) {
         User user=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         List<Long> likeProductIds=productJpaRepo.findHeartProductIdsByUser(user);  //좋아요 상품 id 목록
-        Page<Product> products;
-
-        // 전체 대상 검색
-        if(categoryIds.isEmpty() && lowerCostBound==null)
-            products= productJpaRepo.findProductsByProductNameContains(productName,pageable);
-        // 카테고리별 검색
-        else if(!categoryIds.isEmpty())
-            products= productJpaRepo.searchProductsByNameAndCategory(productName,categoryIds,pageable);
-        // 가격범위별 검색
-        else if(!(lowerCostBound==null))
-            products= productJpaRepo.searchProductsByNameAndCost(productName,lowerCostBound,upperCostBound,pageable);
-        // 카테고리 + 가격범위
-        else products= productJpaRepo.searchProductsByNameAndCategoryAndCost(productName,categoryIds,lowerCostBound,upperCostBound,pageable);
+        Page<Product> products = productJpaRepo.findProductsByOptions(productSearchOptions,pageable);
 
         Page<ProductSearchDto> result = products.map(product -> new ProductSearchDto(product,likeProductIds.contains(product.getProductId())));
         return result;
