@@ -13,7 +13,7 @@ public interface ProductJpaRepo extends JpaRepository<Product, Long> {
     Page<Product> findProductsByUser(User user, Pageable pageable);
 
     @Query(value = "select p from Product p where (:#{#options.productName} is null or p.productName like %:#{#options.productName}%) " +
-            "and (:#{#options.categoryIds} is null or p.category.categoryId in (:#{#options.categoryIds})) " +
+            "and (COALESCE(:#{#options.categoryIds},'null') is null or p.category.categoryId in (:#{#options.categoryIds})) " +
             "and (:#{#options.lowerCostBound} is null or (:#{#options.lowerCostBound} <= p.productCost)) " +
             "and (:#{#options. upperCostBound} is null or (p.productCost <= :#{#options.upperCostBound})) ")
     Page<Product> findProductsByOptions(@Param("options") ProductSearchOptions options, Pageable pageable);
