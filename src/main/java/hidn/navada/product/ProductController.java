@@ -50,7 +50,7 @@ public class ProductController {
     //상품 검색
     @GetMapping(value = "/user/{userId}/products/search")
     public PageResponse<ProductSearchDto> searchProductsByName(@PathVariable long userId, @ModelAttribute ProductSearchOptions productSearchOptions,
-                                                      @PageableDefault(sort = "productId",direction = Sort.Direction.DESC) Pageable pageable){
+                                                      @PageableDefault(sort = "product_id",direction = Sort.Direction.DESC) Pageable pageable){
         return responseService.getPageResponse(productService.searchProducts(userId, productSearchOptions, pageable));
     }
 
