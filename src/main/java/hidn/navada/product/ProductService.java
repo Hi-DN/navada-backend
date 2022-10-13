@@ -113,6 +113,8 @@ public class ProductService {
     public Page<ProductSearchDto> searchProducts(long userId, ProductSearchOptions productSearchOptions, Pageable pageable) {
         User user=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         List<Long> likeProductIds=productJpaRepo.findHeartProductIdsByUser(user);  //좋아요 상품 id 목록
+
+        productSearchOptions.setProductName('%'+productSearchOptions.getProductName()+'%');
         Page<Product> products = productJpaRepo.findProductsByOptions(productSearchOptions,pageable);
 
         Page<ProductSearchDto> result = products.map(product -> new ProductSearchDto(product,likeProductIds.contains(product.getProductId())));

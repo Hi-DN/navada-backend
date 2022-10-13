@@ -12,7 +12,7 @@ import java.util.List;
 public interface ProductJpaRepo extends JpaRepository<Product, Long> {
     Page<Product> findProductsByUser(User user, Pageable pageable);
 
-    @Query(value = "select * from Product p where (:#{#options.productName} is null or p.product_name like '%:#{#options.productName}%') " +
+    @Query(value = "select * from Product p where (:#{#options.productName} is null or p.product_name like :#{#options.productName}) " +
             "and (coalesce(:#{#options.categoryIds},null) is null or p.category_id in (:#{#options.categoryIds})) " +
             "and (:#{#options.lowerCostBound} is null or (:#{#options.lowerCostBound} <= p.product_cost)) " +
             "and (:#{#options. upperCostBound} is null or (p.product_cost <= :#{#options.upperCostBound})) ",nativeQuery = true)
