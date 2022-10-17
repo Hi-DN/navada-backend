@@ -7,7 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface ExchangeJpaRepo extends JpaRepository<Exchange, Long> {
+
+    @Query(value = "select e from Exchange e join fetch e.acceptorProduct p join fetch e.requesterProduct p2 where e.exchangeId=:exchangeId")
+    Optional<Exchange> findByIdWithProduct(@Param("exchangeId") long exchangeId);
 
     @Query(value = "select e from Exchange e join fetch e.requesterProduct join fetch e.acceptorProduct " +
             "where (e.acceptor=:user and e.acceptorHistoryDeleteYn=false) or (e.requester=:user and e.requesterHistoryDeleteYn=false)",
