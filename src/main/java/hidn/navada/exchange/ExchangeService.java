@@ -38,7 +38,8 @@ public class ExchangeService {
 
     //교환 완료
     public Exchange completeExchange(Long exchangeId, Boolean isAcceptor) {
-        Exchange exchange = exchangeJpaRepo.findById(exchangeId).orElseThrow(ExchangeNotFoundException::new);
+        Exchange exchange = exchangeJpaRepo.findByIdWithProduct(exchangeId).orElseThrow(ExchangeNotFoundException::new);
+
         if(isAcceptor) exchange.setAcceptorConfirmYn(true);
         else exchange.setRequesterConfirmYn(true);
 
@@ -102,7 +103,7 @@ public class ExchangeService {
 
     //교환 평점 부여
     public Exchange rateExchange(Long exchangeId, Boolean isAcceptor, float rating) {
-        Exchange exchange = exchangeJpaRepo.findById(exchangeId).orElseThrow(ExchangeNotFoundException::new);
+        Exchange exchange = exchangeJpaRepo.findByIdWithProduct(exchangeId).orElseThrow(ExchangeNotFoundException::new);
 
         if(isAcceptor) exchange.setRequesterRating(rating);
         else exchange.setAcceptorRating(rating);
@@ -112,7 +113,7 @@ public class ExchangeService {
 
     //교환 내역 삭제
     public Exchange deleteExchangeHistory(Long exchangeId, Boolean isAcceptor) {
-        Exchange exchange = exchangeJpaRepo.findById(exchangeId).orElseThrow(ExchangeNotFoundException::new);
+        Exchange exchange = exchangeJpaRepo.findByIdWithProduct(exchangeId).orElseThrow(ExchangeNotFoundException::new);
 
         if(isAcceptor) exchange.setAcceptorHistoryDeleteYn(true);
         else exchange.setRequesterHistoryDeleteYn(true);
