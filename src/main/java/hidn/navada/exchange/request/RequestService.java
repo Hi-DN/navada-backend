@@ -118,18 +118,13 @@ public class RequestService {
         return convertToDto(requestList);
     }
 
-    public Page<RequestDto> convertToDto(Page<Request> requestList){
-        Page<RequestDto> requestDtoList=requestList.map(RequestDto::new);
-        return requestDtoList;
-    }
-
-    //교환신청 거절
+    // 교환신청 거절
     public void rejectRequest(Long requestId) {
         Request request= requestJpaRepo.findById(requestId).orElseThrow(RequestNotFoundException::new);
         request.setRequestStatusCd('2'); // 2. 교환거절
     }
 
-    //특정 상품으로부터 받은 교환신청 목록 조회
+    // 특정 상품으로부터 받은 교환신청 목록 조회
     public List<RequestDto> getRequestsByCertainProduct(Long productId, Long userId) {
         Product product=productJpaRepo.findById(productId).orElseThrow(ProductNotFoundException::new);
         User acceptor=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
@@ -137,6 +132,14 @@ public class RequestService {
         List<Request> requestList=requestJpaRepo.findRequestsByCertainProduct(product,acceptor);
 
         return requestList.stream().map(RequestDto::new).collect(toList());
+    }
+
+    // 특정 상품에게 온 교환신청 목록 조회
+    public Page<RequestDto> getRequestsForCertainProduct(Long productId, Pageable pageable) {
+        Product product=productJpaRepo.findById(productId).orElseThrow(ProductNotFoundException::new);
+        Page<Request> requests = requestJpaRepo.findRequestsForCertainProduct(product, pageable);
+
+        return convertToDto(requests);
     }
 
     // 교환신청 거절내역 삭제
@@ -149,5 +152,10 @@ public class RequestService {
         else request.setRequesterDeniedRequestDeleteYn(true);
 
         return request;
+    }
+
+    public Page<RequestDto> convertToDto(Page<Request> requestList){
+        Page<RequestDto> requestDtoList=requestList.map(RequestDto::new);
+        return requestDtoList;
     }
 }

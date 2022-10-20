@@ -36,5 +36,7 @@ public interface RequestJpaRepo extends JpaRepository<Request,Long> {
             "where p=:requesterProduct and r.acceptor=:acceptor and r.requestStatusCd='0'")
     List<Request> findRequestsByCertainProduct(@Param("requesterProduct") Product requesterProduct, @Param("acceptor") User acceptor);
 
-
+    @Query(value = "select r from Request r join fetch r.acceptorProduct p join fetch r.requesterProduct p2 where p=:acceptorProduct and r.requestStatusCd='0'",
+            countQuery = "select r from Request r inner join r.acceptorProduct p inner join r.requesterProduct p2 where p=:acceptorProduct and r.requestStatusCd='0'")
+    Page<Request> findRequestsForCertainProduct(@Param("acceptorProduct") Product acceptorProduct, Pageable pageable);
 }

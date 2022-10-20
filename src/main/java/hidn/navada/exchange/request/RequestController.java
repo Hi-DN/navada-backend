@@ -68,4 +68,10 @@ public class RequestController {
     public SingleResponse<Request> deleteDeniedRequest(@PathVariable Long requestId, @RequestParam Boolean isAcceptor) {
         return responseService.getSingleResponse(requestService.deleteDeniedRequest(requestId, isAcceptor));
     }
+
+    // 특정 상품에게 온 교환신청 목록 조회
+    @GetMapping(value = "/exchange/request/product/{productId}")
+    public PageResponse<RequestDto> getRequestsForCertainProduct(@PathVariable Long productId, @PageableDefault(size =20) Pageable pageable) {
+        return responseService.getPageResponse(requestService.getRequestsForCertainProduct(productId, pageable));
+    }
 }
