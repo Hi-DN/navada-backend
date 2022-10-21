@@ -13,8 +13,7 @@ import java.util.Optional;
 
 public interface RequestJpaRepo extends JpaRepository<Request,Long> {
 
-    @Query(value = "select r from Request r join fetch r.acceptorProduct p join fetch r.requesterProduct p2 where r.requestId=:requestId",
-        countQuery = "select count(r) from Request r inner join r.acceptorProduct p inner join r.requesterProduct p2 where r.requestId=:requestId")
+    @Query(value = "select r from Request r join fetch r.acceptorProduct p join fetch r.requesterProduct p2 where r.requestId=:requestId")
     Optional<Request> findByIdWithProduct(@Param("requestId") long requestId);
 
     List<Request> findByAcceptorProductAndRequestStatusCd(Product product, char requestStatusCd);
