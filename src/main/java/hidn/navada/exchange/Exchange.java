@@ -62,4 +62,8 @@ public class Exchange extends BaseTime {
 
     @ColumnDefault("false") @Builder.Default
     private boolean requesterHistoryDeleteYn=false;     //requester의 거래내역 삭제 여부
+
+    @Column(columnDefinition="char default 1")
+    @Builder.Default
+    private char exchangeStatusCd='1';   // 교환 상태(1: 교환중, 2: 교환완료, 3: 교환취소)
 }

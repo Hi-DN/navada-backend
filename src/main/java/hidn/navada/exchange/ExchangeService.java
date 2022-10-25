@@ -1,5 +1,6 @@
 package hidn.navada.exchange;
 
+import hidn.navada.comm.exception.CanNotCancelExchangeException;
 import hidn.navada.comm.exception.ExchangeNotFoundException;
 import hidn.navada.comm.exception.ProductNotFoundException;
 import hidn.navada.comm.exception.UserNotFoundException;
@@ -46,6 +47,7 @@ public class ExchangeService {
         // 둘다 교환 완료인 경우
         if(exchange.isAcceptorConfirmYn() && exchange.isRequesterConfirmYn()) {
             exchange.setExchangeCompleteYn(true);
+            exchange.setExchangeStatusCd('2'); //2. 교환 완료
             exchange.setExchangeCompleteDt(LocalDateTime.now());
 
             Product acceptorProduct = productJpaRepo.findById(exchange.getAcceptorProduct().getProductId()).orElseThrow(ProductNotFoundException::new);
@@ -123,5 +125,21 @@ public class ExchangeService {
 
     public Page<ExchangeDto> convertToDto(Page<Exchange> exchangeList){
         return exchangeList.map(ExchangeDto::new);
+    }
+
+    //교환 취소
+    public Exchange cancelExchange(Long exchangeId) {
+        Exchange exchange = exchangeJpaRepo.findByIdWithProduct(exchangeId).orElseThrow(ExchangeNotFoundException::new);
+
+        if(exchange.isAcceptorConfirmYn() || exchange.isRequesterConfirmYn())
+            throw new CanNotCancelExchangeException();
+
+        else {
+            exchange.setExchangeStatusCd('3');  //3. 교환 취소
+            exchange.getAcceptorProduct().setProductExchangeStatusCd('0');
+            exchange.getRequesterProduct().setProductExchangeStatusCd('0');
+        }
+
+        return exchange;
     }
 }

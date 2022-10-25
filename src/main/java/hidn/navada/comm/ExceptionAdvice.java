@@ -128,6 +128,13 @@ public class ExceptionAdvice {
                 getMessage("duplicatedRequestException.msg"));
     }
 
+    @ExceptionHandler(CanNotCancelExchangeException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected CommonResponse CanNotCancelExchangeException(HttpServletRequest request, CanNotCancelExchangeException e){
+        return responseService.getErrorResponse(Integer.parseInt(getMessage("canNotCancelExchangeException.code")),
+                getMessage("canNotCancelExchangeException.msg"));
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected CommonResponse MethodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException e){

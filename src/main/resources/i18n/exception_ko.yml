@@ -43,3 +43,6 @@ tokenValidationException:
 duplicatedRequestException:
   code: "400"
   msg: "이미 존재하는 교환신청입니다."
+canNotCancelExchangeException:
+  code: "400"
+  msg: "한쪽이라도 교환완료한 경우, 해당 교환은 삭제할 수 없습니다."

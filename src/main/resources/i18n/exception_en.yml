@@ -43,4 +43,7 @@ tokenValidationException:
 duplicatedRequestException:
   code: "400"
   msg: "Request duplicated."
+canNotCancelExchangeException:
+  code: "400"
+  msg: "Can not cancel this exchange."
 
