@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @Slf4j
 @Service
 @Transactional
@@ -116,7 +115,10 @@ public class ProductService {
 
         if (productSearchOptions.getProductName()!=null)
             productSearchOptions.setProductName('%'+productSearchOptions.getProductName()+'%');
-        Page<Product> products = productJpaRepo.findProductsByOptions(productSearchOptions,pageable);
+
+        Page<Product> products = productSearchOptions.getIsMyProductIncluded()
+                ? productJpaRepo.findProductsByOptions(productSearchOptions,pageable)
+                : productJpaRepo.findProductsByOptionsExceptMyProduct(productSearchOptions,userId,pageable);
 
         Page<ProductSearchDto> result = products.map(product -> new ProductSearchDto(product,likeProductIds.contains(product.getProductId())));
         return result;

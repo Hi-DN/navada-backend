@@ -15,8 +15,17 @@ public interface ProductJpaRepo extends JpaRepository<Product, Long> {
     @Query(value = "select * from Product p where (:#{#options.productName} is null or p.product_name like :#{#options.productName}) " +
             "and (coalesce(:#{#options.categoryIds},null) is null or p.category_id in (:#{#options.categoryIds})) " +
             "and (:#{#options.lowerCostBound} is null or (:#{#options.lowerCostBound} <= p.product_cost)) " +
-            "and (:#{#options. upperCostBound} is null or (p.product_cost <= :#{#options.upperCostBound})) ",nativeQuery = true)
+            "and (:#{#options. upperCostBound} is null or (p.product_cost <= :#{#options.upperCostBound})) "+
+            "and (coalesce(:#{#options.productExchangeStatusCds},null) is null or p.product_exchange_status_cd in (:#{#options.productExchangeStatusCds}))",nativeQuery = true)
     Page<Product> findProductsByOptions(@Param("options") ProductSearchOptions options, Pageable pageable);
+
+    @Query(value = "select * from Product p where (:#{#options.productName} is null or p.product_name like :#{#options.productName}) " +
+            "and (coalesce(:#{#options.categoryIds},null) is null or p.category_id in (:#{#options.categoryIds})) " +
+            "and (:#{#options.lowerCostBound} is null or (:#{#options.lowerCostBound} <= p.product_cost)) " +
+            "and (:#{#options. upperCostBound} is null or (p.product_cost <= :#{#options.upperCostBound})) "+
+            "and (coalesce(:#{#options.productExchangeStatusCds},null) is null or p.product_exchange_status_cd in(:#{#options.productExchangeStatusCds})) "+
+            "and p.user_id != :userId",nativeQuery = true)
+    Page<Product> findProductsByOptionsExceptMyProduct(@Param("options") ProductSearchOptions options, @Param("userId") long userId,Pageable pageable);
 
 
     @Query(value = "select h.product.productId from Heart h where h.user=:user")
