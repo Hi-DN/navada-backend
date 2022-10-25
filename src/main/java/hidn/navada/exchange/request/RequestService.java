@@ -72,6 +72,9 @@ public class RequestService {
         // requester 가 신청한 나머지 교환 신청들 삭제
         rejectRequestsByRequester(requesterProduct);
 
+        //교환 신청 삭제
+        requestJpaRepo.deleteById(requestId);
+
         // Exchange 엔티티 생성
         return exchangeService.createExchange(request);
     }
