@@ -40,4 +40,11 @@ public class ExchangeController {
     public SingleResponse<Exchange> deleteExchangeHistory(@PathVariable Long exchangeId, @RequestParam Boolean isAcceptor){
         return responseService.getSingleResponse(exchangeService.deleteExchangeHistory(exchangeId, isAcceptor));
     }
+
+    // 교환 취소
+    @PatchMapping(value = "/exchange/{exchangeId}/cancel")
+    public SingleResponse<Exchange> cancelExchange(@PathVariable Long exchangeId){
+        return responseService.getSingleResponse(exchangeService.cancelExchange(exchangeId));
+    }
+
 }
