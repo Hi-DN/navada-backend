@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,6 +31,8 @@ public class ExchangeDto {
 
     private char exchangeStatusCd;
 
+    private LocalDateTime exchangeCompleteDt;
+
     public ExchangeDto(Exchange exchange){
         exchangeId=exchange.getExchangeId();
         requesterId = exchange.getRequester().getUserId();
@@ -40,5 +44,6 @@ public class ExchangeDto {
         requesterProduct = exchange.getRequesterProduct();
         acceptorProduct = exchange.getAcceptorProduct();
         exchangeStatusCd = exchange.getExchangeStatusCd();
+        exchangeCompleteDt = exchange.getExchangeCompleteDt();
     }
 }
