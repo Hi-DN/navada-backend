@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Transactional
@@ -88,16 +89,16 @@ public class ExchangeService {
     }
 
     //교환목록조회(교환중, 교환완료)
-    public Page<ExchangeDto> getExchangeList(Long userId, Boolean viewOnlySentElseGot, Pageable pageable) {
+    public Page<ExchangeDto> getExchangeList(Long userId, List<Character> exchangeStatusCds, Boolean viewOnlySentElseGot, Pageable pageable) {
         User user = userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         Page<Exchange> exchanges;
 
         if(viewOnlySentElseGot == null)
-            exchanges = exchangeJpaRepo.findExchangePagesByUser(user, pageable);
+            exchanges = exchangeJpaRepo.findExchangePagesByUser(user, exchangeStatusCds, pageable);
         else {
             exchanges = (viewOnlySentElseGot)
-                    ? exchangeJpaRepo.findExchangePagesByRequester(user, pageable)
-                    : exchangeJpaRepo.findExchangePagesByAcceptor(user, pageable);
+                    ? exchangeJpaRepo.findExchangePagesByRequester(user, exchangeStatusCds, pageable)
+                    : exchangeJpaRepo.findExchangePagesByAcceptor(user, exchangeStatusCds, pageable);
         }
         return convertToDto(exchanges);
     }

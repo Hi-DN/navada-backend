@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/v1")
@@ -22,11 +24,13 @@ public class ExchangeController {
         return responseService.getSingleResponse(exchangeService.completeExchange(exchangeId, isAcceptor));
     }
 
-    // 교환 목록 조회(교환중, 교환완료)
+    // 교환 목록 조회
     @GetMapping(value = "/user/{userId}/exchanges")
-    public PageResponse<ExchangeDto> getExchangeList(@PathVariable Long userId, @RequestParam(required = false) Boolean viewOnlySentElseGot,
+    public PageResponse<ExchangeDto> getExchangeList(@PathVariable Long userId,
+                                                     @RequestParam(required = false) List<Character> exchangeStatusCds,
+                                                     @RequestParam(required = false) Boolean viewOnlySentElseGot,
                                                      @PageableDefault(size =20, sort = "exchangeStatusCd") Pageable pageable) {
-        return responseService.getPageResponse(exchangeService.getExchangeList(userId, viewOnlySentElseGot, pageable));
+        return responseService.getPageResponse(exchangeService.getExchangeList(userId, exchangeStatusCds, viewOnlySentElseGot, pageable));
     }
 
     // 교환상대에게 평점 부여
