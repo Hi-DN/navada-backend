@@ -46,9 +46,6 @@ public class Exchange extends BaseTime {
     @ColumnDefault("false") @Builder.Default
     private boolean requesterConfirmYn=false;           //신청자 확인여부
 
-    @ColumnDefault("false") @Builder.Default
-    private boolean exchangeCompleteYn=false;           //교환완료여부
-
     private LocalDateTime exchangeCompleteDt;           //교환완료일시
 
     @ColumnDefault("-1") @Builder.Default

@@ -31,8 +31,8 @@ public class ProductController {
 
     //사용자별 상품 리스트 조회
     @GetMapping(value = "/user/{userId}/products")
-    public PageResponse<Product> getProductsByUser(@PathVariable long userId, @PageableDefault(size = 20)Pageable pageable){
-        return responseService.getPageResponse(productService.getProductsByUser(userId,pageable));
+    public PageResponse<Product> getProductsByUser(@PathVariable long userId, @RequestParam(required = false) List<Character> productExchangeStatusCds, @PageableDefault(size = 20)Pageable pageable){
+        return responseService.getPageResponse(productService.getProductsByUser(userId,productExchangeStatusCds,pageable));
     }
 
     // 내물품 리스트 조회(교환 신청하기 화면에서 상대방에게 이미 신청했는지 체크위해 사용)
