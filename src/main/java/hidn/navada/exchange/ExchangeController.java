@@ -25,7 +25,7 @@ public class ExchangeController {
     // 교환 목록 조회(교환중, 교환완료)
     @GetMapping(value = "/user/{userId}/exchanges")
     public PageResponse<ExchangeDto> getExchangeList(@PathVariable Long userId, @RequestParam(required = false) Boolean viewOnlySentElseGot,
-                                                     @PageableDefault(size =20, sort = "exchangeCompleteYn") Pageable pageable) {
+                                                     @PageableDefault(size =20, sort = "exchangeStatusCd") Pageable pageable) {
         return responseService.getPageResponse(exchangeService.getExchangeList(userId, viewOnlySentElseGot, pageable));
     }
 

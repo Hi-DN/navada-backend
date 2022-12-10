@@ -46,7 +46,6 @@ public class ExchangeService {
 
         // 둘다 교환 완료인 경우
         if(exchange.isAcceptorConfirmYn() && exchange.isRequesterConfirmYn()) {
-            exchange.setExchangeCompleteYn(true);
             exchange.setExchangeStatusCd('2'); //2. 교환 완료
             exchange.setExchangeCompleteDt(LocalDateTime.now());
 
