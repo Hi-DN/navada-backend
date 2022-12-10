@@ -10,7 +10,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ProductJpaRepo extends JpaRepository<Product, Long> {
-    Page<Product> findProductsByUser(User user, Pageable pageable);
+    @Query(value = "select p from Product p where p.user=:user" +
+            " and (coalesce(:productExchangeStatusCds,null) is null or (p.productExchangeStatusCd in :productExchangeStatusCds))")
+    Page<Product> findProductsByUser(@Param("user") User user, @Param("productExchangeStatusCds") List<Character> productExchangeStatusCds, Pageable pageable);
 
     @Query(value = "select * from Product p where (:#{#options.productName} is null or p.product_name like :#{#options.productName}) " +
             "and (coalesce(:#{#options.categoryIds},null) is null or p.category_id in (:#{#options.categoryIds})) " +

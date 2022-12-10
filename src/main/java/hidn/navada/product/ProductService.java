@@ -66,10 +66,10 @@ public class ProductService {
 
 
     //사용자별 상품 리스트 조회
-    public Page<Product> getProductsByUser(long userId, Pageable pageable){
+    public Page<Product> getProductsByUser(long userId, List<Character> productExchangeStatusCds, Pageable pageable){
         User user= userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
 
-        return productJpaRepo.findProductsByUser(user,pageable);
+        return productJpaRepo.findProductsByUser(user, productExchangeStatusCds, pageable);
     }
 
 
