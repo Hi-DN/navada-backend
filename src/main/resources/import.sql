@@ -8,11 +8,11 @@ INSERT INTO category(category_name) VALUES ('취미용품');
 INSERT INTO category(category_name) VALUES ('미용');
 INSERT INTO category(category_name) VALUES ('여성의류');
 INSERT INTO category(category_name) VALUES ('남성의류');
-INSERT INTO category(category_name) VALUES ('반려동물용품');
+INSERT INTO category(category_name) VALUES ('반려동물');
 INSERT INTO category(category_name) VALUES ('도서');
 INSERT INTO category(category_name) VALUES ('장난감');
 INSERT INTO category(category_name) VALUES ('식물');
-INSERT INTO category(category_name) VALUES ('기타용품');
+INSERT INTO category(category_name) VALUES ('기타');
 
 INSERT INTO faq(faq_id, faq_question, faq_answer) VALUES(1,'레벨은 어떻게 책정되나요?','레벨의 경우 매달 마지막날 책정됩니다. 자세한 책정방식 정하고 여기에 추가 필요!')
 INSERT INTO faq(faq_id, faq_question, faq_answer) VALUES(2,'교환 완료 버튼을 눌렀는데 계속 교환중이라고 떠요.','교환 신청자와 수락자 모두가 교환 완료 확인을 한 경우에만 교환 완료로 처리됩니다.\n\n따라서 상대가 교환 완료를 하고 나면 정상적으로 교환완료로 보여지게 됩니다.')
