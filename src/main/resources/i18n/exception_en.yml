@@ -1,6 +1,9 @@
 unKnown:
   code: "-9999"
   msg: "Unknown error occurred."
+KaKaoSignInException:
+  code: "500"
+  msg: "Error occurred while signing in by Kakao."
 userNotFound:
   code: "404"
   msg: "User not found."
