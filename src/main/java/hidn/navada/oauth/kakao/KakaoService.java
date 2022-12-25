@@ -2,10 +2,10 @@ package hidn.navada.oauth.kakao;
 
 import com.google.gson.Gson;
 import hidn.navada.comm.exception.KaKaoSignInException;
-import hidn.navada.comm.exception.UserNotFoundException;
-import hidn.navada.oauth.SignInResponse;
+import hidn.navada.comm.exception.OAuthNotFoundException;
+import hidn.navada.oauth.*;
 import hidn.navada.user.User;
-import hidn.navada.user.UserJpaRepo;
+import hidn.navada.user.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -24,7 +24,7 @@ import java.net.URI;
 @Transactional
 @RequiredArgsConstructor
 public class KakaoService {
-    private final UserJpaRepo userJpaRepo;
+    private final OAuthJpaRepo oauthJpaRepo;
     private final Gson gson;
 
     /**
@@ -40,11 +40,10 @@ public class KakaoService {
         }
 
         try {
-            User user = findUser(userProfile.getEmail(), userProfile.getNickName());
-            return makeResponse(user, false);
-        } catch (UserNotFoundException e) {
-            User newUser = createUser(userProfile.getEmail(), userProfile.getNickName());
-            return makeResponse(newUser, true);
+            OAuth oauth = checkUserExist(userProfile.getEmail());
+            return makeResponse(oauth.getUser(), userProfile.getEmail());
+        } catch (OAuthNotFoundException e) {
+            return makeResponse(null, userProfile.getEmail());
         }
     }
 
@@ -63,15 +62,15 @@ public class KakaoService {
         return new HttpEntity<>(null, headers);
     }
 
-    private User findUser(String email, String nickName) {
-        return userJpaRepo.findByUserEmailAndUserNickname(email, nickName).orElseThrow(UserNotFoundException::new);
+    private OAuth checkUserExist(String email) {
+        return oauthJpaRepo.findByUserEmail(email).orElseThrow(OAuthNotFoundException::new);
     }
 
-    private User createUser(String email, String nickName) {
-        return userJpaRepo.save(User.create(email, nickName));
-    }
-
-    private SignInResponse makeResponse(User user, boolean isSignUp) {
-        return new SignInResponse(user, "accessToken", "refreshToken", isSignUp);
+    private SignInResponse makeResponse(User user, String userEmail) {
+        return new SignInResponse(
+                (user != null) ? new UserDto(user) : null,
+                new OAuthDto(userEmail, SigninPlatform.KAKAO),
+                "accessToken",
+                "refreshToken");
     }
 }

@@ -14,12 +14,15 @@ public class UserParams {
     @Size(min = 1, max = 64, message = "회원 별명은 1자 이상 10자 이하여야 합니다.")
     private String userNickname;    // 회원 별명
 
-    private String userEmail;       // 회원 이메일
-
     @NotNull(message = "전화번호는 필수값입니다.")
     private String userPhoneNum;    // 회원 전화번호
 
-//    @NotNull(message = "전화번호는 필수값입니다.")
+    @NotNull(message = "주소는 필수값입니다.")
     private String userAddress;    // 회원 전화번호
 
+    @NotNull(message = "이메일은 필수값입니다.")
+    private String userEmail;       // 회원 이메일
+
+    @NotNull(message = "플랫폼은 필수값입니다.")
+    private String signinPlatform;      // 회원 가입 플랫폼
 }

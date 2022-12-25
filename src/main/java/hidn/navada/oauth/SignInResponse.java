@@ -1,21 +1,20 @@
 package hidn.navada.oauth;
 
-import hidn.navada.user.User;
 import hidn.navada.user.UserDto;
 import lombok.Data;
 
 
 @Data
 public class SignInResponse {
-    private boolean isSignUp;
     private String accessToken;
     private String refreshToken;
     private UserDto user;
+    private OAuthDto oauth;
 
-    public SignInResponse(User user, String accessToken, String refreshToken, boolean isSignUp) {
-        this.isSignUp = isSignUp;
+    public SignInResponse(UserDto user, OAuthDto oauth, String accessToken, String refreshToken) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
-        this.user = new UserDto(user);
+        this.user = user;
+        this.oauth = oauth;
     }
 }

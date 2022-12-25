@@ -21,9 +21,6 @@ public class User extends BaseTime {
     @Column(length = 10)
     private String userNickname;    // 회원 별명
 
-    @Column(nullable = false)
-    private String userEmail;       // 회원 이메일
-
     @Column(length = 16)
     private String userPhoneNum;    // 회원 전화번호
 
@@ -43,12 +40,12 @@ public class User extends BaseTime {
     private int userRatingCount=0;    //평점 받은 횟수
 
     //==생성 메서드==//
-    public static User create(String userEmail, String userNickname) {
+    public static User create(UserParams params) {
         User user = new User();
-//        user.userName = params.getUserName();
-        user.userEmail = userEmail;
-//        user.userPhoneNum = params.getUserPhoneNum();
-        user.userNickname = userNickname;
+        user.userName = params.getUserName();
+        user.userNickname = params.getUserNickname();
+        user.userPhoneNum = params.getUserPhoneNum();
+        user.userAddress = params.getUserAddress();
         return user;
     }
 
@@ -56,7 +53,7 @@ public class User extends BaseTime {
     public void update(UserParams params) {
         userName = params.getUserName();
         userNickname = params.getUserNickname();
-        userAddress = params.getUserAddress();
         userPhoneNum = params.getUserPhoneNum();
+        userAddress = params.getUserAddress();
     }
 }

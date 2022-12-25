@@ -9,18 +9,22 @@ public class UserDto {
     private long userId;
     private String userName;
     private String userNickname;
-    private String userEmail;
     private String userPhoneNum;
     private String userAddress;
     private UserLevel userLevel;
+    private float userRating;
+    private int userTradeCount;
+    private int userRatingCount;
 
     public UserDto(User user){
         userId = user.getUserId();
         userName = user.getUserName();
         userNickname = user.getUserNickname();
-        userEmail = user.getUserEmail();
         userPhoneNum = user.getUserPhoneNum();
         userAddress = user.getUserAddress();
         userLevel = user.getUserLevel();
+        userRating = user.getUserRating();
+        userTradeCount = user.getUserTradeCount();
+        userRatingCount = user.getUserRatingCount();
     }
 }
