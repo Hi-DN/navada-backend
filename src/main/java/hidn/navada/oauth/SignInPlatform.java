@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum SigninPlatform {
+public enum SignInPlatform {
     KAKAO("KAKAO"),
     GOOGLE("GOOGLE"),
     NAVER("NAVER");

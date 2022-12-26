@@ -3,7 +3,7 @@ package hidn.navada.user;
 import hidn.navada.comm.exception.UserNotFoundException;
 import hidn.navada.oauth.OAuth;
 import hidn.navada.oauth.OAuthJpaRepo;
-import hidn.navada.oauth.SigninPlatform;
+import hidn.navada.oauth.SignInPlatform;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class UserService {
     // 회원 가입
     public User createUser(UserParams params) {
         User newUser = userJpaRepo.save(User.create(params));
-        OAuth newOauth = OAuth.create(newUser, params.getUserEmail(), SigninPlatform.valueOf(params.getSigninPlatform()));
+        OAuth newOauth = OAuth.create(newUser, params.getUserEmail(), SignInPlatform.valueOf(params.getSignInPlatform()));
         oauthJpaRepo.save(newOauth);
         return newUser;
     }

@@ -24,5 +24,5 @@ public class UserParams {
     private String userEmail;       // 회원 이메일
 
     @NotNull(message = "플랫폼은 필수값입니다.")
-    private String signinPlatform;      // 회원 가입 플랫폼
+    private String signInPlatform;  // 회원 가입 플랫폼
 }

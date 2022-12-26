@@ -20,6 +20,7 @@ import javax.validation.Valid;
 @RequestMapping(value = "/v1")
 public class SignInController {
     private final KakaoService kakaoService;
+    private final OAuthService oauthService;
     private final UserService userService;
     private final ResponseService responseService;
 
@@ -29,8 +30,15 @@ public class SignInController {
         return responseService.getSingleResponse(new UserDto(userService.createUser(params)));
     }
 
-    @PostMapping("/user/signin/kakao")
+    // 카카오 로그인
+    @PostMapping("/signin/kakao")
     public SingleResponse<SignInResponse> signInByKakaoToken(@Valid @RequestBody KakaoParams params) {
         return responseService.getSingleResponse(kakaoService.signInByKakaoToken(params));
+    }
+
+    // 구글, 네이버 로그인
+    @PostMapping("/signin/oauth")
+    public SingleResponse<SignInResponse> signInByOAuth(@Valid @RequestBody OAuthParams params) {
+        return responseService.getSingleResponse(oauthService.signInByOAuth(params));
     }
 }

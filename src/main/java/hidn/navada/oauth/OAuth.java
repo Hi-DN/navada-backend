@@ -18,7 +18,7 @@ public class OAuth {
     private String userEmail;       // 회원 이메일
 
     @Column(nullable = false, length=6) @Enumerated(EnumType.STRING)
-    private SigninPlatform platform;      // 회원 가입 플랫폼
+    private SignInPlatform platform;      // 회원 가입 플랫폼
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
@@ -26,7 +26,7 @@ public class OAuth {
 
 
     //==생성 메서드==//
-    public static OAuth create(User user, String userEmail, SigninPlatform platform) {
+    public static OAuth create(User user, String userEmail, SignInPlatform platform) {
         OAuth oauth = new OAuth();
         oauth.user = user;
         oauth.userEmail = userEmail;

@@ -5,10 +5,10 @@ import lombok.Data;
 @Data
 public class OAuthDto {
     private String userEmail;
-    private SigninPlatform signinPlatform;
+    private SignInPlatform signInPlatform;
 
-    public OAuthDto(String userEmail, SigninPlatform platform) {
+    public OAuthDto(String userEmail, SignInPlatform platform) {
         this.userEmail = userEmail;
-        this.signinPlatform = platform;
+        this.signInPlatform = platform;
     }
 }

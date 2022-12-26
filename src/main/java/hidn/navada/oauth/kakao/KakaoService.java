@@ -69,7 +69,7 @@ public class KakaoService {
     private SignInResponse makeResponse(User user, String userEmail) {
         return new SignInResponse(
                 (user != null) ? new UserDto(user) : null,
-                new OAuthDto(userEmail, SigninPlatform.KAKAO),
+                new OAuthDto(userEmail, SignInPlatform.KAKAO),
                 "accessToken",
                 "refreshToken");
     }
