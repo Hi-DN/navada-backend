@@ -3,6 +3,8 @@ package hidn.navada.image;
 import hidn.navada.comm.BaseTime;
 import hidn.navada.product.Product;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import static javax.persistence.FetchType.LAZY;
@@ -17,6 +19,7 @@ public class Image extends BaseTime {
     private Long imageId;   //pk
 
     @ManyToOne(fetch = LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "productId")
     private Product product;   //상품(fk)
 
