@@ -35,7 +35,7 @@ public class UserController {
 
     // 회원정보 수정
     @PutMapping(value = "/user/{userId}")
-    public SingleResponse<UserDto> modifyUser(@PathVariable long userId, @Valid @RequestBody UserParams params) {
+    public SingleResponse<UserDto> modifyUser(@PathVariable long userId, @RequestBody UserUpdateParams params) {
         return responseService.getSingleResponse(new UserDto(userService.modifyUser(userId, params)));
     }
 

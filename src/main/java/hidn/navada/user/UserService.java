@@ -36,7 +36,7 @@ public class UserService {
     }
 
     // 회원 정보 수정
-    public User modifyUser(Long userId, UserParams params) {
+    public User modifyUser(Long userId, UserUpdateParams params) {
         User user = userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         user.update(params);
         return user;
