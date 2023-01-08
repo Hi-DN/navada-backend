@@ -18,7 +18,7 @@ public class UserParams {
     private String userPhoneNum;    // 회원 전화번호
 
     @NotNull(message = "주소는 필수값입니다.")
-    private String userAddress;    // 회원 전화번호
+    private String userAddress;     // 회원 주소
 
     @NotNull(message = "이메일은 필수값입니다.")
     private String userEmail;       // 회원 이메일
