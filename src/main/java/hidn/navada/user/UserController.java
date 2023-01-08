@@ -1,5 +1,6 @@
 package hidn.navada.user;
 
+import hidn.navada.comm.response.CommonResponse;
 import hidn.navada.comm.response.ResponseService;
 import hidn.navada.comm.response.SingleResponse;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,12 @@ import javax.validation.Valid;
 public class UserController {
     private final UserService userService;
     private final ResponseService responseService;
+
+    // 회원 가입
+    @PostMapping(value = "/signup")
+    public SingleResponse<UserDto> createUser(@Valid @RequestBody UserParams params) {
+        return responseService.getSingleResponse(new UserDto(userService.createUser(params)));
+    }
 
     // 회원 단건 조회
     @GetMapping(value = "/user/{userId}")
@@ -30,5 +37,12 @@ public class UserController {
     @PutMapping(value = "/user/{userId}")
     public SingleResponse<UserDto> modifyUser(@PathVariable long userId, @Valid @RequestBody UserParams params) {
         return responseService.getSingleResponse(new UserDto(userService.modifyUser(userId, params)));
+    }
+
+    // 회원 탈퇴
+    @DeleteMapping(value = "/user/{userId}")
+    public CommonResponse deleteUser(@PathVariable long userId) {
+        userService.deleteUser(userId);
+        return responseService.getSuccessResponse();
     }
 }

@@ -41,4 +41,10 @@ public class UserService {
         user.update(params);
         return user;
     }
+
+    // 회원 탈퇴
+    public void deleteUser(Long userId) {
+        User user = userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        userJpaRepo.delete(user);
+    }
 }

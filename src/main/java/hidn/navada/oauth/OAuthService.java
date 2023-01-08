@@ -1,7 +1,6 @@
 package hidn.navada.oauth;
 
 import hidn.navada.comm.exception.OAuthNotFoundException;
-import hidn.navada.user.User;
 import hidn.navada.user.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,25 +18,27 @@ public class OAuthService {
      * OAuth 로그인
      */
     public SignInResponse signInByOAuth(OAuthParams params) {
-        String email = params.getUserEmail();
         SignInPlatform platform = SignInPlatform.valueOf(params.getSignInPlatform());
+
         try {
-            OAuth oauth = checkUserExist(params.getUserEmail());
-            return makeResponse(oauth.getUser(), email, platform);
+            OAuth oauth = checkUserExist(params.getUserEmail(), platform);
+            return makeResponse(oauth);
         } catch (OAuthNotFoundException e) {
-            return makeResponse(null, email, platform);
+            return makeResponse(null);
         }
     }
 
-    private OAuth checkUserExist(String email) {
-        return oauthJpaRepo.findByUserEmail(email).orElseThrow(OAuthNotFoundException::new);
+    private OAuth checkUserExist(String email, SignInPlatform platform) {
+        return oauthJpaRepo.findByUserEmailAndPlatform(email, platform).orElseThrow(OAuthNotFoundException::new);
     }
 
-    private SignInResponse makeResponse(User user, String userEmail, SignInPlatform platform) {
-        return new SignInResponse(
-                (user != null) ? new UserDto(user) : null,
-                new OAuthDto(userEmail, platform),
-                "accessToken",
-                "refreshToken");
+    private SignInResponse makeResponse(OAuth oauth) {
+        return (oauth != null)
+                ? new SignInResponse(
+                        new UserDto(oauth.getUser()),
+                        new OAuthDto(oauth.getUserEmail(), oauth.getPlatform()),
+                        "accessToken",
+                        "refreshToken")
+                : new SignInResponse(null, null, null, null);
     }
 }
