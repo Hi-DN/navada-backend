@@ -6,6 +6,8 @@ import hidn.navada.product.Product;
 import hidn.navada.user.User;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -31,6 +33,7 @@ public class Request extends BaseTime {
     private User acceptor;              // 교환수락자(fk)
 
     @JsonIgnore @ManyToOne(fetch = LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(referencedColumnName = "productId",name="acceptorProductId", nullable = false)
     private Product acceptorProduct;    // 수락자 상품(fk)
 
@@ -39,6 +42,7 @@ public class Request extends BaseTime {
     private User requester;             // 교환신청자(fk)
 
     @JsonIgnore @ManyToOne(fetch = LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(referencedColumnName = "productId",name="requesterProductId", nullable = false)
     private Product requesterProduct;   // 신청자 상품(fk)
 
