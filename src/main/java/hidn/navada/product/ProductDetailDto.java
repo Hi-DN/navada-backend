@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class ProductDetailDto {
     private LocalDateTime createdDate;
     private long productId;
-    private String userNickName;
+    private String userNickname;
     private String productName;
     private String productExplanation;
     private Category category;
@@ -23,7 +23,7 @@ public class ProductDetailDto {
     public ProductDetailDto(Product product, boolean like){
         createdDate=product.getCreatedDate();
         productId=product.getProductId();
-        userNickName=product.getUserNickname();
+        userNickname=product.getUserNickname();
         productName=product.getProductName();
         productExplanation=product.getProductExplanation();
         category=product.getCategory();
