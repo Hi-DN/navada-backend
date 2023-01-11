@@ -20,4 +20,5 @@ public interface HeartJpaRepo extends JpaRepository<Heart,Long> {
     countQuery = "select count(h) from Heart h inner join h.product p where h.user=:user and p.productExchangeStatusCd='0'")
     Page<Heart> findHeartsByUserAndProductExchangeStatusCd(@Param("user") User user, Pageable pageable);
 
+    Boolean existsByUserAndProduct(User user, Product product);
 }

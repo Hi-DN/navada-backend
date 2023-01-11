@@ -4,6 +4,7 @@ import hidn.navada.comm.exception.CategoryNotFoundException;
 import hidn.navada.comm.exception.ProductNotFoundException;
 import hidn.navada.comm.exception.UserNotFoundException;
 
+import hidn.navada.heart.HeartJpaRepo;
 import hidn.navada.product.category.Category;
 import hidn.navada.product.category.CategoryJpaRepo;
 import hidn.navada.user.User;
@@ -28,6 +29,7 @@ public class ProductService {
     private final ProductJpaRepo productJpaRepo;
     private final CategoryJpaRepo categoryJpaRepo;
     private final UserJpaRepo userJpaRepo;
+    private final HeartJpaRepo heartJpaRepo;
 
     //상품 등록
     public Product createProduct(long userId, ProductParams productParams){
@@ -103,8 +105,12 @@ public class ProductService {
     }
 
     //상품 단건 조회
-    public Product getOneProduct(long productId){
-        return productJpaRepo.findById(productId).orElseThrow(ProductNotFoundException::new);
+    public ProductDetailDto getOneProduct(long userId, long productId){
+        User user = userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        Product product = productJpaRepo.findById(productId).orElseThrow(ProductNotFoundException::new);
+
+        boolean like = heartJpaRepo.existsByUserAndProduct(user, product);
+        return new ProductDetailDto(product,like);
     }
 
 
