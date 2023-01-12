@@ -142,4 +142,8 @@ public class ExchangeService {
 
         return exchange;
     }
+
+    // 교환 완료 요청 by 스케쥴러
+    public void requestExchangeCompletion() {
+    }
 }

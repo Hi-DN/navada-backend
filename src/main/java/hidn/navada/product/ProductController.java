@@ -42,9 +42,9 @@ public class ProductController {
     }
 
     //상품 단건 조회
-    @GetMapping(value = "/product/{productId}")
-    public SingleResponse<Product> getProduct(@PathVariable long productId){
-        return responseService.getSingleResponse(productService.getOneProduct(productId));
+    @GetMapping(value = "/user/{userId}/product/{productId}")
+    public SingleResponse<ProductDetailDto> getProduct(@PathVariable long userId, @PathVariable long productId){
+        return responseService.getSingleResponse(productService.getOneProduct(userId, productId));
     }
 
     //상품 검색

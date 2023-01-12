@@ -1,5 +1,6 @@
 package hidn.navada.user;
 
+import hidn.navada.comm.enums.UserLevel;
 import hidn.navada.comm.exception.UserNotFoundException;
 import hidn.navada.oauth.OAuth;
 import hidn.navada.oauth.OAuthJpaRepo;
@@ -8,6 +9,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.IntStream;
 
 @Slf4j
 @Service
@@ -47,4 +53,30 @@ public class UserService {
         User user = userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         userJpaRepo.delete(user);
     }
+
+    // 회원 레벨 결정 by 스케쥴러
+    public void updateUserLevel() {
+        List<User> userList=userJpaRepo.findAll();
+        Collections.sort(userList, userLevelComparator);
+
+        int totalNumOfUsers = userList.size();
+        int lastHeadManIndex=0; // headMan 1명
+        int lastNativeIndex = (int) (totalNumOfUsers*0.2); // native 20%
+        int lastResidentIndex = (int) (totalNumOfUsers*0.5); // resident 누적 50%
+
+        IntStream.range(0, totalNumOfUsers).forEach(index -> {
+            User user = userList.get(index);
+            if (index <= lastHeadManIndex) user.setUserLevel(UserLevel.LV4_HEADMAN);
+            else if (index <= lastNativeIndex) user.setUserLevel(UserLevel.LV3_NATIVE);
+            else if (index <= lastResidentIndex) user.setUserLevel(UserLevel.LV2_RESIDENT);
+            else user.setUserLevel(UserLevel.LV1_OUTSIDER);
+        });
+    }
+
+    Comparator<User> userLevelComparator= (User u1, User u2) -> {
+        double u1LevelScore = u1.getUserTradeCount()*70 + u1.getUserRating()*30;
+        double u2LevelScore = u2.getUserTradeCount()*70 + u2.getUserRating()*30;
+
+        return u1LevelScore<u2LevelScore ? 1 : -1;
+    };
 }
