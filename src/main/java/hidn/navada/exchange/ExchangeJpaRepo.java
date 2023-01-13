@@ -1,5 +1,6 @@
 package hidn.navada.exchange;
 
+import hidn.navada.product.Product;
 import hidn.navada.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,4 +39,7 @@ public interface ExchangeJpaRepo extends JpaRepository<Exchange, Long> {
             "where (e.acceptor=:user and e.acceptorHistoryDeleteYn=false)" +
             " and (coalesce(:exchangeStatusCds,null) is null or (e.exchangeStatusCd in :exchangeStatusCds))" )
     Page<Exchange> findExchangePagesByAcceptor(@Param("user") User user, @Param("exchangeStatusCds") List<Character> exchangeStatusCds, Pageable pageable);
+
+    List<Exchange> findExchangesByAcceptorProduct(Product product);
+    List<Exchange> findExchangesByRequesterProduct(Product product);
 }
