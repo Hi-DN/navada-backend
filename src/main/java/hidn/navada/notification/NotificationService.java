@@ -1,7 +1,9 @@
 package hidn.navada.notification;
 
 import hidn.navada.comm.enums.NotificationType;
+import hidn.navada.comm.exception.UserNotFoundException;
 import hidn.navada.user.User;
+import hidn.navada.user.UserJpaRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NotificationService {
     private final NotificationJpaRepo notificationJpaRepo;
+    private final UserJpaRepo userJpaRepo;
 
     public Notification createNotification(User receiver,NotificationType type, String content){
         return notificationJpaRepo.save(
@@ -25,8 +28,9 @@ public class NotificationService {
     }
 
     // 유저별 알림 목록 조회
-    public List<Notification> getNotificationsByUser(long userId){
-        return notificationJpaRepo.findNotificationsByUser(userId);
+    public List<Notification> getNotificationsByReceiver(long userId){
+        User user=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        return notificationJpaRepo.findNotificationsByReceiver(user);
     }
 
     public String getAcceptedNotiContent(String acceptorProductName, String requesterProductName){

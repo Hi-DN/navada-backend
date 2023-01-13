@@ -26,7 +26,7 @@ public class Notification extends BaseTime {
     private String notificationContent;
 
     @JsonIgnore
-    @JoinColumn @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(referencedColumnName = "userId") @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User receiver;
 
