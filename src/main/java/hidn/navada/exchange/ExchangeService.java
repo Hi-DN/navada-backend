@@ -1,10 +1,12 @@
 package hidn.navada.exchange;
 
+import hidn.navada.comm.enums.NotificationType;
 import hidn.navada.comm.exception.CanNotCancelExchangeException;
 import hidn.navada.comm.exception.ExchangeNotFoundException;
 import hidn.navada.comm.exception.ProductNotFoundException;
 import hidn.navada.comm.exception.UserNotFoundException;
 import hidn.navada.exchange.request.Request;
+import hidn.navada.notification.NotificationService;
 import hidn.navada.product.Product;
 import hidn.navada.product.ProductJpaRepo;
 import hidn.navada.user.User;
@@ -25,6 +27,7 @@ public class ExchangeService {
     private final ExchangeJpaRepo exchangeJpaRepo;
     private final ProductJpaRepo productJpaRepo;
     private final UserJpaRepo userJpaRepo;
+    private final NotificationService notificationService;
 
     //교환 성립
     public Exchange createExchange(Request request) {
@@ -59,8 +62,20 @@ public class ExchangeService {
 
             updateUserInfo(exchange);
         }
+        else{
+            sendCompleteNoti(exchange, isAcceptor);
+        }
 
         return exchange;
+    }
+
+    // 교환 완료 알림
+    private void sendCompleteNoti(Exchange exchange, boolean isAcceptor){
+        User completedUser = isAcceptor ? exchange.getAcceptor():exchange.getRequester();
+        User notCompletedUser = isAcceptor ? exchange.getRequester():exchange.getAcceptor();
+
+        String completedContent= notificationService.getCompleteNotiContent(completedUser.getUserName(), exchange);
+        notificationService.createNotification(notCompletedUser, NotificationType.COMPLETE_NOTI,completedContent);
     }
 
     //교환 완료 시 거래횟수, 평균평점 업데이트
