@@ -39,6 +39,9 @@ public class User extends BaseTime {
     @ColumnDefault("0")
     private int userRatingCount=0;    //평점 받은 횟수
 
+    @ColumnDefault("true")
+    private boolean userNotificationReadYn=true;     //알림 확인 여부
+
     //==생성 메서드==//
     public static User create(UserParams params) {
         User user = new User();

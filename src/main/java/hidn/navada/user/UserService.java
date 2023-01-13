@@ -48,6 +48,14 @@ public class UserService {
         return user;
     }
 
+    // 알림 확인 완료
+    public User updateNotificationReadYn(long userId) {
+        User user = userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        user.setUserNotificationReadYn(true);
+
+        return user;
+    }
+
     // 회원 탈퇴
     public void deleteUser(Long userId) {
         User user = userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
@@ -79,4 +87,5 @@ public class UserService {
 
         return u1LevelScore<u2LevelScore ? 1 : -1;
     };
+
 }

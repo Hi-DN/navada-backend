@@ -18,6 +18,8 @@ public class NotificationService {
     private final UserJpaRepo userJpaRepo;
 
     public Notification createNotification(User receiver,NotificationType type, String content){
+        receiver.setUserNotificationReadYn(false);  // 알림 확인 여부 = false
+
         return notificationJpaRepo.save(
                 Notification.builder()
                 .notificationContent(content)
