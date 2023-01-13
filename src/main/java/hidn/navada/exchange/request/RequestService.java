@@ -167,21 +167,17 @@ public class RequestService {
 
     //교환 신청 수락 알림
     private void sendAcceptedNoti(Request request){
-        String acceptorProductName=request.getAcceptorProduct().getProductName();
-        String requesterProductName=request.getRequesterProduct().getProductName();
         User receiver=request.getRequester();
+        String acceptedContent=notificationService.getAcceptedNotiContent(request);
 
-        String acceptedContent=notificationService.getAcceptedNotiContent(acceptorProductName,requesterProductName);
         notificationService.createNotification(receiver,NotificationType.ACCEPTED_NOTI,acceptedContent);
     }
 
     //교환 신청 거절 알림
     private void sendDeniedNoti(Request request){
-        String acceptorProductName=request.getAcceptorProduct().getProductName();
-        String requesterProductName=request.getRequesterProduct().getProductName();
         User receiver=request.getRequester();
+        String deniedContent=notificationService.getDeniedNotiContent(request);
 
-        String deniedContent=notificationService.getDeniedNotiContent(acceptorProductName, requesterProductName);
         notificationService.createNotification(receiver, NotificationType.DENIED_NOTI, deniedContent);
     }
 
