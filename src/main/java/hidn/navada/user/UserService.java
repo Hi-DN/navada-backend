@@ -1,6 +1,7 @@
 package hidn.navada.user;
 
 import hidn.navada.comm.enums.UserLevel;
+import hidn.navada.comm.exception.UserExistException;
 import hidn.navada.comm.exception.UserNotFoundException;
 import hidn.navada.oauth.OAuth;
 import hidn.navada.oauth.OAuthJpaRepo;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 @Slf4j
@@ -24,7 +26,18 @@ public class UserService {
     private final OAuthJpaRepo oauthJpaRepo;
 
     // 회원 가입
-    public User createUser(UserParams params) {
+    public User signUp(UserParams params) {
+        String userPhoneNum = params.getUserPhoneNum().replaceAll("-", "");
+        Optional<User> findUser = userJpaRepo.findUserByUserPhoneNum(userPhoneNum);
+
+        if(findUser.isPresent()) {
+            throw new UserExistException("이미 존재하는 회원입니다.");
+        } else {
+            return createUser(params);
+        }
+    }
+
+    private User createUser(UserParams params) {
         User newUser = userJpaRepo.save(User.create(params));
         OAuth newOauth = OAuth.create(newUser, params.getUserEmail(), SignInPlatform.valueOf(params.getSignInPlatform()));
         oauthJpaRepo.save(newOauth);
@@ -57,7 +70,7 @@ public class UserService {
     // 회원 레벨 결정 by 스케쥴러
     public void updateUserLevel() {
         List<User> userList=userJpaRepo.findAll();
-        Collections.sort(userList, userLevelComparator);
+        userList.sort(userLevelComparator);
 
         int totalNumOfUsers = userList.size();
         int lastHeadManIndex=0; // headMan 1명

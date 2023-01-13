@@ -44,7 +44,7 @@ public class User extends BaseTime {
         User user = new User();
         user.userName = params.getUserName();
         user.userNickname = params.getUserNickname();
-        user.userPhoneNum = params.getUserPhoneNum();
+        user.userPhoneNum = params.getUserPhoneNum().replaceAll("-", "");
         user.userAddress = params.getUserAddress();
         return user;
     }
