@@ -1,8 +1,10 @@
 package hidn.navada.exchange.request;
 
+import hidn.navada.comm.enums.NotificationType;
 import hidn.navada.comm.exception.*;
 import hidn.navada.exchange.Exchange;
 import hidn.navada.exchange.ExchangeService;
+import hidn.navada.notification.NotificationService;
 import hidn.navada.product.Product;
 import hidn.navada.product.ProductJpaRepo;
 import hidn.navada.user.User;
@@ -27,6 +29,7 @@ public class RequestService {
     private final ProductJpaRepo productJpaRepo;
     private final UserJpaRepo userJpaRepo;
     private final ExchangeService exchangeService;
+    private final NotificationService notificationService;
 
     //교환 신청
     public Request createRequest(Long requesterProductId, Long acceptorProductId){
@@ -72,6 +75,9 @@ public class RequestService {
         // requester 가 신청한 나머지 교환 신청들 삭제
         rejectRequestsByRequester(requesterProduct);
 
+        // 교환 수락 알림 발송
+        sendAcceptedNoti(request);
+
         //교환 신청 삭제
         requestJpaRepo.deleteById(requestId);
 
@@ -82,8 +88,8 @@ public class RequestService {
     private void rejectRequestsByAcceptor(Product acceptorProduct) {
         List<Request> requestList= requestJpaRepo.findByAcceptorProductAndRequestStatusCd(acceptorProduct,'0');
 
-        //TODO event 생성 후, 알림 가는지 확인 필요!
         for(Request request : requestList){
+            sendDeniedNoti(request);
             request.setRequestStatusCd('2'); //2. 교환 거절
         }
     }
@@ -124,6 +130,8 @@ public class RequestService {
     // 교환신청 거절
     public void rejectRequest(Long requestId) {
         Request request= requestJpaRepo.findById(requestId).orElseThrow(RequestNotFoundException::new);
+
+        sendDeniedNoti(request);
         request.setRequestStatusCd('2'); // 2. 교환거절
     }
 
@@ -155,6 +163,26 @@ public class RequestService {
         else request.setRequesterDeniedRequestDeleteYn(true);
 
         return request;
+    }
+
+    //교환 신청 수락 알림
+    private void sendAcceptedNoti(Request request){
+        String acceptorProductName=request.getAcceptorProduct().getProductName();
+        String requesterProductName=request.getRequesterProduct().getProductName();
+        User receiver=request.getRequester();
+
+        String acceptedContent=notificationService.getAcceptedNotiContent(acceptorProductName,requesterProductName);
+        notificationService.createNotification(receiver,NotificationType.ACCEPTED_NOTI,acceptedContent);
+    }
+
+    //교환 신청 거절 알림
+    private void sendDeniedNoti(Request request){
+        String acceptorProductName=request.getAcceptorProduct().getProductName();
+        String requesterProductName=request.getRequesterProduct().getProductName();
+        User receiver=request.getRequester();
+
+        String deniedContent=notificationService.getDeniedNotiContent(acceptorProductName, requesterProductName);
+        notificationService.createNotification(receiver, NotificationType.DENIED_NOTI, deniedContent);
     }
 
     public Page<RequestDto> convertToDto(Page<Request> requestList){
