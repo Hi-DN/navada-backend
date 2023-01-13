@@ -3,15 +3,19 @@ package hidn.navada.user;
 import hidn.navada.comm.enums.UserLevel;
 import hidn.navada.comm.exception.UserExistException;
 import hidn.navada.comm.exception.UserNotFoundException;
+import hidn.navada.exchange.Exchange;
+import hidn.navada.exchange.ExchangeJpaRepo;
 import hidn.navada.oauth.OAuth;
 import hidn.navada.oauth.OAuthJpaRepo;
 import hidn.navada.oauth.SignInPlatform;
+import hidn.navada.product.Product;
+import hidn.navada.product.ProductJpaRepo;
+import hidn.navada.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +27,9 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 public class UserService {
     private final UserJpaRepo userJpaRepo;
+    private final ExchangeJpaRepo exchangeJpaRepo;
+    private final ProductJpaRepo productJpaRepo;
+    private final ProductService productService;
     private final OAuthJpaRepo oauthJpaRepo;
 
     // 회원 가입
@@ -64,7 +71,22 @@ public class UserService {
     // 회원 탈퇴
     public void deleteUser(Long userId) {
         User user = userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        deleteProductsByUser(userId);
+        setExchangesUserNull(userId);
         userJpaRepo.delete(user);
+    }
+
+    private void deleteProductsByUser(Long userId) {
+        List<Product> products = productJpaRepo.findProductsByUserUserId(userId);
+        products.forEach((product) -> productService.deleteProduct(product.getProductId()));
+    }
+
+    private void setExchangesUserNull(Long userId) {
+        List<Exchange> exchangesByRequester = exchangeJpaRepo.findExchangesByRequesterUserId(userId);
+        exchangesByRequester.forEach(Exchange::deleteRequester);
+
+        List<Exchange> exchangesByAcceptor = exchangeJpaRepo.findExchangesByAcceptorUserId(userId);
+        exchangesByAcceptor.forEach(Exchange::deleteAccepter);
     }
 
     // 회원 레벨 결정 by 스케쥴러

@@ -67,4 +67,9 @@ public class Exchange extends BaseTime {
     @Column(columnDefinition="char default 1")
     @Builder.Default
     private char exchangeStatusCd='1';   // 교환 상태(1: 교환중, 2: 교환완료, 3: 교환취소)
+
+
+    //==수정 로직==//
+    public void deleteAccepter() { this.acceptor = null; }
+    public void deleteRequester() { this.requester = null; }
 }

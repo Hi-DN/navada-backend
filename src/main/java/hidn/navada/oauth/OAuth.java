@@ -4,6 +4,8 @@ import hidn.navada.user.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -22,6 +24,7 @@ public class OAuth {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;              // 회원 (fk)
 
 
