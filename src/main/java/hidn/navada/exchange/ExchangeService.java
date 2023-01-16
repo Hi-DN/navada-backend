@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -160,5 +162,31 @@ public class ExchangeService {
 
     // 교환 완료 요청 by 스케쥴러
     public void requestExchangeCompletion() {
+        LocalDateTime today = LocalDate.now().atStartOfDay();
+        List<Exchange> exchanges = exchangeJpaRepo.findExchangesForPeriodicCompleteNoti();
+
+        for (Exchange exchange : exchanges) {
+            LocalDateTime createdDay = exchange.getCreatedDate().toLocalDate().atStartOfDay();
+            int passedDays = (int) Duration.between(createdDay,today).toDays();
+
+            // 7일 경과시 알림
+            if(is7DaysPassed(passedDays)){
+                    sendPeriodicCompleteNoti(exchange);
+            }
+        }
     }
+
+    private boolean is7DaysPassed(int days){
+        return days!=0 && days%7==0;
+    }
+
+    private void sendPeriodicCompleteNoti(Exchange exchange){
+        User acceptor = exchange.getAcceptor();
+        User requester = exchange.getRequester();
+        String content = notificationService.getPeriodicCompleteNotiContent(exchange);
+
+        notificationService.createNotification(acceptor,NotificationType.PERIODIC_COMPLETE_NOTI,content);
+        notificationService.createNotification(requester,NotificationType.PERIODIC_COMPLETE_NOTI,content);
+    }
+
 }

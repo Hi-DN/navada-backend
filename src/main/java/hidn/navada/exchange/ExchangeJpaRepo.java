@@ -19,6 +19,10 @@ public interface ExchangeJpaRepo extends JpaRepository<Exchange, Long> {
     @Query(value = "select e from Exchange e join fetch e.acceptorProduct p join fetch e.requesterProduct p2 where e.exchangeId=:exchangeId")
     Optional<Exchange> findByIdWithProduct(@Param("exchangeId") long exchangeId);
 
+
+    @Query(value = "select e from Exchange e where e.exchangeStatusCd='1' and e.acceptorConfirmYn=false and e.requesterConfirmYn=false")
+    List<Exchange> findExchangesForPeriodicCompleteNoti();
+
     @Query(value = "select e from Exchange e join fetch e.requesterProduct join fetch e.acceptorProduct " +
             "where ((e.acceptor=:user and e.acceptorHistoryDeleteYn=false) or (e.requester=:user and e.requesterHistoryDeleteYn=false))" +
             " and (coalesce(:exchangeStatusCds,null) is null or (e.exchangeStatusCd in :exchangeStatusCds))",
