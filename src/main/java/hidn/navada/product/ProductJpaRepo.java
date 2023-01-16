@@ -33,6 +33,8 @@ public interface ProductJpaRepo extends JpaRepository<Product, Long> {
     @Query(value = "select h.product.productId from Heart h where h.user=:user")
     List<Long> findHeartProductIdsByUser(@Param("user") User user);
 
+    List<Product> findProductsByUserUserId(@Param("userId") Long userId);
+
     List<Product> findProductsByUserAndProductExchangeStatusCd(User user, char productExchangeStatusCd);
 
     @Query(value = "select requester_product_id from request where requester_id=:userId and acceptor_product_id=:acceptorProductId and exchange_status_cd=0", nativeQuery = true)

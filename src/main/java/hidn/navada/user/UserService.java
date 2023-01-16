@@ -1,18 +1,24 @@
 package hidn.navada.user;
 
 import hidn.navada.comm.enums.UserLevel;
+import hidn.navada.comm.exception.UserExistException;
 import hidn.navada.comm.exception.UserNotFoundException;
+import hidn.navada.exchange.Exchange;
+import hidn.navada.exchange.ExchangeJpaRepo;
 import hidn.navada.oauth.OAuth;
 import hidn.navada.oauth.OAuthJpaRepo;
 import hidn.navada.oauth.SignInPlatform;
+import hidn.navada.product.Product;
+import hidn.navada.product.ProductJpaRepo;
+import hidn.navada.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 @Slf4j
@@ -21,10 +27,24 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 public class UserService {
     private final UserJpaRepo userJpaRepo;
+    private final ExchangeJpaRepo exchangeJpaRepo;
+    private final ProductJpaRepo productJpaRepo;
+    private final ProductService productService;
     private final OAuthJpaRepo oauthJpaRepo;
 
     // 회원 가입
-    public User createUser(UserParams params) {
+    public User signUp(UserParams params) {
+        String userPhoneNum = params.getUserPhoneNum().replaceAll("-", "");
+        Optional<User> findUser = userJpaRepo.findUserByUserPhoneNum(userPhoneNum);
+
+        if(findUser.isPresent()) {
+            throw new UserExistException("이미 존재하는 회원입니다.");
+        } else {
+            return createUser(params);
+        }
+    }
+
+    private User createUser(UserParams params) {
         User newUser = userJpaRepo.save(User.create(params));
         OAuth newOauth = OAuth.create(newUser, params.getUserEmail(), SignInPlatform.valueOf(params.getSignInPlatform()));
         oauthJpaRepo.save(newOauth);
@@ -59,13 +79,28 @@ public class UserService {
     // 회원 탈퇴
     public void deleteUser(Long userId) {
         User user = userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        deleteProductsByUser(userId);
+        setExchangesUserNull(userId);
         userJpaRepo.delete(user);
+    }
+
+    private void deleteProductsByUser(Long userId) {
+        List<Product> products = productJpaRepo.findProductsByUserUserId(userId);
+        products.forEach((product) -> productService.deleteProduct(product.getProductId()));
+    }
+
+    private void setExchangesUserNull(Long userId) {
+        List<Exchange> exchangesByRequester = exchangeJpaRepo.findExchangesByRequesterUserId(userId);
+        exchangesByRequester.forEach(Exchange::deleteRequester);
+
+        List<Exchange> exchangesByAcceptor = exchangeJpaRepo.findExchangesByAcceptorUserId(userId);
+        exchangesByAcceptor.forEach(Exchange::deleteAccepter);
     }
 
     // 회원 레벨 결정 by 스케쥴러
     public void updateUserLevel() {
         List<User> userList=userJpaRepo.findAll();
-        Collections.sort(userList, userLevelComparator);
+        userList.sort(userLevelComparator);
 
         int totalNumOfUsers = userList.size();
         int lastHeadManIndex=0; // headMan 1명

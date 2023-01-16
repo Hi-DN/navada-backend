@@ -18,7 +18,7 @@ public class UserController {
     // 회원 가입
     @PostMapping(value = "/signup")
     public SingleResponse<UserDto> createUser(@Valid @RequestBody UserParams params) {
-        return responseService.getSingleResponse(new UserDto(userService.createUser(params)));
+        return responseService.getSingleResponse(new UserDto(userService.signUp(params)));
     }
 
     // 회원 단건 조회

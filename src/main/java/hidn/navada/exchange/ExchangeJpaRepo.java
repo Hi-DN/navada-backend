@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ExchangeJpaRepo extends JpaRepository<Exchange, Long> {
+    List<Exchange> findExchangesByRequesterUserId(@Param("requesterId") Long requesterId);
+
+    List<Exchange> findExchangesByAcceptorUserId(@Param("acceptorId") Long acceptorId);
 
     @Query(value = "select e from Exchange e join fetch e.acceptorProduct p join fetch e.requesterProduct p2 where e.exchangeId=:exchangeId")
     Optional<Exchange> findByIdWithProduct(@Param("exchangeId") long exchangeId);
