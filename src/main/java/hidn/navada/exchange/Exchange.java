@@ -27,7 +27,7 @@ public class Exchange extends BaseTime {
     private Long exchangeId;                //pk
 
     @JsonIgnore @ManyToOne(fetch = LAZY)
-    @JoinColumn(referencedColumnName = "userId",name = "acceptorId",nullable = false)
+    @JoinColumn(referencedColumnName = "userId",name = "acceptorId")
     private User acceptor;                  //교환수락자(fk)
 
     @OneToOne(fetch = LAZY)
@@ -36,7 +36,7 @@ public class Exchange extends BaseTime {
     private Product acceptorProduct;        //수락자상품(fk)
 
     @JsonIgnore @ManyToOne(fetch = LAZY)
-    @JoinColumn(referencedColumnName = "userId",name = "requesterId",nullable = false)
+    @JoinColumn(referencedColumnName = "userId",name = "requesterId")
     private User requester;                 //교환신청자(fk)
 
     @OneToOne(fetch = LAZY)
@@ -67,4 +67,9 @@ public class Exchange extends BaseTime {
     @Column(columnDefinition="char default 1")
     @Builder.Default
     private char exchangeStatusCd='1';   // 교환 상태(1: 교환중, 2: 교환완료, 3: 교환취소)
+
+
+    //==수정 로직==//
+    public void deleteAccepter() { this.acceptor = null; }
+    public void deleteRequester() { this.requester = null; }
 }
