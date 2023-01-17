@@ -1,10 +1,16 @@
 package hidn.navada.product;
 
+import hidn.navada.comm.enums.NotificationType;
 import hidn.navada.comm.exception.CategoryNotFoundException;
 import hidn.navada.comm.exception.ProductNotFoundException;
 import hidn.navada.comm.exception.UserNotFoundException;
 
+import hidn.navada.exchange.Exchange;
+import hidn.navada.exchange.ExchangeJpaRepo;
+import hidn.navada.exchange.request.Request;
+import hidn.navada.exchange.request.RequestJpaRepo;
 import hidn.navada.heart.HeartJpaRepo;
+import hidn.navada.notification.NotificationService;
 import hidn.navada.product.category.Category;
 import hidn.navada.product.category.CategoryJpaRepo;
 import hidn.navada.user.User;
@@ -30,6 +36,9 @@ public class ProductService {
     private final CategoryJpaRepo categoryJpaRepo;
     private final UserJpaRepo userJpaRepo;
     private final HeartJpaRepo heartJpaRepo;
+    private final ExchangeJpaRepo exchangeJpaRepo;
+    private final RequestJpaRepo requestJpaRepo;
+    private final NotificationService notificationService;
 
     //상품 등록
     public Product createProduct(long userId, ProductParams productParams){
@@ -134,6 +143,25 @@ public class ProductService {
     //상품 삭제
     public void deleteProduct(long productId){
         Product product=productJpaRepo.findById(productId).orElseThrow(ProductNotFoundException::new);
+        // 교환상품 == null
+        List<Exchange> requestedExchanges=exchangeJpaRepo.findExchangesByRequesterProduct(product);
+        List<Exchange> acceptedExchanges=exchangeJpaRepo.findExchangesByAcceptorProduct(product);
+
+        for (Exchange requestedExchange : requestedExchanges)
+            requestedExchange.setRequesterProduct(null);
+
+        for (Exchange acceptedExchange : acceptedExchanges)
+            acceptedExchange.setAcceptorProduct(null);
+
+        // 상품 삭제 notify ( 해당 상품에 교환신청한 유저들에게 )
+        List<Request> requests=requestJpaRepo.findByAcceptorProductAndRequestStatusCd(product, '0');
+        String deletionContent = notificationService.getProductDeletionNotiContent(product.getProductName());
+
+        for (Request request : requests) {
+            User receiver=request.getRequester();
+            notificationService.createNotification(receiver, NotificationType.PRODUCT_DELETION_NOTI, deletionContent);
+        }
+
         productJpaRepo.delete(product);
     }
 

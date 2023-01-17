@@ -39,6 +39,12 @@ public class UserController {
         return responseService.getSingleResponse(new UserDto(userService.modifyUser(userId, params)));
     }
 
+    // 알림 확인 완료
+    @PatchMapping(value = "/user/{userId}/noti")
+    public SingleResponse<User> updateNotificationReadYn(@PathVariable long userId) {
+        return responseService.getSingleResponse(userService.updateNotificationReadYn(userId));
+    }
+
     // 회원 탈퇴
     @DeleteMapping(value = "/user/{userId}")
     public CommonResponse deleteUser(@PathVariable long userId) {
