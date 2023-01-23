@@ -18,7 +18,7 @@ public class UserDto {
 
     public UserDto(User user){
         userId = user.getUserId();
-        userName = user.getUserName();
+        userName = user.getUserRealName();
         userNickname = user.getUserNickname();
         userPhoneNum = user.getUserPhoneNum();
         userAddress = user.getUserAddress();

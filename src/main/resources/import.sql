@@ -18,9 +18,12 @@ INSERT INTO faq(faq_id, faq_question, faq_answer) VALUES(1,'레벨은 어떻게 
 INSERT INTO faq(faq_id, faq_question, faq_answer) VALUES(2,'교환 완료 버튼을 눌렀는데 계속 교환중이라고 떠요.','교환 신청자와 수락자 모두가 교환 완료 확인을 한 경우에만 교환 완료로 처리됩니다.\n\n따라서 상대가 교환 완료를 하고 나면 정상적으로 교환완료로 보여지게 됩니다.')
 INSERT INTO faq(faq_id, faq_question, faq_answer) VALUES(3,'교환을 이미 수락했는데 다시 취소하고 싶어요.','상대방과 본인 모두 교환완료 처리를 하지 않았다면, 교환 취소가 가능합니다.\n\n교환 상세 페이지 하단에서 교환 취소가 가능하며, 자동으로 상대방에게 취소 알람이 갑니다.')
 
-INSERT INTO user(user_id,user_name,user_phone_num,user_address,user_level, user_nickname) VALUES (1,'kim','010-1111-2222','address','LV1_OUTSIDER' ,'투썸러버');
-INSERT INTO user(user_id,user_name,user_phone_num,user_address,user_level, user_nickname) VALUES (2,'lee','010-1111-3333','address','LV2_RESIDENT', '나는스벅나는스벅나는');
-INSERT INTO user(user_id,user_name,user_phone_num,user_address,user_level, user_nickname) VALUES (3,'park','010-1111-3333','address','LV4_HEADMAN', 'seller');
+INSERT INTO `user`(user_real_name,user_phone_num,user_address,user_level, user_nickname) VALUES ('이한슬','01011112222','서울시 서초구','LV1_OUTSIDER','네이버슬');
+INSERT INTO oauth(platform, user_email, user_id) VALUES ('NAVER', 'hssarah@naver.com', 1);
+
+INSERT INTO `user`(user_real_name,user_phone_num,user_address,user_level, user_nickname) VALUES ('kim','010-1111-2222','address','LV1_OUTSIDER' ,'투썸러버');
+INSERT INTO `user`(user_real_name,user_phone_num,user_address,user_level, user_nickname) VALUES ('lee','010-1111-3333','address','LV2_RESIDENT', '나는스벅나는스벅나는');
+INSERT INTO `user`(user_real_name,user_phone_num,user_address,user_level, user_nickname) VALUES ('park','010-1111-3333','address','LV4_HEADMAN', 'seller');
 
 INSERT INTO product(created_date,product_id,user_id,product_name,product_explanation,category_id,heart_num, product_cost, exchange_cost_range,user_nickname,product_exchange_status_cd) VALUES (now(),1,1,'투썸아아 투썸아아 투썸아아 투썸아아 ','투썸 아아입니다투썸 아아입니다투썸 아아입니다투썸 아아입니다투썸 아아입니다투썸 아아입니다투썸 아아입니다투썸 아아입니다투썸 아아입니다투썸 아아입니다투썸 아아입니다투썸 아아입니다ㅇㅇㅇㅇ',1,0, 4500, 500,'투썸러버','1');
 INSERT INTO product(created_date,product_id,user_id,product_name,product_explanation,category_id,heart_num, product_cost, exchange_cost_range,user_nickname,product_exchange_status_cd) VALUES (now(),2,1,'투썸 카페라떼','투썸 카페라떼입니다!!',1,0, 5000, 500,'투썸러버','0');

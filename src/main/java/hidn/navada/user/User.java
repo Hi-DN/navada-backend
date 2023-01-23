@@ -4,19 +4,22 @@ import hidn.navada.comm.BaseTime;
 import hidn.navada.comm.enums.UserLevel;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User extends BaseTime {
+public class User extends BaseTime implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;            // pk
 
     @Column(length = 64)
-    private String userName;        // 회원 이름
+    private String userRealName;        // 회원 이름
 
     @Column(length = 10)
     private String userNickname;    // 회원 별명
@@ -42,7 +45,7 @@ public class User extends BaseTime {
     //==생성 메서드==//
     public static User create(UserParams params) {
         User user = new User();
-        user.userName = params.getUserName();
+        user.userRealName = params.getUserName();
         user.userNickname = params.getUserNickname();
         user.userPhoneNum = params.getUserPhoneNum();
         user.userAddress = params.getUserAddress();
@@ -54,5 +57,41 @@ public class User extends BaseTime {
         userNickname = params.getUserNickname();
         userPhoneNum = params.getUserPhoneNum();
         userAddress = params.getUserAddress();
+    }
+
+    //==Sprint Security UserDetails==//
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return userId.toString();  //유저 식별값 리턴
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
