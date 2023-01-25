@@ -76,7 +76,7 @@ public class ExchangeService {
         User completedUser = isAcceptor ? exchange.getAcceptor():exchange.getRequester();
         User notCompletedUser = isAcceptor ? exchange.getRequester():exchange.getAcceptor();
 
-        String completedContent= notificationService.getCompleteNotiContent(completedUser.getUserName(), exchange);
+        String completedContent= notificationService.getCompleteNotiContent(completedUser.getUserNickname(), exchange);
         notificationService.createNotification(notCompletedUser, NotificationType.COMPLETE_NOTI,completedContent);
     }
 
