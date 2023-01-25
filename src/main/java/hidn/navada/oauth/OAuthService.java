@@ -1,5 +1,6 @@
 package hidn.navada.oauth;
 
+import hidn.navada.comm.config.security.JwtTokenProvider;
 import hidn.navada.comm.exception.OAuthNotFoundException;
 import hidn.navada.user.UserDto;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class OAuthService {
     private final OAuthJpaRepo oauthJpaRepo;
+    private final JwtTokenProvider jwtTokenProvider;
 
     /**
      * OAuth 로그인
@@ -33,12 +35,16 @@ public class OAuthService {
     }
 
     private SignInResponse makeResponse(OAuth oauth) {
-        return (oauth != null)
-                ? new SignInResponse(
-                        new UserDto(oauth.getUser()),
-                        new OAuthDto(oauth.getUserEmail(), oauth.getPlatform()),
-                        "accessToken",
-                        "refreshToken")
-                : new SignInResponse(null, null, null, null);
+        if(oauth != null) {
+            String accessToken = jwtTokenProvider.createToken(oauth.getUser().getUserId().toString());
+            return new SignInResponse(
+                    new UserDto(oauth.getUser()),
+                    new OAuthDto(oauth.getUserEmail(), oauth.getPlatform()),
+                    accessToken,
+                    "refreshToken");
+        } else {
+            return new SignInResponse(null, null, null, null);
+        }
     }
+
 }
