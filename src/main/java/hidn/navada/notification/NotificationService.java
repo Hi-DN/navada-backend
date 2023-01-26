@@ -68,4 +68,11 @@ public class NotificationService {
     public String getProductDeletionNotiContent(String deletedProductName){
         return String.format("'%s'에 대한 교환 요청이 해당 물품의 삭제로 인해 자동 취소되었습니다.",deletedProductName);
     }
+
+    public String getExchangeCanceledNotiContent(String userName, Exchange exchange){
+        String acceptorProductName=exchange.getAcceptorProduct().getProductName();
+        String requesterProductName=exchange.getRequesterProduct().getProductName();
+
+        return String.format("%s님이 '%s'와 '%s'에 대한 교환을 취소했습니다.",userName, acceptorProductName, requesterProductName);
+    }
 }

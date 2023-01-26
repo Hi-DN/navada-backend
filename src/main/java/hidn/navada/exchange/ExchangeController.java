@@ -46,9 +46,9 @@ public class ExchangeController {
     }
 
     // 교환 취소
-    @PatchMapping(value = "/exchange/{exchangeId}/cancel")
-    public SingleResponse<Exchange> cancelExchange(@PathVariable Long exchangeId){
-        return responseService.getSingleResponse(exchangeService.cancelExchange(exchangeId));
+    @PatchMapping(value = "/user/{userId}/exchange/{exchangeId}/cancel")
+    public SingleResponse<Exchange> cancelExchange(@PathVariable Long userId, @PathVariable Long exchangeId){
+        return responseService.getSingleResponse(exchangeService.cancelExchange(userId,exchangeId));
     }
 
 }
