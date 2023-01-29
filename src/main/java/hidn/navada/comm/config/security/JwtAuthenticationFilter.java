@@ -23,7 +23,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
 
         //토큰이 유효한지 확인
-        if(token != null && jwtTokenProvider.validateToken(token)) {
+        if(token != null && jwtTokenProvider.validateAccessToken(token)) {
             //토큰이 유효하면 유저정보를 가져옴
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
 

@@ -1,5 +1,6 @@
 package hidn.navada.user;
 
+import hidn.navada.comm.config.security.token.TokenService;
 import hidn.navada.comm.response.CommonResponse;
 import hidn.navada.comm.response.ResponseService;
 import hidn.navada.comm.response.SingleResponse;
@@ -13,12 +14,20 @@ import javax.validation.Valid;
 @RequestMapping(value = "/v1")
 public class UserController {
     private final UserService userService;
+    private final TokenService tokenService;
     private final ResponseService responseService;
 
     // 회원 가입
     @PostMapping(value = "/signup")
     public SingleResponse<UserDto> createUser(@Valid @RequestBody UserParams params) {
         return responseService.getSingleResponse(new UserDto(userService.signUp(params)));
+    }
+
+    // 로그아웃
+    @DeleteMapping(value = "/user/{userId}/signout")
+    public CommonResponse signOut(@PathVariable long userId) {
+        tokenService.deleteRefreshToken(userId);
+        return responseService.getSuccessResponse();
     }
 
     // 회원 단건 조회
@@ -49,6 +58,7 @@ public class UserController {
     @DeleteMapping(value = "/user/{userId}")
     public CommonResponse deleteUser(@PathVariable long userId) {
         userService.deleteUser(userId);
+        tokenService.deleteRefreshToken(userId);
         return responseService.getSuccessResponse();
     }
 }

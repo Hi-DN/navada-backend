@@ -46,4 +46,10 @@ duplicatedRequestException:
 canNotCancelExchangeException:
   code: "400"
   msg: "Can not cancel this exchange."
+refreshTokenInvalidException:
+  code: "402"
+  msg: "Invalid refresh Token. Sign in please."
+refreshTokenNotFoundException:
+  code: "404"
+  msg: "Refresh token not found."
 
