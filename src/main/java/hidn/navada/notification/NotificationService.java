@@ -34,7 +34,7 @@ public class NotificationService {
     // 유저별 알림 목록 조회
     public List<Notification> getNotificationsByReceiver(long userId){
         User user=userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
-        return notificationJpaRepo.findNotificationsByReceiver(user);
+        return notificationJpaRepo.findNotificationsByReceiverOrderByCreatedDateDesc(user);
     }
 
     public String getAcceptedNotiContent(Request request){
