@@ -21,6 +21,7 @@ public class JwtTokenProvider {
     private String accessSecretKey = "navadaprojectsecretsecretkey";
     private String refreshSecretKey = "navadaprojectrefreshsecretsecretkey";
 
+//    private final long accessTokenValidTime = 5 * 1000L;  //Access Token 유효시간 5초 (테스트용)
     private final long accessTokenValidTime = 30 * 60 * 1000L;  //Access Token 유효시간 30분
     private final long refreshTokenValidTime = 14 * 24 * 60 * 60 * 1000L; //Refresh Token 유효시간 14일
 

@@ -31,14 +31,10 @@ public class TokenService {
         return new TokenDto(userId, newAccessToken, newRefreshToken.getRefreshToken());
     }
 
-    public boolean validateRefreshToken(Long userId, String refreshToken) {
+    public boolean validateRefreshToken(String refreshToken) {
         try{
             RefreshToken findToken = findRefreshToken(refreshToken);
-            if(findToken.getUserId().equals(userId)){
-                return jwtTokenProvider.validateRefreshToken(findToken);
-            } else {
-                throw new AccessDeniedException("회원id와 refresh token의 회원정보가 일치하지 않습니다.");
-            }
+            return jwtTokenProvider.validateRefreshToken(findToken);
         } catch (RefreshTokenNotFoundException e) {
             return false;
         }
@@ -51,6 +47,10 @@ public class TokenService {
 
     public RefreshToken findRefreshToken(String refreshToken) {
         return refreshTokenJpaRepo.findByRefreshToken(refreshToken).orElseThrow(RefreshTokenNotFoundException::new);
+    }
+
+    public Long getUserIdFromAccessToken(String accessToken) {
+        return Long.parseLong(jwtTokenProvider.getUserPk(accessToken));
     }
 
     public void deleteRefreshToken(Long userId) {
