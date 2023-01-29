@@ -76,7 +76,7 @@ public class ExchangeService {
         User completedUser = isAcceptor ? exchange.getAcceptor():exchange.getRequester();
         User notCompletedUser = isAcceptor ? exchange.getRequester():exchange.getAcceptor();
 
-        String completedContent= notificationService.getCompleteNotiContent(completedUser.getUserName(), exchange);
+        String completedContent= notificationService.getCompleteNotiContent(completedUser.getUserNickname(), exchange);
         notificationService.createNotification(notCompletedUser, NotificationType.COMPLETE_NOTI,completedContent);
     }
 
@@ -140,12 +140,12 @@ public class ExchangeService {
         return exchange;
     }
 
-    public Page<ExchangeDto> convertToDto(Page<Exchange> exchangeList){
+    private Page<ExchangeDto> convertToDto(Page<Exchange> exchangeList){
         return exchangeList.map(ExchangeDto::new);
     }
 
     //교환 취소
-    public Exchange cancelExchange(Long exchangeId) {
+    public Exchange cancelExchange(Long userId,Long exchangeId) {
         Exchange exchange = exchangeJpaRepo.findByIdWithProduct(exchangeId).orElseThrow(ExchangeNotFoundException::new);
 
         if(exchange.isAcceptorConfirmYn() || exchange.isRequesterConfirmYn())
@@ -155,9 +155,23 @@ public class ExchangeService {
             exchange.setExchangeStatusCd('3');  //3. 교환 취소
             exchange.getAcceptorProduct().setProductExchangeStatusCd('0');
             exchange.getRequesterProduct().setProductExchangeStatusCd('0');
+
+            //교환 취소 알림
+            boolean isAcceptor = userId==exchange.getAcceptor().getUserId();
+            sendExchangeCanceledNoti(exchange,isAcceptor);
         }
 
         return exchange;
+    }
+
+    private void sendExchangeCanceledNoti(Exchange exchange, boolean isAcceptor){
+        User canceledUser = isAcceptor? exchange.getAcceptor() : exchange.getRequester();
+        User notifiedUser=isAcceptor? exchange.getRequester() : exchange.getAcceptor();
+
+        String userName = canceledUser.getUserNickname();
+        String content = notificationService.getExchangeCanceledNotiContent(userName,exchange);
+
+        notificationService.createNotification(notifiedUser,NotificationType.EXCHANGE_CANCELED_NOTI,content);
     }
 
     // 교환 완료 요청 by 스케쥴러
@@ -188,5 +202,4 @@ public class ExchangeService {
         notificationService.createNotification(acceptor,NotificationType.PERIODIC_COMPLETE_NOTI,content);
         notificationService.createNotification(requester,NotificationType.PERIODIC_COMPLETE_NOTI,content);
     }
-
 }
