@@ -39,10 +39,17 @@ public class UserController {
         return responseService.getSingleResponse(new UserDto(userService.modifyUser(userId, params)));
     }
 
+    // 알림 확인 여부 조회
+    @GetMapping("/user/{userId}/noti")
+    public SingleResponse<Boolean> getUserNotificationReadYn(@PathVariable long userId){
+        return responseService.getSingleResponse(userService.getUserNotificationReadYn(userId));
+    }
+
     // 알림 확인 완료
     @PatchMapping(value = "/user/{userId}/noti")
-    public SingleResponse<User> updateNotificationReadYn(@PathVariable long userId) {
-        return responseService.getSingleResponse(userService.updateNotificationReadYn(userId));
+    public CommonResponse updateNotificationReadYn(@PathVariable long userId) {
+        userService.updateNotificationReadYn(userId);
+        return responseService.getSuccessResponse();
     }
 
     // 회원 탈퇴

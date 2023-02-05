@@ -68,12 +68,16 @@ public class UserService {
         return user;
     }
 
+    // 알림 확인 여부 조회
+    public Boolean getUserNotificationReadYn(long userId) {
+        User user = userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
+        return user.isUserNotificationReadYn();
+    }
+
     // 알림 확인 완료
-    public User updateNotificationReadYn(long userId) {
+    public void updateNotificationReadYn(long userId) {
         User user = userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         user.setUserNotificationReadYn(true);
-
-        return user;
     }
 
     // 회원 탈퇴
