@@ -30,6 +30,27 @@ public class ExceptionAdvice {
         return responseService.getErrorResponse(Integer.parseInt(getMessage("unKnown.code")), getMessage("unKnown.msg"));
     }
 
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResponse kakaoSignInException(HttpServletRequest request, KakaoSignInException e) {
+        return responseService.getErrorResponse(Integer.parseInt(getMessage("kakaoSignInException.code")),
+                getMessage("kakaoSignInException.msg"));
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResponse googleSignInException(HttpServletRequest request, GoogleSignInException e) {
+        return responseService.getErrorResponse(Integer.parseInt(getMessage("googleSignInException.code")),
+                getMessage("googleSignInException.msg"));
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResponse naverSignInException(HttpServletRequest request, NaverSignInException e) {
+        return responseService.getErrorResponse(Integer.parseInt(getMessage("naverSignInException.code")),
+                getMessage("naverSignInException.msg"));
+    }
+
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     protected CommonResponse userNotFoundException(HttpServletRequest request, UserNotFoundException e) {
