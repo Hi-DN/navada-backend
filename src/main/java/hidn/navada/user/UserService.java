@@ -51,6 +51,12 @@ public class UserService {
         return newUser;
     }
 
+    // 닉네임 중복 체크
+    public boolean checkNicknameUsable(String nickname) {
+        Optional<User> findUser = userJpaRepo.findUserByUserNickname(nickname);
+        return findUser.isEmpty();
+    }
+
     // 회원 단건 조회
     public User getOneUser(long userId){
         return userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);

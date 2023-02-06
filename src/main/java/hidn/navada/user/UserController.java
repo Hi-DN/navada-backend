@@ -23,6 +23,12 @@ public class UserController {
         return responseService.getSingleResponse(new UserDto(userService.signUp(params)));
     }
 
+    // 닉네임 사용 가능 여부
+    @GetMapping(value = "/signup/check")
+    public SingleResponse<Boolean> checkNicknameUsable(@RequestParam String nickname){
+        return responseService.getSingleResponse(userService.checkNicknameUsable(nickname));
+    }
+
     // 로그아웃
     @DeleteMapping(value = "/user/{userId}/signout")
     public CommonResponse signOut(@PathVariable long userId) {
