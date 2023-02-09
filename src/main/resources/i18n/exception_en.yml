@@ -46,4 +46,20 @@ duplicatedRequestException:
 canNotCancelExchangeException:
   code: "400"
   msg: "Can not cancel this exchange."
+refreshTokenInvalidException:
+  code: "402"
+  msg: "Invalid refresh Token. Sign in please."
+refreshTokenNotFoundException:
+  code: "404"
+  msg: "Refresh token not found."
+kakaoSignInException:
+  code: "500"
+  msg: "Error occurred during Signing in Kakao."
+googleSignInException:
+  code: "500"
+  msg: "Error occurred during Signing in Google."
+naverSignInException:
+  code: "500"
+  msg: "Error occurred during Signing In Naver."
+
 

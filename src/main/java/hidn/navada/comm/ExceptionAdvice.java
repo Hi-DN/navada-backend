@@ -30,6 +30,27 @@ public class ExceptionAdvice {
         return responseService.getErrorResponse(Integer.parseInt(getMessage("unKnown.code")), getMessage("unKnown.msg"));
     }
 
+    @ExceptionHandler(KakaoSignInException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResponse kakaoSignInException(HttpServletRequest request, KakaoSignInException e) {
+        return responseService.getErrorResponse(Integer.parseInt(getMessage("kakaoSignInException.code")),
+                getMessage("kakaoSignInException.msg"));
+    }
+
+    @ExceptionHandler(GoogleSignInException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResponse googleSignInException(HttpServletRequest request, GoogleSignInException e) {
+        return responseService.getErrorResponse(Integer.parseInt(getMessage("googleSignInException.code")),
+                getMessage("googleSignInException.msg"));
+    }
+
+    @ExceptionHandler(NaverSignInException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResponse naverSignInException(HttpServletRequest request, NaverSignInException e) {
+        return responseService.getErrorResponse(Integer.parseInt(getMessage("naverSignInException.code")),
+                getMessage("naverSignInException.msg"));
+    }
+
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     protected CommonResponse userNotFoundException(HttpServletRequest request, UserNotFoundException e) {
@@ -94,7 +115,7 @@ public class ExceptionAdvice {
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     protected CommonResponse accessDeniedException(HttpServletRequest request, AccessDeniedException e) {
         return responseService.getErrorResponse(Integer.parseInt(getMessage("accessDenied.code")),
                 getMessage("accessDenied.msg"));
@@ -119,6 +140,20 @@ public class ExceptionAdvice {
     protected CommonResponse tokenValidationException(HttpServletResponse request, TokenValidationException e) {
         return responseService.getErrorResponse(Integer.parseInt(getMessage("tokenValidationException.code")),
                 getMessage("tokenValidationException.msg"));
+    }
+
+    @ExceptionHandler(RefreshTokenInvalidException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    protected CommonResponse refreshTokenInvalidException(HttpServletResponse request, RefreshTokenInvalidException e) {
+        return responseService.getErrorResponse(Integer.parseInt(getMessage("refreshTokenInvalidException.code")),
+                getMessage("refreshTokenInvalidException.msg"));
+    }
+
+    @ExceptionHandler(RefreshTokenNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    protected CommonResponse refreshTokenNotFoundException(HttpServletResponse request, RefreshTokenNotFoundException e) {
+        return responseService.getErrorResponse(Integer.parseInt(getMessage("refreshTokenNotFoundException.code")),
+                getMessage("refreshTokenNotFoundException.msg"));
     }
 
     @ExceptionHandler(DuplicatedRequestException.class)
