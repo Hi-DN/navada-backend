@@ -29,6 +29,7 @@ dependencies {
 	implementation 'com.google.code.gson:gson'
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter', version: '1.2.8.RELEASE'
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-storage', version: '1.2.8.RELEASE'
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-core', version: '1.2.8.RELEASE'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'mysql:mysql-connector-java'

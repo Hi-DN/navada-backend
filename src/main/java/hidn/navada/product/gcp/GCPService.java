@@ -16,8 +16,6 @@ import java.util.UUID;
 public class GCPService {
     private final Storage storage;
 
-    private static String folderName="/product";
-
     @Value("${spring.cloud.gcp.storage.bucket}")
     private String bucketName;
 
@@ -26,13 +24,14 @@ public class GCPService {
 
     public String uploadProductImage(MultipartFile image) throws IOException {
         String uuid= UUID.randomUUID().toString();
-        String fileName=image.getOriginalFilename()+"_"+uuid;
+        String fileName=uuid+"_"+image.getOriginalFilename();
 
-        BlobId blobId= BlobId.of(bucketName,folderName+"/"+fileName);
+        BlobId blobId= BlobId.of(bucketName,fileName);
         BlobInfo blobInfo=BlobInfo.newBuilder(blobId).build();
+
         Blob blob=storage.create(blobInfo,image.getBytes());
 
-        String fileUrl=hostUrl+bucketName+blob.getName();
+        String fileUrl=hostUrl+bucketName+"/"+blob.getName();
         return fileUrl;
     }
 }

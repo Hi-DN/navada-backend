@@ -21,8 +21,8 @@ public class ProductController {
 
     //상품 등록
     @PostMapping(value="/user/{userId}/product")
-    public SingleResponse<Product> saveProduct(@PathVariable long userId, @Valid @RequestBody ProductParams productParams,
-                                               @RequestParam(required = false) MultipartFile productImage) throws IOException {
+    public SingleResponse<Product> saveProduct(@PathVariable long userId, @Valid @ModelAttribute ProductParams productParams,
+                                               @RequestParam MultipartFile productImage) throws IOException {
         return responseService.getSingleResponse(productService.createProduct(userId, productParams,productImage));
     }
 
