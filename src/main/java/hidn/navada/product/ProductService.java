@@ -13,6 +13,7 @@ import hidn.navada.heart.HeartJpaRepo;
 import hidn.navada.notification.NotificationService;
 import hidn.navada.product.category.Category;
 import hidn.navada.product.category.CategoryJpaRepo;
+import hidn.navada.product.gcp.GCPService;
 import hidn.navada.user.User;
 import hidn.navada.user.UserJpaRepo;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,11 +42,14 @@ public class ProductService {
     private final ExchangeJpaRepo exchangeJpaRepo;
     private final RequestJpaRepo requestJpaRepo;
     private final NotificationService notificationService;
+    private final GCPService gcpService;
 
     //상품 등록
-    public Product createProduct(long userId, ProductParams productParams){
+    public Product createProduct(long userId, ProductParams productParams, MultipartFile productImage) throws IOException {
         User user= userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         Category category = categoryJpaRepo.findById(productParams.getCategoryId()).orElseThrow(CategoryNotFoundException::new);
+
+        String imageUrl=gcpService.uploadProductImage(productImage);
 
         Product product = Product.builder()
                 .user(user)
@@ -53,7 +59,7 @@ public class ProductService {
                 .category(category)
                 .productCost(productParams.getProductCost())
                 .exchangeCostRange(productParams.getExchangeCostRange())
-                .productImageUrl(productParams.getProductImageUrl())
+                .productImageUrl(imageUrl)
                 .build();
 
         return productJpaRepo.save(product);
@@ -70,7 +76,7 @@ public class ProductService {
         product.setCategory(category);
         product.setProductCost(productParams.getProductCost());
         product.setExchangeCostRange(productParams.getExchangeCostRange());
-        product.setProductImageUrl(productParams.getProductImageUrl());
+//        product.setProductImageUrl(productParams.getProductImageUrl());
 
         return product;
     }
