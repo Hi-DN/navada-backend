@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class ProductSearchDto {
     private long productId;
-//    private String productImageUrl;
+    private String productImageUrl;
     private String productName;
     private String userNickname;
     private int productCost;
@@ -15,6 +15,7 @@ public class ProductSearchDto {
 
     ProductSearchDto(Product product, boolean like){
         productId=product.getProductId();
+        productImageUrl=product.getProductImageUrl();
         productName=product.getProductName();
         userNickname=product.getUserNickname();
         productCost=product.getProductCost();
