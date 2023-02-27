@@ -49,7 +49,7 @@ public class ProductService {
         User user= userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         Category category = categoryJpaRepo.findById(productParams.getCategoryId()).orElseThrow(CategoryNotFoundException::new);
 
-        String imageUrl=gcpService.uploadProductImage(productImage);
+        String imageUrl = !productImage.isEmpty()?gcpService.uploadProductImage(productImage):null;
 
         Product product = Product.builder()
                 .user(user)
