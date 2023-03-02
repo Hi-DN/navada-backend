@@ -2,6 +2,7 @@ package hidn.navada.product;
 
 import lombok.Data;
 
+import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -21,5 +22,8 @@ public class ProductParams {
 
     @NotNull(message = "교환 희망 가격범위는 필수값입니다.")
     private int exchangeCostRange;
+
+    @Nullable
+    private String productImageUrl;
 
 }

@@ -28,8 +28,9 @@ public class ProductController {
 
     //상품 수정
     @PatchMapping(value = "/product/{productId}")
-    public SingleResponse<Product> modifyProduct(@PathVariable long productId, @Valid @RequestBody ProductParams productParams){
-        return responseService.getSingleResponse(productService.modifyProduct(productId, productParams));
+    public SingleResponse<Product> modifyProduct(@PathVariable long productId, @Valid @ModelAttribute ProductParams productParams,
+                                                 @RequestPart(value="file",required = false) MultipartFile file) throws IOException {
+        return responseService.getSingleResponse(productService.modifyProduct(productId, productParams,file));
     }
 
     //사용자별 상품 리스트 조회
