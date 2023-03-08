@@ -49,7 +49,7 @@ public class ProductService {
         User user= userJpaRepo.findById(userId).orElseThrow(UserNotFoundException::new);
         Category category = categoryJpaRepo.findById(productParams.getCategoryId()).orElseThrow(CategoryNotFoundException::new);
 
-        String imageUrl = !productImage.isEmpty()?gcpService.uploadProductImage(productImage):null;
+        String imageUrl = gcpService.uploadProductImage(productImage);
 
         Product product = Product.builder()
                 .user(user)
@@ -67,16 +67,21 @@ public class ProductService {
 
 
     //상품 수정
-    public Product modifyProduct(long productId, ProductParams productParams){
+    public Product modifyProduct(long productId, ProductParams productParams,MultipartFile productImage) throws IOException {
         Product product=productJpaRepo.findById(productId).orElseThrow(ProductNotFoundException::new);
         Category category = categoryJpaRepo.findById(productParams.getCategoryId()).orElseThrow(CategoryNotFoundException::new);
+
+        // 이미지 변경된 경우
+        if(!productParams.getProductImageUrl().equals(product.getProductImageUrl())){
+            String updatedImageUrl = gcpService.updateProductImage(product.getProductImageUrl(),productImage);
+            product.setProductImageUrl(updatedImageUrl);
+        }
 
         product.setProductName(productParams.getProductName());
         product.setProductExplanation(productParams.getProductExplanation());
         product.setCategory(category);
         product.setProductCost(productParams.getProductCost());
         product.setExchangeCostRange(productParams.getExchangeCostRange());
-//        product.setProductImageUrl(productParams.getProductImageUrl());
 
         return product;
     }
