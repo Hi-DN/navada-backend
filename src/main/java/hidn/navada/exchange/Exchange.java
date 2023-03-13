@@ -32,7 +32,7 @@ public class Exchange extends BaseTime {
 
     @OneToOne(fetch = LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(referencedColumnName = "productId",name = "acceptorProductId",nullable = false)
+    @JoinColumn(referencedColumnName = "productId",name = "acceptorProductId")
     private Product acceptorProduct;        //수락자상품(fk)
 
     @JsonIgnore @ManyToOne(fetch = LAZY)
@@ -41,7 +41,7 @@ public class Exchange extends BaseTime {
 
     @OneToOne(fetch = LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(referencedColumnName = "productId",name = "requesterProductId",nullable = false)
+    @JoinColumn(referencedColumnName = "productId",name = "requesterProductId")
     private Product requesterProduct;       //신청자상품(fk)
 
     @ColumnDefault("false") @Builder.Default

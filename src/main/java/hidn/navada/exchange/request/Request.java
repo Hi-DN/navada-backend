@@ -29,21 +29,21 @@ public class Request extends BaseTime {
     private Long requestId;             //pk
 
     @JsonIgnore @ManyToOne(fetch = LAZY)
-    @JoinColumn(referencedColumnName = "userId",name = "acceptorId",nullable = false)
+    @JoinColumn(referencedColumnName = "userId",name = "acceptorId")
     private User acceptor;              // 교환수락자(fk)
 
     @JsonIgnore @ManyToOne(fetch = LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(referencedColumnName = "productId",name="acceptorProductId", nullable = false)
+    @JoinColumn(referencedColumnName = "productId",name="acceptorProductId")
     private Product acceptorProduct;    // 수락자 상품(fk)
 
     @JsonIgnore @ManyToOne(fetch = LAZY)
-    @JoinColumn(referencedColumnName = "userId",name = "requesterId",nullable = false)
+    @JoinColumn(referencedColumnName = "userId",name = "requesterId")
     private User requester;             // 교환신청자(fk)
 
     @JsonIgnore @ManyToOne(fetch = LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(referencedColumnName = "productId",name="requesterProductId", nullable = false)
+    @JoinColumn(referencedColumnName = "productId",name="requesterProductId")
     private Product requesterProduct;   // 신청자 상품(fk)
 
     @Column(columnDefinition="char default 0") @Builder.Default

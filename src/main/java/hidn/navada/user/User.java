@@ -58,7 +58,7 @@ public class User extends BaseTime implements UserDetails {
     //==수정 메서드==//
     public void update(UserUpdateParams params) {
         userNickname = params.getUserNickname();
-        userPhoneNum = params.getUserPhoneNum();
+        userPhoneNum = params.getUserPhoneNum().replaceAll("-", "");
         userAddress = params.getUserAddress();
     }
 
