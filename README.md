@@ -43,7 +43,6 @@ Change unnecessary items into valuable items by bartering with your neighbors!
 
 ## 🔮 Preview
 - 소셜 로그인 / 로그아웃 / 회원탈퇴
-<img width="250" alt="mosainfo_logo" src="https://user-images.githubusercontent.com/51855129/221163410-408266ac-53d7-4d11-99eb-25e056a40591.gif">
 
 - 홈
   - 카테고리별 물품 조회
