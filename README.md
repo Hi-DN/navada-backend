@@ -48,7 +48,37 @@ Change unnecessary items into valuable items by bartering with your neighbors!
 <br/> 
 
 ## 🔮 Preview
-- 소셜 로그인 / 로그아웃 / 회원탈퇴
+상세 화면을 확인하려면 토글을 클릭하세요:)    
+</br>
+
+<details>
+<summary>소셜 로그인 / 로그아웃 / 회원탈퇴 </summary>
+    </br>
+    <p>
+        <img width="20%" src="https://user-images.githubusercontent.com/70498432/225634608-f35a0df5-9af9-47d8-915c-75dd5de62c45.png">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <img width="20%" src="https://user-images.githubusercontent.com/70498432/225626672-f72f0e9b-925d-4b4c-b8c7-a86e72738dc5.png">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <img width="20%" src="https://user-images.githubusercontent.com/70498432/225626717-b3eeed38-f0c1-417b-838d-98ba9b78330c.png">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <img width="20%" src="https://user-images.githubusercontent.com/70498432/225629267-4006ce2f-eb7e-4408-a6c4-1f77d0cecc0f.png">
+    </p>                  
+</details>
+</br>
+
+<details>
+<summary>홈 / 물품 등록하기 </summary>    
+    </br>
+    <p>
+        <img width="20%" src="https://user-images.githubusercontent.com/70498432/225635485-a934c618-f516-44e5-8c16-8d34188fec6d.png">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <img width="20%" src="https://user-images.githubusercontent.com/70498432/225633364-54086612-99a5-4978-a6ef-0819b841022f.png">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <img width="20%" src="https://user-images.githubusercontent.com/70498432/225633607-cba9ace1-5da9-4a68-bd9d-ac783016384c.png">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </p>
+</details>
+</br>
 
 - 홈
   - 카테고리별 물품 조회
