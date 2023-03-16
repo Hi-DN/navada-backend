@@ -30,10 +30,16 @@ Change unnecessary items into valuable items by bartering with your neighbors!
 ## 🥞 Stacks
 ### FRONTEND
 - Flutter
+    - MVVM 구조를 사용한 비즈니스 로직과 화면을 분리
+    - Provider 를 사용한 렌더링 횟수 최적화
 
 ### BACKEND
 - Spring Boot
+    - REST 기반의 API 설계
+    - 기능 설계에 부합하는 비즈니스 서비스 작성
+    
 - JPA
+    - 데이터베이스 스펙에 맞는 도메인 설계 및 쿼리 작성
 
 ### DB
 - MySQL
