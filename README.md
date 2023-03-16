@@ -23,7 +23,7 @@ Change unnecessary items into valuable items by bartering with your neighbors!
 <br/> 
 
 ## 📅 Duration
-2022.02 - 2023.02
+2022.02 - 2023.03 (테스트 및 보완작업중)
 
 <br/> 
 
