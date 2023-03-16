@@ -30,8 +30,8 @@ Change unnecessary items into valuable items by bartering with your neighbors!
 ## 🥞 Stacks
 ### FRONTEND
 - Flutter
-    - MVVM 구조를 사용한 비즈니스 로직과 화면을 분리
-    - Provider 를 사용한 렌더링 횟수 최적화
+    - MVVM 구조를 사용한 비즈니스 로직과 화면 분리
+    - Provider를 사용한 렌더링 횟수 최적화
 
 ### BACKEND
 - Spring Boot
