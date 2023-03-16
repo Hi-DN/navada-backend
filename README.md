@@ -64,6 +64,9 @@ Change unnecessary items into valuable items by bartering with your neighbors!
 <br/> 
 
 ## 🖌 Design
+### ER Diagram
+<img width="900" alt="Untitled" src="https://user-images.githubusercontent.com/51855129/225588020-c7b52a7e-8060-4a26-be31-f40ecf3ae893.png">
+
 ### Use Case Diagram
 <img width="900" alt="Untitled" src="https://user-images.githubusercontent.com/51855129/221156123-a8eb138b-6815-4aa4-95f8-320c3ddb3559.png">
 
